@@ -1,0 +1,24 @@
+.informationContainer {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.informationImages {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bodyInfo {
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.textInfo {
+    margin-block-start: 5px;
+    margin-block-end: 0;
+    margin-inline-end: 0;
+}

@@ -1,2 +1,44 @@
-.coverpage {
+.buttonContainer {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 4rem;
+}
+
+.whiteButton {
+    background-color: transparent;
+    border: 1px solid var(--white-text);
+    border-radius: 9px;
+    color: var(--white-text);
+    font-size: 1.375em;
+    font-weight: 200;
+    margin-left: 30px;
+    padding: 15px;
+    width: 377px;
+}
+
+.whiteButton:hover {
+    background-color: var(--grey-text);
+    border: 1px solid var(--grey-text);
+}
+
+span {
+    font-weight: lighter;
+}
+
+@media (max-width: 600px) {
+    .buttonContainer {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .whiteButton {
+        width: 90%;
+        margin: 30px 10px;
+        font-size: 1.125em;
+    }
 }

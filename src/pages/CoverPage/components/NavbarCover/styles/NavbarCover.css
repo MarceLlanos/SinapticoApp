@@ -1,0 +1,43 @@
+.container-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    list-style: none;
+    margin: 10px;
+    width: 90vw;
+}
+
+.link:not(:last-child) {
+    margin-right: 1.2rem;
+}
+
+.link {
+    color: var(--white-text);
+    font-size: 1.2rem;
+    font-weight: 200;
+    position: relative;
+}
+
+.link:hover {
+    cursor: pointer;
+    color: var(--primary-text);
+}
+
+.link::after {
+    background-color: var(--primary-text);
+    bottom: 0;
+    content: "";
+    height: 1.5px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 350ms ease-in-out;
+}
+
+.link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
