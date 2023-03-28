@@ -18,12 +18,13 @@
 		"react-dom": "^18.2.0",
 		"react-eslint": "^0.0.1",
 		"react-redux": "^8.0.5",
-		"react-router-dom": "^6.9.0"
+		"react-router-dom": "^6.9.0",
+		"styled-components": "^5.3.9"
 	},
 	"devDependencies": {
+		"@types/node": "^18.15.10",
 		"@types/react": "^18.0.28",
 		"@types/react-dom": "^18.0.11",
-		"@types/styled-components": "^5.1.26",
 		"@typescript-eslint/eslint-plugin": "^5.57.0",
 		"@typescript-eslint/parser": "^5.57.0",
 		"@vitejs/plugin-react": "^3.1.0",
