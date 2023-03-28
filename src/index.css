@@ -1,55 +1,55 @@
 :root {
-  --primary-text: #466ee9;
-  --white-text: #ffffff;
-  --grey-text: #97999c;
-  --grey-text-dark: #686b6d;
-  --dark-grey-text: #797a7c;
-  --green-text: #1ab394;
-  --red-text: #ff0000;
+	--primary-text: #466ee9;
+	--white-text: #ffffff;
+	--grey-text: #97999c;
+	--grey-text-dark: #686b6d;
+	--dark-grey-text: #797a7c;
+	--green-text: #1ab394;
+	--red-text: #ff0000;
 }
 
 body {
-  margin: 0;
-  background-color: #ffffff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-weight: 200;
+	margin: 0;
+	background-color: #ffffff;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-weight: 200;
 }
 
 /* Font weight */
 
 .textLight {
-  font-weight: 100;
+	font-weight: 100;
 }
 
 .textNormal {
-  font-weight: 200;
+	font-weight: 200;
 }
 
 .textBold {
-  font-weight: 300;
+	font-weight: 300;
 }
 
 /* Color Text */
 
 .greyText {
-  color: var(--grey-text);
+	color: var(--grey-text);
 }
 
 .greyDarkText {
-  color: var(--dark-grey-text);
+	color: var(--dark-grey-text);
 }
 
 .primaryText {
-  color: var(--primary-text);
+	color: var(--primary-text);
 }
 
 .whiteText {
-  color: var(--white-text);
+	color: var(--white-text);
 }
 
 .redText {
-  color: var(--red-text);
+	color: var(--red-text);
 }
 
 /* Text margin block */
@@ -60,6 +60,91 @@ h3,
 h4,
 p,
 span {
-  margin-block-start: 0;
-  margin-block-end: 0;
+	margin-block-start: 0;
+	margin-block-end: 0;
+}
+
+/* column container */
+
+.columnContainerCentered {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.columnContainer {
+	display: flex;
+	flex-direction: column;
+}
+
+/* row container */
+
+.rowContainer {
+	display: flex;
+	flex-direction: row;
+}
+
+/* margin y padding defaults */
+.mt-1 {
+	margin-top: 10px;
+}
+
+.mr-1 {
+	margin-right: 10px;
+}
+
+.ml-1 {
+	margin-left: 10px;
+}
+
+.mb-1 {
+	margin-bottom: 10px;
+}
+
+.mb-3 {
+	margin-bottom: 25px;
+}
+
+.mt-3 {
+	margin-top: 25px;
+}
+
+.ml-3 {
+	margin-left: 25px;
+}
+
+.mr-3 {
+	margin-right: 25px;
+}
+
+.pt-1 {
+	padding-top: 10px;
+}
+
+.pl-1 {
+	padding-left: 10px;
+}
+
+.pb-1 {
+	padding-bottom: 10px;
+}
+
+.pr-1 {
+	padding-right: 10px;
+}
+
+.pt-3 {
+	padding-top: 25px;
+}
+
+.pl-3 {
+	padding-left: 25px;
+}
+
+.pb-3 {
+	padding-bottom: 25px;
+}
+
+.pr-3 {
+	padding-right: 25px;
 }
