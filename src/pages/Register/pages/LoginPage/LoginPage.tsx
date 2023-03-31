@@ -1,11 +1,13 @@
+import { PublicRegisterRoutes } from '@/models';
+import { useAppDispatch } from '@/redux';
+import { ButtonGrey, ButtonPrimary, LinkPrimary } from '@/styled-components';
 import { TextField } from '@mui/material';
 import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { RegisterFrame } from '../../components';
 import { Label } from '../../styled-components';
-import { ButtonGrey, ButtonPrimary, LinkPrimary } from '@/styled-components';
-import { PublicRegisterRoutes } from '@/models';
+import { loginEmailAndPassword, registerEmailAndPassword } from '@/redux/slices/authentication.slice';
 
 export interface LoginPageProps {}
 interface IFormLogin {
@@ -14,7 +16,7 @@ interface IFormLogin {
 }
 
 export const LoginPage: React.FC<LoginPageProps> = () => {
-	// const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	const {
@@ -24,7 +26,13 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 	} = useForm<IFormLogin>();
 
 	const handleSubmitLogin: SubmitHandler<IFormLogin> = userData => {
-		console.log('logged');
+		const { email, password } = userData;
+		try {
+			dispatch( loginEmailAndPassword(userData))
+		} catch (error) {
+			
+		}
+
 	};
 
 	return (
@@ -42,7 +50,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 					margin='normal'
 					{...register('email', {
 						required: 'Email es requerido',
-						pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+						pattern: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.]{1}[a-zA-Z]{2,}$/,
 					})}
 					error={errors.email ? true : false}
 				/>

@@ -4,5 +4,9 @@
 	"singleQuote": true,
 	"bracketSpacing": true,
 	"bracketSameLine": false,
-	"arrowParens": "avoid"
+	"arrowParens": "avoid",
+	"endOfLine": "lf",
+	"semi": true,
+	"tabWidth": 2,
+	"requirePragma": false
 }
