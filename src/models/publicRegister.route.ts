@@ -1,4 +1,4 @@
 export const PublicRegisterRoutes = {
-    LOGIN: 'login',
-    REGISTER: 'create-account',
-}
+	LOGIN: 'login',
+	REGISTER: 'create-account',
+};

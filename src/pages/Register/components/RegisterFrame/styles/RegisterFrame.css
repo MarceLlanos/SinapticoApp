@@ -1,0 +1,13 @@
+.formContainer {
+	align-items: center;
+	display: flex;
+	padding: calc(50dvh / 8) calc(50dvw / 8);
+}
+
+.formContainerItem {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	margin: 30px;
+	width: calc(100vw / 2.5);
+}
