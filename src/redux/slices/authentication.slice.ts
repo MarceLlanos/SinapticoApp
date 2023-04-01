@@ -1,36 +1,35 @@
-import { createUserAdapted } from "@/adapters/FirebaseUser.adapter";
-import { DataRegister, loginUserEmailPassword, registerUserEmailPassword } from "@/services";
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { setMessage } from "./messages.slice";
-import { UserInterface } from "@/models/user.model";
+import { AuthState, DataAuth } from '@/models';
+import {
+    loginUserEmailPassword,
+    logoutUser,
+    registerUserEmailPassword,
+} from '@/services';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { setMessage } from './messages.slice';
 
-const user: UserInterface = {
+
+const userDataAuth: AuthState = {
     uid: '',
     email: '',
     name: '',
     photo: '',
-    accessToken: '',
-    emailVerified: false,
-    isLoggedIn: false
+    accessToken: ''
 }
 
-const initialUserState = user ? { isLoggedIn: true, user } : { isLoggedIn: false, user: {} }
 
 const getErrorMessage = (error: any, thunk: any) => {
     const errorMessage = thunk.dispatch(setMessage(error.message));
 
     return thunk.rejectWithValue(errorMessage);
-}
-
+};
 
 export const registerEmailAndPassword = createAsyncThunk(
     'auth/register',
-    async ({ email, password }: DataRegister, thunkAPI) => {
+    async (dataAuth: DataAuth, thunkAPI) => {
         try {
-            const user: any = await registerUserEmailPassword({ email, password });
-            const response = await createUserAdapted(user);
+            const user: any = await registerUserEmailPassword(dataAuth);
 
-            return response;
+            return user;
         } catch (error: any) {
             return getErrorMessage(error, thunkAPI);
         }
@@ -39,9 +38,9 @@ export const registerEmailAndPassword = createAsyncThunk(
 
 export const loginEmailAndPassword = createAsyncThunk(
     'auth/login',
-    async ({ email, password }: DataRegister, thunkAPI) => {
+    async (dataAuth: DataAuth, thunkAPI) => {
         try {
-            const data = await loginUserEmailPassword({ email, password });
+            const data = await loginUserEmailPassword(dataAuth);
             return data;
         } catch (error) {
             return getErrorMessage(error, thunkAPI);
@@ -49,38 +48,47 @@ export const loginEmailAndPassword = createAsyncThunk(
     }
 );
 
-export const logout = createAsyncThunk(
-    'auth/logout',
-    async () => {
-
-    }
-)
-
-const authSlice = createSlice({
-    name: 'auth',
-    initialState: initialUserState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
-            .addCase(registerEmailAndPassword.fulfilled, (state, action: PayloadAction<UserInterface>) => {
-                state.isLoggedIn = false;
-                state.user = action.payload;
-            })
-            .addCase(registerEmailAndPassword.rejected, (state) => {
-                state.isLoggedIn = false;
-            })
-            .addCase(loginEmailAndPassword.fulfilled, (state, action: PayloadAction<UserInterface>) => {
-                state.isLoggedIn = false;
-                state.user = action.payload;
-            })
-            .addCase(loginEmailAndPassword.rejected, (state) => {
-                state.isLoggedIn = false;
-            })
-            .addCase(logout.fulfilled, (state) => {
-                state.isLoggedIn = false;
-                state.user = initialUserState;
-            })
+export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
+    try {
+        await logoutUser();
+    } catch (error: any) {
+        return thunkAPI.rejectWithValue({ error: error.message })
     }
 });
 
-export default authSlice.reducer;
+const initialUserState = userDataAuth
+    ? { authenticated: true, userDataAuth }
+    : { authenticated: false, userDataAuth: null }
+
+export const authSlice = createSlice({
+    name: 'auth',
+    initialState: initialUserState,
+    reducers: {},
+    extraReducers: builder => {
+        builder
+            .addCase(
+                registerEmailAndPassword.fulfilled,
+                (state, action: PayloadAction<AuthState>) => {
+                    state.authenticated = true;
+                    state.userDataAuth = action.payload;
+                }
+            )
+            .addCase(registerEmailAndPassword.rejected, state => {
+                state.authenticated = false;
+            })
+            .addCase(
+                loginEmailAndPassword.fulfilled,
+                (state, action: PayloadAction<AuthState>) => {
+                    state.authenticated = true;
+                    state.userDataAuth = action.payload;
+                }
+            )
+            .addCase(loginEmailAndPassword.rejected, state => {
+                state.authenticated = false;
+            })
+            .addCase(logout.fulfilled, state => {
+                state.authenticated = false;
+                state.userDataAuth = null;
+            });
+    },
+});

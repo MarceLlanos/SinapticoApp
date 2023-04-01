@@ -1,9 +1,17 @@
+import { Route, Routes } from 'react-router-dom';
 import './styles/NotFoundPage.css';
 
-export interface NotFoundPageProps {}
+export interface NotFoundPageProps {
+	children: JSX.Element[] | JSX.Element;
+}
 
-const NotFoundPage: React.FC<NotFoundPageProps> = () => {
-	return <div className='notfoundpage'>NotFoundPage</div>;
+const NotFoundPage: React.FC<NotFoundPageProps> = ({ children }) => {
+	return (
+		<Routes>
+			{children}
+			<Route path='*' element={<>Not Found</>} />
+		</Routes>
+	);
 };
 
 export default NotFoundPage;
