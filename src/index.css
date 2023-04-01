@@ -148,3 +148,20 @@ span {
 .pr-3 {
 	padding-right: 25px;
 }
+
+/* text form */
+
+.smallTextItalic {
+	color: var(--grey-text);
+	font-size: 0.8rem;
+	font-weight: 100;
+	font-style: italic;
+	margin-bottom: 10px;
+}
+
+.greyText {
+	color: var(--grey-text);
+	font-size: 1.125rem;
+	font-weight: 200;
+	margin-bottom: 20px;
+}

@@ -1,4 +1,4 @@
-import { PublicRegisterRoutes } from '@/models';
+import { IFormRegister, PublicRegisterRoutes } from '@/models';
 import { useAppDispatch } from '@/redux';
 import { ButtonGrey, ButtonPrimary, LinkPrimary } from '@/styled-components';
 import { TextField } from '@mui/material';
@@ -7,13 +7,12 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { RegisterFrame } from '../../components';
 import { Label } from '../../styled-components';
-import { loginEmailAndPassword, registerEmailAndPassword } from '@/redux/slices/authentication.slice';
+import {
+	loginEmailAndPassword,
+	registerEmailAndPassword,
+} from '@/redux/slices/authentication.slice';
 
 export interface LoginPageProps {}
-interface IFormLogin {
-	email: string;
-	password: string;
-}
 
 export const LoginPage: React.FC<LoginPageProps> = () => {
 	const dispatch = useAppDispatch();
@@ -23,16 +22,12 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<IFormLogin>();
+	} = useForm<IFormRegister>();
 
-	const handleSubmitLogin: SubmitHandler<IFormLogin> = userData => {
-		const { email, password } = userData;
+	const handleSubmitLogin: SubmitHandler<IFormRegister> = userData => {
 		try {
-			dispatch( loginEmailAndPassword(userData))
-		} catch (error) {
-			
-		}
-
+			dispatch(loginEmailAndPassword(userData));
+		} catch (error) {}
 	};
 
 	return (

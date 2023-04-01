@@ -1,9 +1,10 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 
 import { Suspense } from 'react';
 import { Provider } from 'react-redux';
-import { PublicRegisterRoutes } from './models';
-import { CoverPage, LoginPage, RegisterPage } from './pages';
+import { AuthGuard } from './guards';
+import { PrivateRegisterRoutes, PublicRegisterRoutes } from './models';
+import { CoverPage, LoginPage, Register, RegisterPage } from './pages';
 import { store } from './redux';
 import { NotFoundPage } from './utilities/NotFoundPage';
 
@@ -13,7 +14,7 @@ function App() {
 			<Suspense fallback={<> Loading... </>}>
 				<Provider store={store}>
 					<Router>
-						<Routes>
+						<NotFoundPage>
 							<Route path='/' element={<CoverPage />} />
 							<Route
 								path={`${PublicRegisterRoutes.LOGIN}`}
@@ -23,8 +24,13 @@ function App() {
 								path={`${PublicRegisterRoutes.REGISTER}`}
 								element={<RegisterPage />}
 							/>
-							<Route path='*' element={<NotFoundPage />} />
-						</Routes>
+							<Route element={<AuthGuard />}>
+								<Route
+									path={`/${PrivateRegisterRoutes.PRIVATE}/*`}
+									element={<Register />}
+								/>
+							</Route>
+						</NotFoundPage>
 					</Router>
 				</Provider>
 			</Suspense>
