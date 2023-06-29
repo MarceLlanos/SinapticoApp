@@ -44,6 +44,7 @@ export const ButtonGrey = styled.button`
 	&:hover {
 		animation: pulse 2s ease-out 0.4s;
 		color: var(--grey-text);
+		box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
 	}
 
 	&:hover::after,

@@ -1,12 +1,12 @@
-import { Route, BrowserRouter as Router } from 'react-router-dom';
-
 import { Suspense } from 'react';
 import { Provider } from 'react-redux';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
+
 import { AuthGuard } from './guards';
 import { PrivateRegisterRoutes, PublicRegisterRoutes } from './models';
 import { CoverPage, LoginPage, Register, RegisterPage } from './pages';
 import { store } from './redux';
-import { NotFoundPage } from './utilities/NotFoundPage';
+import { NotFoundPage } from './utilities';
 
 function App() {
 	return (
@@ -24,7 +24,7 @@ function App() {
 								path={`${PublicRegisterRoutes.REGISTER}`}
 								element={<RegisterPage />}
 							/>
-							<Route element={<AuthGuard />}>
+							<Route path={'/'} element={<AuthGuard />}>
 								<Route
 									path={`/${PrivateRegisterRoutes.PRIVATE}/*`}
 									element={<Register />}

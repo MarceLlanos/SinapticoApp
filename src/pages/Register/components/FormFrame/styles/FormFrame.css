@@ -1,0 +1,8 @@
+.headForm {
+	width: calc(100dvw - 35px);
+	margin: 19px 0 0 35px;
+}
+
+.bodyForm {
+	margin: 10px 35px;
+}
