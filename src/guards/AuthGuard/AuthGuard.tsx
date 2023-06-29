@@ -1,10 +1,15 @@
-import { PublicRegisterRoutes } from '@/models';
-import { useAppSelector } from '@/redux/hook/useAppSelector.hook';
-import { uidUserSelector } from '@/redux/selectors/authSelector.selector';
+import { FirebaseUser, PublicRegisterRoutes } from '@/models';
+import { useAppSelector } from '@/redux';
+import { verifyUser } from '@/utilities';
 import { Navigate, Outlet } from 'react-router-dom';
 
 export const AuthGuard = () => {
-	const user = useAppSelector(uidUserSelector);
-	console.log(`From Auth Guard ${user}`);
-	return user ? <Outlet />: <Navigate to={`/${PublicRegisterRoutes.LOGIN}`}/>;
+	const userData: FirebaseUser = useAppSelector(state => state.auth.user);
+	const verifyData = verifyUser(userData);
+
+	return verifyData ? (
+		<Outlet />
+	) : (
+		<Navigate to={`/${PublicRegisterRoutes.LOGIN}`} />
+	);
 };

@@ -1,42 +1,55 @@
-import { auth, firestore } from '@/firebase';
-import { DataAuth } from '@/models';
+import { createUserCredentialAdapted } from '@/adapters';
+import { auth, firestore, googleProvider } from '@/firebase';
+import { AuthUserCredential } from '@/models';
 import {
 	User,
 	createUserWithEmailAndPassword,
+	sendEmailVerification,
 	signInWithEmailAndPassword,
+	signInWithPopup,
 	signOut,
 } from 'firebase/auth';
-import { collection, doc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 export const getCurrentUser = (): User | null => {
 	return auth.currentUser;
 };
 
-export const registerUserEmailPassword = async (dataRegister: DataAuth) => {
-	const { email, password } = dataRegister;
+export const registerEmailPassword = async ({
+	email,
+	password,
+}: AuthUserCredential): Promise<User> => {
 	const user = await createUserWithEmailAndPassword(auth, email, password)
 		.then(({ user }) => user)
-		.catch(_err => {
-			const error = _err.code;
-			const errorMessage = _err.message;
-			return { error, errorMessage };
-		});
+		.catch(error => error);
+
 	return user;
 };
 
-export const loginUserEmailPassword = async (dataLogin: DataAuth) => {
-	const { email, password } = dataLogin;
+export const loginEmailPassword = async ({
+	email,
+	password,
+}: AuthUserCredential): Promise<User> => {
 	const user = await signInWithEmailAndPassword(auth, email, password)
 		.then(({ user }) => user)
-		.catch(_err => {
-			const error = _err.code;
-			const errorMessage = _err.message;
-			return { error, errorMessage };
-		});
+		.catch(_err => _err);
 	return user;
 };
 
-export const logoutUser = async () => {
+export const loginWithGoogle = async () => {
+	const userData = await signInWithPopup(auth, googleProvider)
+		.then(userResult => userResult)
+		.catch(error => {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			const email = error.customData.email;
+			return { errorCode, errorMessage, email };
+		});
+
+	return userData;
+};
+
+export const logout = async () => {
 	const currentUserUid = getCurrentUser()?.uid;
 	const logout = await signOut(auth);
 

@@ -1,16 +1,22 @@
-import { SerializedError } from "@reduxjs/toolkit";
+import { FirebaseUser } from './FirebaseUser.model';
 
-export interface AuthState {
-	uid: string;
-	name?: string | null;
-	email?: string | null;
-	photo?: string | null;
-	accessToken: string;
-	isEmailConfirmed?: boolean;
-}
-
-export interface DataAuth {
+export interface AuthUserCredential {
 	email: string;
 	password: string;
-	error?: SerializedError
+	accessToken?: string;
 }
+
+export type AuthState = {
+	user: FirebaseUser;
+	isLoading: Boolean;
+	error: string | null;
+};
+
+export interface UserData {
+	uid: string;
+	email: string;
+	name: string;
+	photo: string;
+}
+
+export type NewUser = AuthUserCredential & UserData;

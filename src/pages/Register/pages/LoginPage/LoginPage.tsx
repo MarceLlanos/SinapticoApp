@@ -1,16 +1,20 @@
-import { IFormRegister, PublicRegisterRoutes } from '@/models';
-import { useAppDispatch } from '@/redux';
+import { createUserAdapted } from '@/adapters/FirebaseUser.adapter';
+import {
+	AuthUserCredential,
+	FirebaseUser,
+	PrivateRegisterRoutes,
+	PublicRegisterRoutes,
+} from '@/models';
+import { loginUser, useAppDispatch } from '@/redux';
+import { loginEmailPassword, loginWithGoogle } from '@/services';
 import { ButtonGrey, ButtonPrimary, LinkPrimary } from '@/styled-components';
 import { TextField } from '@mui/material';
-import React from 'react';
+import { User, UserCredential } from 'firebase/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { RegisterFrame } from '../../components';
+import { ButtonGoogleIcon, RegisterFrame } from '../../components';
 import { Label } from '../../styled-components';
-import {
-	loginEmailAndPassword,
-	registerEmailAndPassword,
-} from '@/redux/slices/authentication.slice';
+import { createUserCredentialAdapted } from '@/adapters';
 
 export interface LoginPageProps {}
 
@@ -22,17 +26,50 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<IFormRegister>();
+	} = useForm<AuthUserCredential>();
 
-	const handleSubmitLogin: SubmitHandler<IFormRegister> = userData => {
+	const handleSubmitLogin: SubmitHandler<
+		AuthUserCredential
+	> = async dataUser => {
 		try {
-			dispatch(loginEmailAndPassword(userData));
+			const data: User = await loginEmailPassword(dataUser);
+			const user: FirebaseUser = (await createUserAdapted(
+				data
+			)) as FirebaseUser;
+			dispatch(loginUser(user));
+			navigate(
+				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
+			);
 		} catch (error) {}
+	};
+
+	const handleGoogleLogin = async () => {
+		try {
+			const data: UserCredential = (await loginWithGoogle()) as UserCredential;
+			const user: FirebaseUser = (await createUserCredentialAdapted(
+				data
+			)) as FirebaseUser;
+
+			dispatch(loginUser(user));
+			navigate(
+				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
+			);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
 		<RegisterFrame>
 			<Label>Ingresa a tu cuenta</Label>
+
+			<div className='columnContainerCentered mt-3'>
+				<ButtonGoogleIcon
+					handleClick={handleGoogleLogin}
+					title='Ingrese con Google'
+				/>
+			</div>
+
 			<form
 				onSubmit={handleSubmit(handleSubmitLogin)}
 				className='columnContainerCentered mt-3'

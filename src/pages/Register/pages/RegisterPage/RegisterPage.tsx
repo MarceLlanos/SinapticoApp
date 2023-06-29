@@ -1,14 +1,24 @@
-import React from 'react';
-import './styles/RegisterPage.css';
-import { RegisterFrame } from '../../components';
-import { Label } from '../../styled-components';
-import { TextField } from '@mui/material';
+import {
+	AuthUserCredential,
+	FirebaseUser,
+	PrivateRegisterRoutes,
+} from '@/models';
+import { loginUser, registerUser, useAppDispatch } from '@/redux';
 import { ButtonPrimary } from '@/styled-components';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '@/redux';
+import { TextField } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { registerEmailAndPassword } from '@/redux/slices/authentication.slice';
-import { DataAuth, PrivateRegisterRoutes } from '@/models';
+import { useNavigate } from 'react-router-dom';
+import { ButtonGoogleIcon, RegisterFrame } from '../../components';
+import { Label } from '../../styled-components';
+
+import './styles/RegisterPage.css';
+import {
+	addDocument,
+	loginWithGoogle,
+	registerEmailPassword,
+} from '@/services';
+import { User, UserCredential } from 'firebase/auth';
+import { createUserAdapted, createUserCredentialAdapted } from '@/adapters';
 
 export interface RegisterPageProps {}
 
@@ -20,22 +30,53 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<DataAuth>();
+	} = useForm<AuthUserCredential>();
 
-	const onHandleRegister: SubmitHandler<DataAuth> = dataUser => {
+	const onHandleRegister: SubmitHandler<
+		AuthUserCredential
+	> = async dataUser => {
 		try {
-			dispatch(registerEmailAndPassword(dataUser));
+			const data: User = await registerEmailPassword(dataUser);
+			const user: FirebaseUser = (await createUserAdapted(
+				data
+			)) as FirebaseUser;
+
+			dispatch(registerUser(user));
+			await addDocument('user', user);
 			navigate(
 				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`,
 				{ replace: true }
 			);
-		} catch {
+		} catch {}
+	};
 
+	const registerGoogleHandle = async () => {
+		try {
+			const data: UserCredential = (await loginWithGoogle()) as UserCredential;
+			const user: FirebaseUser = (await createUserCredentialAdapted(
+				data
+			)) as FirebaseUser;
+
+			dispatch(loginUser(user));
+
+			await addDocument('user', user);
+			navigate(
+				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
+			);
+		} catch (error) {
+			console.log(error);
 		}
 	};
+
 	return (
 		<RegisterFrame>
 			<Label>Crea tu cuenta</Label>
+			<div className='columnContainerCentered mt-3'>
+				<ButtonGoogleIcon
+					handleClick={registerGoogleHandle}
+					title='Crear cuenta con Google'
+				/>
+			</div>
 			<form
 				onSubmit={handleSubmit(onHandleRegister)}
 				className='columnContainerCentered mt-3'
