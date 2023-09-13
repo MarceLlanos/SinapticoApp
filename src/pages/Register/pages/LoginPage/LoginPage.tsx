@@ -5,21 +5,23 @@ import {
 	PrivateRegisterRoutes,
 	PublicRegisterRoutes,
 } from '@/models';
-import { loginUser, useAppDispatch } from '@/redux';
 import { loginEmailPassword, loginWithGoogle } from '@/services';
-import { ButtonGrey, ButtonPrimary, LinkPrimary } from '@/styled-components';
+import {
+	ButtonGrey,
+	ButtonPrimary,
+	LabelTitle,
+	LinkPrimary,
+} from '@/styled-components';
 import { TextField } from '@mui/material';
 import { User, UserCredential } from 'firebase/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ButtonGoogleIcon, RegisterFrame } from '../../components';
-import { Label } from '../../styled-components';
 import { createUserCredentialAdapted } from '@/adapters';
 
 export interface LoginPageProps {}
 
 export const LoginPage: React.FC<LoginPageProps> = () => {
-	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	const {
@@ -36,7 +38,6 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 			const user: FirebaseUser = (await createUserAdapted(
 				data
 			)) as FirebaseUser;
-			dispatch(loginUser(user));
 			navigate(
 				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
 			);
@@ -50,7 +51,6 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 				data
 			)) as FirebaseUser;
 
-			dispatch(loginUser(user));
 			navigate(
 				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
 			);
@@ -61,7 +61,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 
 	return (
 		<RegisterFrame>
-			<Label>Ingresa a tu cuenta</Label>
+			<LabelTitle>Ingresa a tu cuenta</LabelTitle>
 
 			<div className='columnContainerCentered mt-3'>
 				<ButtonGoogleIcon
@@ -118,7 +118,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 				</div>
 			</form>
 			<div className='columnContainer mt-3'>
-				<span className='text-grey mb-1 '>¿No tienes una cuenta?</span>
+				<span className='greyText mb-1 '>¿No tienes una cuenta?</span>
 				<ButtonGrey
 					onClick={() => navigate(`/${PublicRegisterRoutes.REGISTER}`)}
 				>

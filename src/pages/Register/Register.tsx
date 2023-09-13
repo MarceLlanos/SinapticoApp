@@ -4,6 +4,7 @@ import { NotFoundPage } from '@/utilities';
 import { Navigate, Route } from 'react-router-dom';
 import { PrivateRegisterRoutes } from '@/models';
 import { DataProjectPage } from './pages';
+import TeamCode from './pages/TeamCode';
 
 export interface RegisterPagesProps {}
 
@@ -18,8 +19,11 @@ export const Register: React.FC<RegisterPagesProps> = () => {
 				path={`/${PrivateRegisterRoutes.CREATEPROJECT}/*`}
 				element={<DataProjectPage />}
 			/>
-			{/* <Route path={`${PrivateRegisterRoutes.TEAMCODE}/*`} element={< />}/>
-			<Route path={`${PrivateRegisterRoutes.JOINTEAM}/*`} element={< />}/>
+			<Route
+				path={`${PrivateRegisterRoutes.TEAMCODE}/*`}
+				element={<TeamCode />}
+			/>
+			{/* <Route path={`${PrivateRegisterRoutes.JOINTEAM}/*`} element={< />}/>
 			<Route path={`${PrivateRegisterRoutes.TEAMLIST}/*`} element={< />}/>
 			<Route path={`${PrivateRegisterRoutes.CONFIGUREDRIVE}/*`} element={< />}/>
 			<Route path={`${PrivateRegisterRoutes.TEAMROLE}/*`} element={< />}/> */}

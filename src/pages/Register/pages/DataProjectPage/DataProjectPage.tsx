@@ -1,24 +1,19 @@
 import { TextField } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import moment from 'moment';
 
-import { DataProject } from '@/models';
+import { DataProject, PrivateRegisterRoutes } from '@/models';
 import { ButtonPrimary } from '@/styled-components';
 import { FormFrame, HeadFormTitle } from '../../components';
 
 import './styles/DataProjectPage.css';
-import { useAddProjectMutation, useAppDispatch } from '@/redux';
-import { verifyDate } from '@/utilities/VerifyDate';
 
-
+import { createProjectDocService } from '@/services/projectDocument.service';
+import { useNavigate } from 'react-router-dom';
 
 export interface DataProjectPageProps {}
 
 const DataProjectPage: React.FC<DataProjectPageProps> = () => {
-	const dispatch = useAppDispatch();
-	const [addProject, { isSuccess, isError, isLoading }] =
-		useAddProjectMutation();
-
+	const navigation = useNavigate();
 	const {
 		register,
 		handleSubmit,
@@ -26,10 +21,12 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 	} = useForm<DataProject>();
 
 	const handleSubmitRegister: SubmitHandler<DataProject> = async data => {
-		const { dateDeliverProject } = data;
-		const currentDate = new Date();
-		const date = verifyDate(dateDeliverProject, currentDate );
-		addProject(data);
+		const projectDoc = await createProjectDocService(data);
+		console.log(projectDoc);
+		navigation(
+			`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMCODE}`,
+			{ replace: true }
+		);
 	};
 
 	return (
@@ -97,7 +94,7 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 					id='outlined-date-input'
 					label='Fecha de entrega del proyecto'
 					type='date'
-					autoComplete='current-password'
+					autoComplete='current-date'
 					margin='normal'
 					InputLabelProps={{
 						shrink: true,

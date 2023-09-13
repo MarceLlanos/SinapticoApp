@@ -14,7 +14,7 @@ const ButtonGoogleIcon: React.FC<ButtonGoogleIconProps> = ({
 	return (
 		<ButtonIcon onClick={handleClick} className='buttonGoogle'>
 			<img
-				src='../src/assets/icons/google.svg'
+				src='../../src/assets/icons/google.svg'
 				alt='Google icon'
 				className='googleIcon'
 			/>
