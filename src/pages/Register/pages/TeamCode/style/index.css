@@ -1,0 +1,14 @@
+.inline-row {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.form-container {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.mt-6 {
+    margin-top: 4rem;
+}

@@ -4,6 +4,8 @@ import { FormFrame, HeadFormTitle } from '../../components';
 import { TextField } from '@mui/material';
 import { ButtonPrimary } from '@/styled-components';
 
+import './style/index.css';
+
 interface ITeamCodeProps {}
 
 const TeamCode: React.FC<ITeamCodeProps> = props => {
@@ -21,11 +23,13 @@ const TeamCode: React.FC<ITeamCodeProps> = props => {
 	return (
 		<FormFrame>
 			<HeadFormTitle title='Añadir miembros a tu equipo de trabajo. (Importante)' />
-			<span className='greyText mt-3'>
-				Usa el siguiente código para que los demas miembros se puedan sumar a tu
-				equipo.
-			</span>
-			<form>
+			<div className='mt-1'>
+				<span className='greyText'>
+					Usa el siguiente código para que los demas miembros se puedan sumar a
+					tu equipo.
+				</span>
+			</div>
+			<form className='mt-3 inline-row form-container'>
 				<TextField
 					id='outlined-code-input'
 					label='Codigo del Equipo'
@@ -36,16 +40,19 @@ const TeamCode: React.FC<ITeamCodeProps> = props => {
 					}}
 					value='CHY4'
 				/>
-				<ButtonPrimary type='submit'>Copiar</ButtonPrimary>
+				<ButtonPrimary type='submit' className='ml-3'>
+					Copiar código
+				</ButtonPrimary>
 			</form>
-			<span className=' greyText mt-3'>
+			<span className=' greyText mt-3 '>
 				Este codigo es importante para que sumes integrantes a tu equipo.
-				<br className=' mt-1'></br>
+				<br></br>
 				Lo puedes obtener también ingresando a la sección “Equipo” en el
 				escritorio de trabajo de Sinaptico.
 			</span>
-
-			<ButtonPrimary>Continuar</ButtonPrimary>
+			<div className='mt-6'>
+				<ButtonPrimary>Continuar</ButtonPrimary>
+			</div>
 		</FormFrame>
 	);
 };
