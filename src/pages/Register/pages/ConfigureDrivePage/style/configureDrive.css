@@ -1,0 +1,13 @@
+.italic {
+    font-size: 0.8rem;
+}
+
+.driveForm {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+}
+
+.driveButtonContainer {
+    display: flex;
+    justify-content: center;
+}

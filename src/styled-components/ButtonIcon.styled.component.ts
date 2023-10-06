@@ -4,7 +4,7 @@ export const ButtonIcon = styled.button`
 	align-items: center;
 	background: transparent;
 	border: 1px solid var(--grey-text);
-	border-radius: 7px;
+	border-radius: 3px;
 	display: flex;
 	height: 47px;
 	justify-content: center;
@@ -22,7 +22,7 @@ export const ButtonIcon = styled.button`
 
 	&::after,
 	&::before {
-		border-radius: 7px;
+		border-radius: 3px;
 		content: '';
 		height: 0%;
 		position: absolute;

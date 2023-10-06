@@ -3,13 +3,11 @@ import {
 	FirebaseUser,
 	PrivateRegisterRoutes,
 } from '@/models';
-import { loginUser, registerUser, useAppDispatch } from '@/redux';
-import { ButtonPrimary } from '@/styled-components';
+import { ButtonPrimary, LabelTitle } from '@/styled-components';
 import { TextField } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ButtonGoogleIcon, RegisterFrame } from '../../components';
-import { Label } from '../../styled-components';
 
 import './styles/RegisterPage.css';
 import {
@@ -19,12 +17,12 @@ import {
 } from '@/services';
 import { User, UserCredential } from 'firebase/auth';
 import { createUserAdapted, createUserCredentialAdapted } from '@/adapters';
+import OrDivider from '../../components/OrDivider';
 
 export interface RegisterPageProps {}
 
 const RegisterPage: React.FC<RegisterPageProps> = () => {
 	const navigate = useNavigate();
-	const dispatch = useAppDispatch();
 
 	const {
 		register,
@@ -41,7 +39,6 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 				data
 			)) as FirebaseUser;
 
-			dispatch(registerUser(user));
 			await addDocument('user', user);
 			navigate(
 				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`,
@@ -57,8 +54,6 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 				data
 			)) as FirebaseUser;
 
-			dispatch(loginUser(user));
-
 			await addDocument('user', user);
 			navigate(
 				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
@@ -70,13 +65,14 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 
 	return (
 		<RegisterFrame>
-			<Label>Crea tu cuenta</Label>
+			<LabelTitle>Crea tu cuenta</LabelTitle>
 			<div className='columnContainerCentered mt-3'>
 				<ButtonGoogleIcon
 					handleClick={registerGoogleHandle}
 					title='Crear cuenta con Google'
 				/>
 			</div>
+			<OrDivider />
 			<form
 				onSubmit={handleSubmit(onHandleRegister)}
 				className='columnContainerCentered mt-3'

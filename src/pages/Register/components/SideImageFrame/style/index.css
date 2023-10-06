@@ -1,0 +1,27 @@
+.sideContainer {
+    display: flex;
+    height: 100vh;
+    top: 0;
+}
+
+.sideContainerItem {
+    box-sizing: border-box;
+    flex: 1;
+    height: calc(100vh);
+    margin: 0 10px 0 30px;
+}
+
+.sideImageContainerItem {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    height: 100dvh;
+    justify-content: center;
+}
+
+.image {
+    height: 100svh;
+    width: 100%;
+    object-fit: cover;
+
+}

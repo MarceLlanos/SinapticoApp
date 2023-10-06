@@ -1,4 +1,6 @@
 export * from './FirebaseUser.model';
+export * from './Roles.models';
+export * from './TeamCode.model';
 export * from './authState.model';
 export * from './dataProject.model';
 export * from './privateDashboard.route';

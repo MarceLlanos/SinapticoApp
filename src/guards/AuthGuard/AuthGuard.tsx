@@ -1,15 +1,17 @@
-import { FirebaseUser, PublicRegisterRoutes } from '@/models';
-import { useAppSelector } from '@/redux';
-import { verifyUser } from '@/utilities';
-import { Navigate, Outlet } from 'react-router-dom';
+import { PublicRegisterRoutes } from "@/models";
+import { Navigate, Outlet } from "react-router-dom";
 
-export const AuthGuard = () => {
-	const userData: FirebaseUser = useAppSelector(state => state.auth.user);
-	const verifyData = verifyUser(userData);
+interface Props {
+  privateValidation: boolean;
+}
 
-	return verifyData ? (
-		<Outlet />
-	) : (
-		<Navigate to={`/${PublicRegisterRoutes.LOGIN}`} />
-	);
+const PrivateValidationFragment = <Outlet />
+const PublicValidationFragment = <Navigate replace to={PublicRegisterRoutes.LOGIN} />
+
+export const AuthGuard = ( { privateValidation }: Props ) => {
+  return true ? (
+    <Outlet />
+  ) : (
+    <Navigate replace to={`/${PublicRegisterRoutes.LOGIN}`} />
+  );
 };

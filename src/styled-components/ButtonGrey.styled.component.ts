@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const ButtonGrey = styled.button`
 	background-color: transparent;
 	border: 1px solid var(--grey-text);
-	border-radius: 7px;
+	border-radius: 3px;
 	color: var(--grey-text);
 	font-size: 1.3rem;
 	font-weight: 100;
@@ -17,7 +17,7 @@ export const ButtonGrey = styled.button`
 
 	&::after,
 	&::before {
-		border-radius: 7px;
+		border-radius: 3px;
 		content: '';
 		height: 0%;
 		position: absolute;

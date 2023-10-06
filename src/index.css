@@ -1,19 +1,21 @@
 :root {
 	--primary-text: #466ee9;
 	--white-text: #ffffff;
-	--grey-text: #828080;
+	--grey-text: #a19f9f;
 	--grey-text-dark: #686b6d;
 	--dark-grey-text: #656667;
 	--green-text: #1ab394;
 	--red-text: #ff0000;
 }
 
+/* //askjdhkjashdjk */
 body {
 	margin: 0;
 	background-color: #ffffff;
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
 		Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	font-weight: 200;
+	font-weight: bold;
 }
 
 /* Font weight */
