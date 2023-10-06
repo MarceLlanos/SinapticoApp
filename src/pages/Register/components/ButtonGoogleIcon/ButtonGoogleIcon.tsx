@@ -5,16 +5,18 @@ import { ButtonIcon } from '@/styled-components';
 export interface ButtonGoogleIconProps {
 	handleClick: any;
 	title: String;
+	iconLink: string;
 }
 
 const ButtonGoogleIcon: React.FC<ButtonGoogleIconProps> = ({
 	handleClick,
 	title,
+	iconLink
 }) => {
 	return (
 		<ButtonIcon onClick={handleClick} className='buttonGoogle'>
 			<img
-				src='../../src/assets/icons/google.svg'
+				src={iconLink}
 				alt='Google icon'
 				className='googleIcon'
 			/>

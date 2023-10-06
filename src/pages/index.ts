@@ -12,6 +12,6 @@ export * from './Register';
 export * from './Register/pages/DataProjectPage';
 export * from './Register/pages/LoginPage';
 export * from './Register/pages/RegisterPage';
-export * from './Register/pages/TeamCode';
+export * from './Register/pages/TeamCodePage';
 export * from './Register/pages';
 export * from './Register/styled-components';

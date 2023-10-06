@@ -22,9 +22,9 @@ function App() {
 							path={`${PublicRegisterRoutes.REGISTER}`}
 							element={<RegisterPage />}
 						/>
-						<Route path={'/'} element={<AuthGuard />}>
+						<Route element={<AuthGuard privateValidation={ true } />}>
 							<Route
-								path={`/${PrivateRegisterRoutes.PRIVATE}/*`}
+								path={`${PrivateRegisterRoutes.PRIVATE}/*`}
 								element={<Register />}
 							/>
 						</Route>

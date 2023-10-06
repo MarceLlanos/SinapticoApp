@@ -18,11 +18,13 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ButtonGoogleIcon, RegisterFrame } from '../../components';
 import { createUserCredentialAdapted } from '@/adapters';
+import OrDivider from '../../components/OrDivider';
 
 export interface LoginPageProps {}
 
 export const LoginPage: React.FC<LoginPageProps> = () => {
 	const navigate = useNavigate();
+
 
 	const {
 		register,
@@ -61,14 +63,18 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 
 	return (
 		<RegisterFrame>
+			
 			<LabelTitle>Ingresa a tu cuenta</LabelTitle>
 
 			<div className='columnContainerCentered mt-3'>
 				<ButtonGoogleIcon
 					handleClick={handleGoogleLogin}
 					title='Ingrese con Google'
+					iconLink='../../src/assets/icons/google.svg'
 				/>
 			</div>
+
+			<OrDivider />
 
 			<form
 				onSubmit={handleSubmit(handleSubmitLogin)}

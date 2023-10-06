@@ -17,6 +17,7 @@ import {
 } from '@/services';
 import { User, UserCredential } from 'firebase/auth';
 import { createUserAdapted, createUserCredentialAdapted } from '@/adapters';
+import OrDivider from '../../components/OrDivider';
 
 export interface RegisterPageProps {}
 
@@ -71,6 +72,7 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 					title='Crear cuenta con Google'
 				/>
 			</div>
+			<OrDivider />
 			<form
 				onSubmit={handleSubmit(onHandleRegister)}
 				className='columnContainerCentered mt-3'

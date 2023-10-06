@@ -1,0 +1,15 @@
+.span {
+    font-weight: 200;
+    color: var(--grey-text);
+
+}
+
+.container {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.flex {
+    flex: 1;
+}

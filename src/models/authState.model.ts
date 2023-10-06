@@ -11,12 +11,12 @@ export type AuthState = {
 	isLoading: Boolean;
 	error: string | null;
 };
-
 export interface UserData {
 	uid: string;
 	email: string;
 	name: string;
 	photo: string;
+
 }
 
 export type NewUser = AuthUserCredential & UserData;

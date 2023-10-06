@@ -1,11 +1,9 @@
 export interface DataProject {
-	userId: string;
-	projectId: string;
 	nameProject: string;
 	description: string;
 	assigment: string;
 	proffessorName: string;
-	dateDeliverProject: Date | null;
+	dateDeliverProject: Date;
 }
 
 export interface Project {

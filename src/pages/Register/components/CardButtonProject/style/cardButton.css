@@ -1,0 +1,42 @@
+.cardContainer {
+    align-items: center;
+    border-radius: 3px;
+    /* border: 1px solid var(--grey-text); */
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+    padding: 1em;
+
+    box-shadow: rgba(17, 17, 26, 0.1) -2px 0px 8px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+
+    width: fit-content;
+}
+
+.grow {
+    display: flex;
+    transition-duration: .3s;
+    position: relative;
+    transition-property: transform;
+    transform-origin: 0 100%;
+
+    &:hover {
+        transform: translateX(5px);
+    }
+}
+
+.imageCardContainer {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-right: 8px;
+}
+
+.descriptionCardContainer p {
+    margin-bottom: 4px;
+}
+
+.descriptionCardContainer span {
+    margin-bottom: 4px;
+}

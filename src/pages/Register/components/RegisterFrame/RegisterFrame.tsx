@@ -11,7 +11,7 @@ const RegisterFrame: React.FC<RegisterFrameProps> = ({ children }) => {
 		<div className='formContainer'>
 			<div className='formContainerItem'>{children}</div>
 			<div className='formContainerItem'>
-				<LogoSinpatico src='./src/assets/images/logo-color.svg' />
+				<LogoSinpatico src='../src/assets/images/logo-color.svg' />
 			</div>
 		</div>
 	);

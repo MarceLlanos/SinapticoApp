@@ -1,6 +1,17 @@
-import { PublicRegisterRoutes } from '@/models';
-import { Navigate, Outlet } from 'react-router-dom';
+import { PublicRegisterRoutes } from "@/models";
+import { Navigate, Outlet } from "react-router-dom";
 
-export const AuthGuard = () => {
-	return true ? <Outlet /> : <Navigate to={`/${PublicRegisterRoutes.LOGIN}`} />;
+interface Props {
+  privateValidation: boolean;
+}
+
+const PrivateValidationFragment = <Outlet />
+const PublicValidationFragment = <Navigate replace to={PublicRegisterRoutes.LOGIN} />
+
+export const AuthGuard = ( { privateValidation }: Props ) => {
+  return true ? (
+    <Outlet />
+  ) : (
+    <Navigate replace to={`/${PublicRegisterRoutes.LOGIN}`} />
+  );
 };
