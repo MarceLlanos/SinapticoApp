@@ -1,6 +1,6 @@
 
 import React, { Fragment } from 'react';
-import './style/index';
+import './style/index.css';
 
 interface IDashboardPageProps {
 

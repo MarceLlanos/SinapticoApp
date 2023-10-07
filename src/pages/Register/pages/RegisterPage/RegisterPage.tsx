@@ -68,6 +68,7 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 			<LabelTitle>Crea tu cuenta</LabelTitle>
 			<div className='columnContainerCentered mt-3'>
 				<ButtonGoogleIcon
+					iconLink='../../src/assets/icons/google.svg'
 					handleClick={registerGoogleHandle}
 					title='Crear cuenta con Google'
 				/>

@@ -3,9 +3,11 @@ import { Suspense } from 'react';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 
 import { AuthGuard } from './guards';
-import { PrivateRegisterRoutes, PublicRegisterRoutes } from './models';
-import { CoverPage, LoginPage, Register, RegisterPage } from './pages';
+import { PrivateDashboardRoutes, PrivateRegisterRoutes, PublicRegisterRoutes } from './models';
+import { CoverPage, Dashboard, LoginPage, Register, RegisterPage } from './pages';
 import { NotFoundPage } from './utilities';
+
+
 
 function App() {
 	return (
@@ -26,6 +28,12 @@ function App() {
 							<Route
 								path={`${PrivateRegisterRoutes.PRIVATE}/*`}
 								element={<Register />}
+							/>
+						</Route>
+						<Route element={<AuthGuard privateValidation={ true } />}>
+							<Route
+								path={`${PrivateDashboardRoutes.PRIVATE}/*`}
+								element={<Dashboard />}
 							/>
 						</Route>
 					</NotFoundPage>
