@@ -4,9 +4,10 @@ import { Route, BrowserRouter as Router } from 'react-router-dom';
 
 import { AuthGuard } from './guards';
 import { PrivateDashboardRoutes, PrivateRegisterRoutes, PublicRegisterRoutes } from './models';
-import { CoverPage, LoginPage, Register, RegisterPage } from './pages';
+import { CoverPage, Dashboard, LoginPage, Register, RegisterPage } from './pages';
 import { NotFoundPage } from './utilities';
-import Dashboard from './pages/Dashboard';
+
+
 
 function App() {
 	return (

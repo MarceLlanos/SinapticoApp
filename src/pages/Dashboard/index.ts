@@ -1,3 +1,11 @@
-
-import Dashboard from './Dashboard';
-export default Dashboard;    
+export { default as Dashboard } from './Dashboard';
+export * from './pages/ChatPage';
+export * from './pages/DashboardPage';
+export * from './pages/HelpPage';
+export * from './pages/PhaseReviewPage';
+export * from './pages/SettingsPage';
+export * from './pages/StaticsPage';
+export * from './pages/TaskBoardPage';
+export * from './pages/TaskListPage';
+export * from './pages/TeamPage';
+export * from './pages';

@@ -1,28 +1,27 @@
-import React from "react";
+import React, { lazy } from "react";
 import "./style/dashboard.css";
 import { NotFoundPage } from "@/utilities";
 import { Navigate, Route } from "react-router-dom";
 import { PrivateDashboardRoutes } from "@/models";
-import {
-  ChatPage,
-  DashboardPage,
-  HelpPage,
-  PhaseReviewPage,
-  SettingsPage,
-  StaticsPage,
-  TaskBoardPage,
-  TaskListPage,
-  TeamPage
-} from "./pages";
+
+const ChatPage = lazy(() => import('./pages/ChatPage/ChatPage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage/DashboardPage'));
+const HelpPage = lazy(() => import('./pages/HelpPage/HelpPage'));
+const PhaseReviewPage = lazy(() => import('./pages/PhaseReviewPage/PhaseReviewPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage/SettingsPage'));
+const StaticsPage = lazy(() => import('./pages/StaticsPage/StaticsPage'));
+const TaskBoardPage = lazy(() => import('./pages/TaskBoardPage/TaskBoardPage'));
+const TaskListPage = lazy(() => import('./pages/TaskListPage/TaskListPage'));
+const TeamPage = lazy(() => import('./pages/TeamPage/TeamPage'));
 
 interface IDashboardProps {}
 
-const Dashboard: React.FC<IDashboardProps> = (props) => {
+const Dashboard: React.FC<IDashboardProps> = () => {
   return (
     <NotFoundPage>
       <Route
         path="/"
-        element={<Navigate to={PrivateDashboardRoutes.DASHBOARD} />}
+        element={<Navigate to={PrivateDashboardRoutes.PRIVATE} />}
       />
       <Route
         path={PrivateDashboardRoutes.DASHBOARD}
@@ -36,14 +35,22 @@ const Dashboard: React.FC<IDashboardProps> = (props) => {
         path={PrivateDashboardRoutes.TASKLIST}
         element={<TaskListPage />}
       />
-      <Route path={PrivateDashboardRoutes.STATICS} element={<StaticsPage />} />
+      <Route
+        path={PrivateDashboardRoutes.STATICS}
+        element={<StaticsPage />} />
       <Route
         path={PrivateDashboardRoutes.PHASESREVIEW}
         element={<PhaseReviewPage />}
       />
-      <Route path={PrivateDashboardRoutes.TEAM} element={<TeamPage />} />
-      <Route path={PrivateDashboardRoutes.CHAT} element={<ChatPage />} />
-      <Route path={PrivateDashboardRoutes.HELP} element={<HelpPage />} />
+      <Route
+        path={PrivateDashboardRoutes.TEAM} element={<TeamPage />}
+      />
+      <Route
+        path={PrivateDashboardRoutes.CHAT} element={<ChatPage />}
+      />
+      <Route
+        path={PrivateDashboardRoutes.HELP} element={<HelpPage />}
+      />
       <Route
         path={PrivateDashboardRoutes.SETTINGS}
         element={<SettingsPage />}
