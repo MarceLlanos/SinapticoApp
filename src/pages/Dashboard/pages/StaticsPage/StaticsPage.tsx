@@ -1,6 +1,6 @@
 
 import React, { Fragment } from 'react';
-import './styles/index';
+import './style/index.css';
 
 interface IStaticsPageProps {
 
