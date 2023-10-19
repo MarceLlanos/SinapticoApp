@@ -1,0 +1,8 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.right-container {
+    width: calc(100dvw - 18%);
+}

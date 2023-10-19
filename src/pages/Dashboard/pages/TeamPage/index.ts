@@ -1,3 +1,1 @@
-
-import TeamPage from './TeamPage';
-export default TeamPage;    
+export { default as TeamPage } from './TeamPage';

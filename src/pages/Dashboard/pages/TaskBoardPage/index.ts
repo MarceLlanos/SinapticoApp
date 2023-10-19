@@ -1,3 +1,1 @@
-
-import TaskBoardPage from './TaskBoardPage';
-export default TaskBoardPage;    
+export { default as TaskBoardPage } from './TaskBoardPage';

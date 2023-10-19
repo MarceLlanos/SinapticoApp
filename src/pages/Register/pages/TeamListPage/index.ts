@@ -1,3 +1,1 @@
-
-import TeamListPage from './TeamListPage';
-export default TeamListPage;    
+export { default as TeamListPage } from './TeamListPage';

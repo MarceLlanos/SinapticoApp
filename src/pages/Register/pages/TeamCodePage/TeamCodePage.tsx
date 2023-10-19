@@ -41,7 +41,7 @@ const TeamCodePage: React.FC<ITeamCodePageProps> = props => {
 		<FormFrame>
 			<HeadFormTitle title='Añadir miembros a tu equipo de trabajo. (Importante)' />
 			<div className='mt-1'>
-				<span className='greyText'>
+				<span className='greyTextCustom'>
 					Usa el siguiente código para que los demás miembros se puedan sumar a
 					tu equipo.
 				</span>

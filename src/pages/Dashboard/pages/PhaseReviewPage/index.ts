@@ -1,3 +1,1 @@
-
-import PhaseReviewPage from './PhaseReviewPage';
-export default PhaseReviewPage;    
+export { default as PhaseReviewPage } from './PhaseReviewPage';

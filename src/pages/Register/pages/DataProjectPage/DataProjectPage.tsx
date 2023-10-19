@@ -114,7 +114,7 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 					error={errors.dateDeliverProject ? true : false}
 				/>
 
-				<span className='greyText mt-3'>
+				<span className='greyTextCustom mt-3'>
 					Revisa bien el rol y las tareas que tienes que cumplir como encargado
 					del equipo. <br />
 					La aplicación te brindara ayuda y te guiara durante el camino, Buena

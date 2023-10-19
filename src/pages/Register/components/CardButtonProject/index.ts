@@ -1,3 +1,1 @@
-
-import CardButtonProject from './CardButtonProject';
-export default CardButtonProject;    
+export { default as CardButtonProject } from './CardButtonProject';

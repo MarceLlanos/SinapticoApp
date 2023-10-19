@@ -1,3 +1,1 @@
-
-import ConfigureDrivePage from './ConfigureDrivePage';
-export default ConfigureDrivePage;    
+export { default as ConfigureDrivePage } from './ConfigureDrivePage';

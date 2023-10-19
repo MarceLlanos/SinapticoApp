@@ -161,7 +161,7 @@ span {
 	margin-bottom: 10px;
 }
 
-.greyText {
+.greyTextCustom {
 	color: var(--grey-text);
 	font-size: 1.125rem;
 	font-weight: 200;

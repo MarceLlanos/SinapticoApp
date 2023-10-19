@@ -1,5 +1,6 @@
 
-import React, { Fragment } from 'react';
+import React from 'react';
+
 import './style/index.css';
 
 interface IChatPageProps {
@@ -7,7 +8,11 @@ interface IChatPageProps {
 }
 
 const ChatPage: React.FC<IChatPageProps> = (props) => {
-    return <Fragment></Fragment>;
+    return (
+        <>
+            hola desde Chat Page
+        </>
+    );
 }
 
 export default ChatPage;

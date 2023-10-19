@@ -26,7 +26,7 @@ const CoverPage: React.FC<CoverPageProps> = () => {
 					</ButtonTransparent>
 					<ButtonTransparent
 						onClick={() =>
-							navigate(PrivateRegisterRoutes.JOINTEAM, { replace: true })
+							navigate(PrivateRegisterRoutes.JOINTEAM)
 						}
 					>
 						<span>Unirse a un Equipo</span>

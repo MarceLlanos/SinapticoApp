@@ -11,7 +11,7 @@ const CardButtonProject: React.FC<ICardButtonProjectProps> = (props) => {
     const { materia, proyecto } = props;
 
     return (
-        <div className="cardContainer grow mb-1">
+        <div className="cardContainer grow">
             <div className="imageCardContainer">
                 <img src="../src/assets/icons/users.svg" alt="Siluetas de un grupo de usuarios" />
             </div>

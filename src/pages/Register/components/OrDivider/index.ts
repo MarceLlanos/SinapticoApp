@@ -1,3 +1,1 @@
-
-import OrDivider from './OrDivider';
-export default OrDivider;    
+export { default as OrDivider } from './OrDivider';

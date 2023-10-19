@@ -1,3 +1,1 @@
-
-import JoinTeamPage from './JoinTeamPage';
-export default JoinTeamPage;    
+export { default as JoinTeamPage } from './JoinTeamPage';

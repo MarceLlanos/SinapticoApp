@@ -1,5 +1,7 @@
 
-import React, { Fragment } from 'react';
+import React from 'react';
+import { DashboardFrameContainer } from '../../components';
+
 import './style/index.css';
 
 interface IDashboardPageProps {
@@ -7,7 +9,11 @@ interface IDashboardPageProps {
 }
 
 const DashboardPage: React.FC<IDashboardPageProps> = (props) => {
-    return <Fragment></Fragment>;
+    return (
+        <DashboardFrameContainer>
+            <p>Holaalksjdlkas</p>
+        </DashboardFrameContainer>
+    );
 }
 
 export default DashboardPage;
