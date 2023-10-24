@@ -1,0 +1,4 @@
+.barTitleContainer {
+    border-bottom: 0.5px solid var(--grey-text-dark);
+    padding: 20px;
+}

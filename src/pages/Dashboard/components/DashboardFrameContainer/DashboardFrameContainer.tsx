@@ -10,11 +10,11 @@ interface IDashboardFrameContainerProps {
 
 const DashboardFrameContainer: React.FC<IDashboardFrameContainerProps> = ({ children }) => {
     return (
-        <div className='dashboard-container'>
+        <div className='dashboardContainer'>
             <SideMenu />
-            <div className="right-container">
+            <div className="rightContainerFrame">
                 <AppBar />
-                <div className="container">
+                <div className="frameContentContainer">
                     {
                         children
                     }
