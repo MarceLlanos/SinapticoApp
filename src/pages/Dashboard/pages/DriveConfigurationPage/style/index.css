@@ -1,0 +1,6 @@
+.driveContainer {
+    align-items: center;
+    height: calc(100dvh - 20%);
+    display: flex;
+    padding: 20px;
+}

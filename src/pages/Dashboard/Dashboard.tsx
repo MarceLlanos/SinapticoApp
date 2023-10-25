@@ -5,6 +5,7 @@ import { NotFoundPage } from "@/utilities";
 import { PrivateDashboardRoutes } from "@/models";
 
 import "./style/dashboard.css";
+import { DriveConfigurationPage } from "./pages";
 
 const ChatPage = lazy(() => import('./pages/ChatPage/ChatPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage/DashboardPage'));
@@ -33,6 +34,10 @@ const Dashboard: React.FC<IDashboardProps> = () => {
       <Route
         path={PrivateDashboardRoutes.TASKBOARD}
         element={<TaskBoardPage />}
+      />
+      <Route
+        path={PrivateDashboardRoutes.DRIVEBOARD}
+        element={<DriveConfigurationPage />}
       />
       <Route
         path={PrivateDashboardRoutes.TASKLIST}
