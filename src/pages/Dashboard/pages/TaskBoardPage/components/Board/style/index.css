@@ -1,0 +1,6 @@
+.boardContainer {
+    border: 0.5px solid var(--dark-grey-text);
+    max-height: calc(100dvh);
+    overflow: auto;
+    padding: 12px;
+}

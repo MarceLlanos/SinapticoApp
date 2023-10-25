@@ -1,0 +1,33 @@
+.formTaskContainer {
+    width: calc(40dvw);
+}
+
+.color {
+    height: 1rem;
+    display: flex;
+    width: 3dvw;
+    margin-left: 4px;
+
+    & red {
+        /* background-color: var(--red-border); */
+        border: 1px solid var(--red-border);
+    }
+
+    & yellow {
+        background-color: var(--yellow-border);
+    }
+
+    & green {
+        background-color: var(--green-border);
+    }
+
+
+    & black {
+        background-color: var(--black-border);
+    }
+
+}
+
+.optionContentSelect {
+    margin-block-start: 12px;
+}

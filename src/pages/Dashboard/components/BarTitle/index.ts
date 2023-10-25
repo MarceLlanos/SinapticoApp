@@ -1,3 +1,1 @@
-
-import BarTitle from './BarTitle';
-export default BarTitle;    
+export { default as BarTitle } from './BarTitle';

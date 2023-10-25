@@ -1,0 +1,9 @@
+.tableroContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 2%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    height: calc(100dvh - 23dvh);
+}
