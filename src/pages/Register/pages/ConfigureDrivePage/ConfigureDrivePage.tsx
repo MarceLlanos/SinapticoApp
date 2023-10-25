@@ -77,7 +77,7 @@ const ConfigureDrivePage: React.FC<IConfigureDrivePageProps> = () => {
                 <ButtonGrey type='submit'>Guardar</ButtonGrey>
             </form>
             <article className='textLight greyDarkText mt-1'>
-                <h3 className='textLight'>Paso 2</h3>
+                <h3 className='textLight mb-1'>Paso 2</h3>
                 <p>Crea los archivos que necesitaras para el proyecto.</p>
                 <p className='ml-3'>En la carpeta exclusiva para este proyecto, crea todos los documentos que necesitaras.</p>
                 <p className='ml-3'>Estos pueden ser:</p>
@@ -86,7 +86,7 @@ const ConfigureDrivePage: React.FC<IConfigureDrivePageProps> = () => {
                     <li>Google Sheets (Similar a Excel)</li>
                     <li>Google Slides (Similar a Power Point)</li>
                 </ul>
-                <p className='ml-3 mb-1'>Ademas que puedes usarlo para almacenar PDF’s, imagenes, videos, etc.</p>
+                <p className='ml-3 mb-1'>Ademas que puedes usarlo para almacenar PDF’s, imágenes, videos, etc.</p>
             </article>
             <ButtonPrimary onClick={() => navigate(PrivateRegisterRoutes.TEAMLIST, { replace: true }) }>Continuar y terminar</ButtonPrimary>
 

@@ -1,3 +1,1 @@
-
-import SideImageFrame from './SideImageFrame';
-export default SideImageFrame;    
+export { default as SideImageFrame } from './SideImageFrame';

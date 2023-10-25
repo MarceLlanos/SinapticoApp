@@ -1,0 +1,13 @@
+.dashboardContainer {
+    display: flex;
+    flex-direction: row;
+    max-height: calc(100dvh);
+}
+
+.rightContainerFrame {
+    width: calc(100dvw - 18%);
+}
+
+.frameContentContainer {
+    max-height: calc(100dvh - 8%);
+}

@@ -67,7 +67,7 @@ const JoinTeamPage: React.FC<IJoinTeamPageProps> = () => {
             </form>
             
 			<div className='columnContainer mt-3'>
-				<span className='greyText mb-1 '>Si no tienes un equipo de trabajo, puedes crear uno o seguir <br/>trabajando en los que ya estas registrado.</span>
+				<span className='greyTextCustom mb-1 '>Si no tienes un equipo de trabajo, puedes crear uno o seguir <br/>trabajando en los que ya estas registrado.</span>
 				<ButtonGrey
 					onClick={() =>
 							navigate(PrivateRegisterRoutes.PRIVATE, { replace: true })

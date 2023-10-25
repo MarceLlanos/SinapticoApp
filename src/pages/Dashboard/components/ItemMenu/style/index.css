@@ -1,0 +1,42 @@
+.item-container {
+    align-items: center;
+    color: var(--grey-text-dark);
+    padding: 7px 10px;
+    margin: 4px 0;
+    max-width: 220px;
+}
+
+.icon {
+    fill: var(--primary-text);
+    transition: fill 0.3s ease;
+}
+
+.item-container:hover {
+    background-color: var(--primary-text);
+    border-radius: 2px;
+    color: var(--white-text);
+    cursor: pointer;
+
+    .icon {
+        fill: var(--white-text);
+    }
+}
+
+.item-container:active {
+    background-color: var(--primary-text);
+    border-radius: 2px;
+    color: var(--white-text);
+
+    .icon {
+        fill: var(--white-text);
+    }
+}
+
+.icon-item {
+    fill: black;
+    transition: fill 0.3s ease;
+}
+
+.icon-item-container {
+    margin-right: 8px;
+}

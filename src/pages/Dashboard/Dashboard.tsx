@@ -1,8 +1,10 @@
 import React, { lazy } from "react";
-import "./style/dashboard.css";
-import { NotFoundPage } from "@/utilities";
 import { Navigate, Route } from "react-router-dom";
+
+import { NotFoundPage } from "@/utilities";
 import { PrivateDashboardRoutes } from "@/models";
+
+import "./style/dashboard.css";
 
 const ChatPage = lazy(() => import('./pages/ChatPage/ChatPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage/DashboardPage'));
@@ -13,6 +15,7 @@ const StaticsPage = lazy(() => import('./pages/StaticsPage/StaticsPage'));
 const TaskBoardPage = lazy(() => import('./pages/TaskBoardPage/TaskBoardPage'));
 const TaskListPage = lazy(() => import('./pages/TaskListPage/TaskListPage'));
 const TeamPage = lazy(() => import('./pages/TeamPage/TeamPage'));
+
 
 interface IDashboardProps {}
 

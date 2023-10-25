@@ -15,7 +15,7 @@ const TeamListPage = lazy(() => import('./pages/TeamListPage/TeamListPage'));
 
 export interface RegisterPagesProps { }
 
-export const Register: React.FC<RegisterPagesProps> = () => {
+const Register: React.FC<RegisterPagesProps> = () => {
 	return (
 		<NotFoundPage>
 			<Route
@@ -23,7 +23,7 @@ export const Register: React.FC<RegisterPagesProps> = () => {
 				element={<Navigate to={PrivateRegisterRoutes.CREATEPROJECT} />}
 			/>
 			<Route
-				path={PrivateRegisterRoutes.CREATEPROJECT}
+				path={`/${PrivateRegisterRoutes.CREATEPROJECT}`}
 				element={<DataProjectPage />}
 			/>
 			<Route
@@ -31,7 +31,7 @@ export const Register: React.FC<RegisterPagesProps> = () => {
 				element={<TeamCodePage />}
 			/>
 			<Route
-				path={PrivateRegisterRoutes.JOINTEAM}
+				path={`/${PrivateRegisterRoutes.JOINTEAM}`}
 				element={<JoinTeamPage />}
 			/>
 			<Route
@@ -46,3 +46,5 @@ export const Register: React.FC<RegisterPagesProps> = () => {
 		</NotFoundPage>
 	);
 };
+
+export default Register;

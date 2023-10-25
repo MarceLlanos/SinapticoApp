@@ -7,7 +7,6 @@ export const ButtonGrey = styled.button`
 	color: var(--grey-text);
 	font-size: 1.3rem;
 	font-weight: 100;
-	margin-bottom: 15px;
 	min-width: 192px;
 	padding: 10px;
 	position: relative;

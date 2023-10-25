@@ -1,0 +1,51 @@
+.red {
+    border-left: 3px solid var(--red-border);
+}
+
+.yellow {
+    border-left: 3px solid var(--yellow-border);
+}
+
+.green {
+    border-left: 3px solid var(--green-border);
+}
+
+.black {
+    border-left: 3px solid var(--black-border);
+}
+
+.taskContainer {
+    border-top: 0.5px solid var(--grey-text);
+    border-right: 0.5px solid var(--grey-text);
+    border-bottom: 0.5px solid var(--grey-text);
+    cursor: pointer;
+    padding: 8px;
+}
+
+.titleTask {
+    font-size: 1.2rem;
+}
+
+.descriptionContent p {
+    text-align: justify;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+}
+
+.iconContent {
+    align-items: center;
+    display: flex;
+    margin-bottom: 4px;
+}
+
+.contentFooterTask {
+    position: relative;
+    display: flex;
+    align-items: end;
+}
+
+.contentRight {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}

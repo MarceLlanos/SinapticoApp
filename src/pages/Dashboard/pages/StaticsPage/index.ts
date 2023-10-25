@@ -1,3 +1,1 @@
-
-import StaticsPage from './StaticsPage';
-export default StaticsPage;    
+export { default as StaticsPage } from './StaticsPage';

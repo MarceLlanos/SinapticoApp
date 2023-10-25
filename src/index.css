@@ -6,6 +6,10 @@
 	--dark-grey-text: #656667;
 	--green-text: #1ab394;
 	--red-text: #ff0000;
+	--red-border: #E93636;
+	--yellow-border: #FBF407;
+	--green-border: #05C121;
+	--black-border: #000000;
 }
 
 /* //askjdhkjashdjk */
@@ -16,6 +20,7 @@ body {
 		Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	font-weight: 200;
 	font-weight: bold;
+	height: calc(100dvh);
 }
 
 /* Font weight */
@@ -161,7 +166,7 @@ span {
 	margin-bottom: 10px;
 }
 
-.greyText {
+.greyTextCustom {
 	color: var(--grey-text);
 	font-size: 1.125rem;
 	font-weight: 200;

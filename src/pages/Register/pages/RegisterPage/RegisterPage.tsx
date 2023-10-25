@@ -7,7 +7,7 @@ import { ButtonPrimary, LabelTitle } from '@/styled-components';
 import { TextField } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { ButtonGoogleIcon, RegisterFrame } from '../../components';
+import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
 
 import './styles/RegisterPage.css';
 import {
@@ -17,7 +17,6 @@ import {
 } from '@/services';
 import { User, UserCredential } from 'firebase/auth';
 import { createUserAdapted, createUserCredentialAdapted } from '@/adapters';
-import OrDivider from '../../components/OrDivider';
 
 export interface RegisterPageProps {}
 

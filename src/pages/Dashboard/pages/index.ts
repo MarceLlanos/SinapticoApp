@@ -1,9 +1,9 @@
-export { default as ChatPage } from './ChatPage';
-export { default as DashboardPage } from './DashboardPage';
-export { default as HelpPage } from './HelpPage';
-export { default as PhaseReviewPage } from './PhaseReviewPage';
-export { default as SettingsPage } from './SettingsPage';
-export { default as StaticsPage } from './StaticsPage';
-export { default as TaskBoardPage } from './TaskBoardPage';
-export { default as TaskListPage } from './TaskListPage';
-export { default as TeamPage } from './TeamPage';
+export * from './ChatPage';
+export * from './DashboardPage';
+export * from './HelpPage';
+export * from './PhaseReviewPage';
+export * from './SettingsPage';
+export * from './StaticsPage';
+export * from './TaskBoardPage';
+export * from './TaskListPage';
+export * from './TeamPage';

@@ -16,13 +16,12 @@ import { TextField } from '@mui/material';
 import { User, UserCredential } from 'firebase/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { ButtonGoogleIcon, RegisterFrame } from '../../components';
+import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
 import { createUserCredentialAdapted } from '@/adapters';
-import OrDivider from '../../components/OrDivider';
 
 export interface LoginPageProps {}
 
-export const LoginPage: React.FC<LoginPageProps> = () => {
+const LoginPage: React.FC<LoginPageProps> = () => {
 	const navigate = useNavigate();
 
 
@@ -124,7 +123,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 				</div>
 			</form>
 			<div className='columnContainer mt-3'>
-				<span className='greyText mb-1 '>¿No tienes una cuenta?</span>
+				<span className='greyTextCustom mb-1 '>¿No tienes una cuenta?</span>
 				<ButtonGrey
 					onClick={() => navigate(`/${PublicRegisterRoutes.REGISTER}`)}
 				>
@@ -134,3 +133,5 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 		</RegisterFrame>
 	);
 };
+
+export default LoginPage;
