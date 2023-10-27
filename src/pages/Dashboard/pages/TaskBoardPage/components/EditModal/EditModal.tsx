@@ -5,12 +5,13 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton 
 import { TransitionProps } from '@mui/material/transitions';
 import Slide from '@mui/material/Slide';
 import CloseIcon from '@mui/icons-material/Close';
-import { FormTask } from '@/pages/Dashboard/components';
 import { ButtonGrey, ButtonPrimary } from '@/styled-components';
+import { FormTask } from '../FormTask';
 
 interface IEditModalProps {
-    isOpenModal: boolean
-    closeModal: () => void
+    isOpenModal: boolean;
+    closeModal: () => void;
+
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -24,7 +25,7 @@ const Transition = React.forwardRef(function Transition(
 
 const EditModal: React.FC<IEditModalProps> = ({ isOpenModal, closeModal }) => {
 
-
+    
     return (
         <Dialog
             open={isOpenModal}
@@ -33,7 +34,7 @@ const EditModal: React.FC<IEditModalProps> = ({ isOpenModal, closeModal }) => {
             keepMounted
             sx={{ padding: '12px'}}
         >
-            <DialogTitle>
+            <DialogTitle className='textBold greyDarkText'>
                 Editar tarea 01
             </DialogTitle>
             <IconButton
@@ -53,7 +54,7 @@ const EditModal: React.FC<IEditModalProps> = ({ isOpenModal, closeModal }) => {
                 <FormTask />
             </DialogContent>
             <DialogActions>
-                <ButtonGrey>Cancelar</ButtonGrey>
+                <ButtonGrey onClick={closeModal}>Cancelar</ButtonGrey>
                 <ButtonPrimary>Guardar</ButtonPrimary>
             </DialogActions>
         </Dialog>

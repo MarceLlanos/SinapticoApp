@@ -1,0 +1,22 @@
+.color {
+    width: 2.5rem;
+    height: 1rem;
+    content: ' ';
+    border-radius: 3px;
+}
+
+.red {
+    background-color: var(--red-border);
+}
+
+.yellow {
+    background-color: var(--yellow-border);
+}
+
+.green {
+    background-color: var(--green-border);
+}
+
+.black {
+    background-color: var(--black-border);
+}

@@ -53,10 +53,10 @@ const FormTask: React.FC<IFormTaskProps> = () => {
                         label="Grado de Dificultad"
                         onChange={handleChange}
                     >
-                        <MenuItem value='red'>Alta <div className="color red"></div></MenuItem>
-                        <MenuItem value='yellow'>Media <div className="color yellow"></div></MenuItem>
-                        <MenuItem value='green'>Baja <div className="color green"></div></MenuItem>
-                        <MenuItem value='black'>Imposible <div className="color black"></div></MenuItem>
+                        <MenuItem value='red'>Alta <div className="color red ml-1"></div></MenuItem>
+                        <MenuItem value='yellow'>Media <div className="color yellow ml-1"></div></MenuItem>
+                        <MenuItem value='green'>Baja <div className="color gree ml-1n"></div></MenuItem>
+                        <MenuItem value='black'>Imposible <div className="color black ml-1"></div></MenuItem>
                     </Select>
                 </FormControl>
             </div>

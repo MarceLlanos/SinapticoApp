@@ -5,7 +5,6 @@ export * from './AppBar/components';
 export * from './AppBar';
 export * from './BarTitle';
 export * from './DashboardFrameContainer';
-export * from './FormTask';
 export * from './FrameSubTitleContainer';
 export * from './ItemMenu/components/ChatSVG';
 export * from './ItemMenu/components/FilesDriveSVG';

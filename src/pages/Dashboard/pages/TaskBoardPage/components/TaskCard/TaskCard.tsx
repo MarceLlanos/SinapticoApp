@@ -4,8 +4,6 @@ import QueryBuilderOutlinedIcon from '@mui/icons-material/QueryBuilderOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { LinkPrimary } from '@/styled-components';
 
-
-
 import './style/taskCard.css';
 import { EditModal } from '../EditModal';
 
@@ -27,7 +25,7 @@ const TaskCard: React.FC<ITaskCardProps> = ({ colorTask }) => {
     }
 
     return (
-        <div className={`taskContainer ${colorTask} textLight greyDarkText ` }>
+        <div className={`taskContainer ${colorTask}-border textLight greyDarkText ` }>
             <div className="taskBody">
                 <div className="mb-1">
                     <h2 className='textLight titleTask'>Tarea 01</h2>
@@ -55,7 +53,7 @@ const TaskCard: React.FC<ITaskCardProps> = ({ colorTask }) => {
                     </div>
                 </div>
             </div>
-            <EditModal isOpenModal={ openModal } closeModal={ onCloseModal } />
+            <EditModal isOpenModal={openModal} closeModal={onCloseModal} />
         </div>
     )
 }

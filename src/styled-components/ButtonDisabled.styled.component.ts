@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ButtonPrimary = styled.button`
+export const ButtonDisable = styled.button`
     background-color: var(--grey-text);
     border: 1px solid var(--grey-text);
     border-radius: 7px;
