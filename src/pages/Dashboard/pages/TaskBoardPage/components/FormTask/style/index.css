@@ -1,0 +1,7 @@
+.formTaskContainer {
+    width: calc(40dvw);
+}
+
+.optionContentSelect {
+    margin-block-start: 12px;
+}

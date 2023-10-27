@@ -1,0 +1,6 @@
+.TaskListContainer {
+    background-color: #F4F6FA;
+    padding: 5px 20px;
+    height: calc(100dvh - 20dvh);
+    overflow: auto;
+}
