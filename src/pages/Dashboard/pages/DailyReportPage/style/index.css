@@ -1,0 +1,26 @@
+.dailyReportContainer {
+    background-color: #F4F6FA;
+    padding: 20px;
+}
+
+.reportContainer {
+    background-color: var(--white-text);
+}
+
+.buttonSmallContainer {
+    background-color: aqua;
+    margin: 8px;
+    padding-top: 4px;
+    width: fit-content;
+}
+
+.buttonRight {
+    display: flex;
+    right: 0;
+}
+
+.cardsReportContainer {
+    overflow: auto;
+    height: calc(100dvh - 32dvh);
+    padding: 8px;
+}

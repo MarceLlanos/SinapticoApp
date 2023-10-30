@@ -5,10 +5,12 @@ import { NotFoundPage } from "@/utilities";
 import { PrivateDashboardRoutes } from "@/models";
 
 import "./style/dashboard.css";
-import { DriveConfigurationPage } from "./pages";
+
 
 const ChatPage = lazy(() => import('./pages/ChatPage/ChatPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage/DashboardPage'));
+const DailyReportPage = lazy(() => import('./pages/DailyReportPage/DailyReportPage'));
+const DriveConfigurationPage = lazy(() => import('./pages/DriveConfigurationPage/DriveConfigurationPage'));
 const HelpPage = lazy(() => import('./pages/HelpPage/HelpPage'));
 const PhaseReviewPage = lazy(() => import('./pages/PhaseReviewPage/PhaseReviewPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage/SettingsPage'));
@@ -38,6 +40,10 @@ const Dashboard: React.FC<IDashboardProps> = () => {
       <Route
         path={PrivateDashboardRoutes.DRIVEBOARD}
         element={<DriveConfigurationPage />}
+      />
+      <Route
+        path={PrivateDashboardRoutes.DAILYREPORT}
+        element={<DailyReportPage />}
       />
       <Route
         path={PrivateDashboardRoutes.TASKLIST}
