@@ -1,0 +1,11 @@
+.cardDailyContainer {
+    background-color: #F5F5F5;
+    border-radius: 5px;
+    padding: 12px;
+    width: calc(40dvh + 20%);
+}
+
+.actionReport span {
+    font-size: 0.95rem;
+    margin-left: 8px;
+}

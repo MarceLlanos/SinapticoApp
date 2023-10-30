@@ -1,0 +1,56 @@
+.rightCommentContainer {
+    display: flex;
+    width: 100%;
+
+}
+
+.leftCommentLollipop {
+    display: flex;
+    top: 0;
+    width: calc(100dvh / 2 + 8.5%);
+}
+
+.containerChildren {
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+
+.lollipopDateContainer {
+    display: flex;
+}
+
+.lollipopContainer {
+    width: fit-content;
+    height: 100%;
+}
+
+.lollipop {
+    background-color: var(--green-text);
+    border-radius: 50%;
+    margin: 0 auto;
+    padding: 10px 12px;
+    top: 0;
+    width: fit-content;
+}
+
+.stick {
+    bottom: -10;
+    width: 5px;
+    height: calc(100% - 18%);
+    background-color: var(--grey-text);
+    margin: 0 auto;
+}
+
+
+.date {
+    margin-left: 12px;
+}
+
+.date p {
+    font-size: 0.8rem;
+}
+
+.greenText {
+    color: var(--green-text);
+}
