@@ -1,0 +1,47 @@
+.alta {
+    color: var(--white-text);
+    background-color: var(--red-border);
+    border-radius: 5px;
+    padding: 2px 4px;
+    width: calc(28%);
+    text-align: center;
+}
+
+.media {
+    color: var(--grey-text-dark);
+    background-color: var(--yellow-border);
+    border-radius: 5px;
+    padding: 2px 4px;
+    width: calc(28%);
+    text-align: center;
+}
+
+.baja {
+    color: var(--white-text);
+    background-color: var(--green-border);
+    border-radius: 5px;
+    padding: 2px 4px;
+    width: calc(28%);
+    text-align: center;
+}
+
+.imposible {
+    color: var(--white-text);
+    background-color: var(--black-border);
+    border-radius: 5px;
+    padding: 2px 4px;
+    width: calc(28%);
+    text-align: center;
+}
+
+.taskText {
+    font-size: 30px;
+}
+
+.spanText {
+    font-size: 0.8rem;
+}
+
+.percentageText {
+    font-size: 1.2rem;
+}

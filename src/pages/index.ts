@@ -9,7 +9,7 @@ export * from './Dashboard/pages/DashboardPage';
 export * from './Dashboard/pages/HelpPage';
 export * from './Dashboard/pages/PhaseReviewPage';
 export * from './Dashboard/pages/SettingsPage';
-export * from './Dashboard/pages/StaticsPage';
+export * from './Dashboard/pages/StatsPage';
 export * from './Dashboard/pages/TaskBoardPage';
 export * from './Dashboard/pages/TaskListPage';
 export * from './Dashboard/pages/TeamPage';
