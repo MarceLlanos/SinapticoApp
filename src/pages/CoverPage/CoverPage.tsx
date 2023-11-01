@@ -11,6 +11,7 @@ export interface CoverPageProps {}
 
 const CoverPage: React.FC<CoverPageProps> = () => {
 	const navigate = useNavigate();
+	
 	return (
 		<CoverPageContainer>
 			<CoverPageBlur>

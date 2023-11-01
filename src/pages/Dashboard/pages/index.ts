@@ -5,7 +5,7 @@ export * from './DriveConfigurationPage';
 export * from './HelpPage';
 export * from './PhaseReviewPage';
 export * from './SettingsPage';
-export * from './StaticsPage';
+export * from './StatsPage';
 export * from './TaskBoardPage/components/Board';
 export * from './TaskBoardPage/components/EditModal';
 export * from './TaskBoardPage/components/FormTask';

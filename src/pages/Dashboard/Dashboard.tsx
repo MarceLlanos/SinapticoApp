@@ -14,7 +14,7 @@ const DriveConfigurationPage = lazy(() => import('./pages/DriveConfigurationPage
 const HelpPage = lazy(() => import('./pages/HelpPage/HelpPage'));
 const PhaseReviewPage = lazy(() => import('./pages/PhaseReviewPage/PhaseReviewPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage/SettingsPage'));
-const StaticsPage = lazy(() => import('./pages/StaticsPage/StaticsPage'));
+const StaticsPage = lazy(() => import('./pages/StatsPage/StatsPage'));
 const TaskBoardPage = lazy(() => import('./pages/TaskBoardPage/TaskBoardPage'));
 const TaskListPage = lazy(() => import('./pages/TaskListPage/TaskListPage'));
 const TeamPage = lazy(() => import('./pages/TeamPage/TeamPage'));
@@ -27,7 +27,7 @@ const Dashboard: React.FC<IDashboardProps> = () => {
     <NotFoundPage>
       <Route
         path="/"
-        element={<Navigate to={PrivateDashboardRoutes.PRIVATE} />}
+        element={<Navigate to={`${PrivateDashboardRoutes.PRIVATE}/${PrivateDashboardRoutes.DASHBOARD}`} />}
       />
       <Route
         path={PrivateDashboardRoutes.DASHBOARD}

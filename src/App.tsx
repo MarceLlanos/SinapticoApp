@@ -32,15 +32,15 @@ function App() {
               path={`${PublicRegisterRoutes.REGISTER}`}
               element={<RegisterPage />}
             />
-            {/* <Route element={<AuthGuard privateValidation={true} />}>
+            <Route element={<AuthGuard privateValidation={true} />}>
               <Route
                 path={`/${PrivateRegisterRoutes.PRIVATE}/*`}
                 element={<Register />}
               />
-            </Route> */}
+            </Route>
             <Route element={<AuthGuard privateValidation={true} />}>
               <Route
-                path={`/${PrivateDashboardRoutes.PRIVATE}/*`}
+                path={`/${PrivateDashboardRoutes.PRIVATE}/${PrivateDashboardRoutes.DASHBOARD}/*`}
                 element={<Dashboard />}
               />
             </Route>

@@ -4,7 +4,7 @@ export * from './pages/DashboardPage';
 export * from './pages/HelpPage';
 export * from './pages/PhaseReviewPage';
 export * from './pages/SettingsPage';
-export * from './pages/StaticsPage';
+export * from './pages/StatsPage';
 export * from './pages/TaskBoardPage';
 export * from './pages/TaskListPage';
 export * from './pages/TeamPage';
