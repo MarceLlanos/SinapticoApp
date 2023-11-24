@@ -1,47 +1,66 @@
-import { createUserAdapted } from '@/adapters/FirebaseUser.adapter';
+import { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+
 import {
 	AuthUserCredential,
 	FirebaseUser,
 	PrivateRegisterRoutes,
 	PublicRegisterRoutes,
 } from '@/models';
-import { loginEmailPassword, loginWithGoogle } from '@/services';
+import { loginWithGoogle } from '@/services';
 import {
 	ButtonGrey,
 	ButtonPrimary,
 	LabelTitle,
 	LinkPrimary,
 } from '@/styled-components';
-import { TextField } from '@mui/material';
-import { User, UserCredential } from 'firebase/auth';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import {
+	FormControl,
+	IconButton,
+	InputAdornment,
+	InputLabel,
+	OutlinedInput,
+	TextField
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+
+import { UserCredential } from 'firebase/auth';
 import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
 import { createUserCredentialAdapted } from '@/adapters';
+import { LOGIN } from '../../schemas';
 
 export interface LoginPageProps {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
 	const navigate = useNavigate();
-
+	const [showPassword, setShowPassword] = useState(false);
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<AuthUserCredential>();
+	const [login, { data }] = useMutation(LOGIN);
 
 	const handleSubmitLogin: SubmitHandler<
 		AuthUserCredential
 	> = async dataUser => {
 		try {
-			const data: User = await loginEmailPassword(dataUser);
-			const user: FirebaseUser = (await createUserAdapted(
-				data
-			)) as FirebaseUser;
-			navigate(
-				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
-			);
+			const loginRegister = await login({
+				variables: {
+					loginInput: {
+						email: dataUser.email,
+						password: dataUser.password
+					}
+				}
+			});
+			console.log(loginRegister);
+			// navigate(
+			// 	`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
+			// );
 		} catch (error) {}
 	};
 
@@ -97,21 +116,39 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 					</span>
 				)}
 
-				<TextField
-					id='outlined-password-input'
-					label='Contraseña'
-					type='password'
-					autoComplete='current-password'
-					margin='normal'
-					{...register('password', {
-						required: true,
-						minLength: 5,
-					})}
-					error={errors.password ? true : false}
-				/>
-				{errors.password && (
-					<span className='small-text-italic redText'>
-						<strong>Error:</strong> Debes ingresar una constraseña de mas de 5
+				<FormControl sx={{ width: '100%' }} variant="outlined" className='mt-1'>
+					<InputLabel htmlFor="password-input">Contraseña * </InputLabel>
+					<OutlinedInput
+						id="password-input"
+						type={showPassword ? 'text' : 'password'}
+						required
+						endAdornment={
+							<InputAdornment position="end">
+								<IconButton
+									aria-label="toggle password visibility"
+									onClick={handleClickShowPassword}
+									edge="end"
+								>
+									{showPassword ? <VisibilityOff /> : <Visibility />}
+								</IconButton>
+							</InputAdornment>
+						}
+						{...register('password', {
+							required: 'La contraseña debe tener mas de 6 caracteres',
+							minLength: 5,
+						})}
+						error={errors.password ? true : false}
+						label="Contraseña"
+					/>
+				</FormControl>
+				{errors.password ? (
+					<span className='smallTextItalic redText'>
+						<strong>Error:</strong> Debes ingresar una constraseña de más de 5
+						caracteres.
+					</span>
+				) : (
+					<span className='smallTextItalic'>
+						<strong>Importante:</strong> La contraseña debe tener por lo menos 6
 						caracteres.
 					</span>
 				)}

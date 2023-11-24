@@ -20,14 +20,14 @@ const CoverPage: React.FC<CoverPageProps> = () => {
 				<div className='buttonContainer'>
 					<ButtonTransparent
 						onClick={() =>
-							navigate(PrivateRegisterRoutes.PRIVATE, { replace: true })
+							navigate(`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`, { replace: true })
 						}
 					>
 						<span>Crear un equipo de trabajo</span>
 					</ButtonTransparent>
 					<ButtonTransparent
 						onClick={() =>
-							navigate(PrivateRegisterRoutes.JOINTEAM)
+							navigate(`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`, { replace: true })
 						}
 					>
 						<span>Unirse a un Equipo</span>

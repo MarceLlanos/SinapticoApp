@@ -1,9 +1,9 @@
 import { FirebaseUser } from './FirebaseUser.model';
 
 export interface AuthUserCredential {
+	userName: string;
 	email: string;
 	password: string;
-	accessToken?: string;
 }
 
 export type AuthState = {

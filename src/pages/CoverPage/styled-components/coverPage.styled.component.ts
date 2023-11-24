@@ -6,9 +6,9 @@ export const CoverPageContainer = styled.div`
 	background-size: cover;
 	background-color: var(--white-text);
 	bottom: 0;
-	heigth: 100vh;
+	heigth: calc(100dvh);
 	position: fixed;
 	top: 0;
-	width: 100vw;
-	z-index: -10;
+	width: calc(100dvw);
+	z-index: 1;
 `;

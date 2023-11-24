@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import './styles/NavbarCover.css';
 import { PublicRegisterRoutes, PublicInformationRoutes } from '@/models';
+
+import './styles/NavbarCover.css';
 
 export interface NavbarCoverProps {}
 
@@ -10,18 +11,18 @@ const NavbarCover: React.FC<NavbarCoverProps> = () => {
 	return (
 		<div className='container-list'>
 			<a
-				className='link'
+				className='link-nav-items'
 				onClick={() => navigate(`${PublicRegisterRoutes.LOGIN}`)}
 			>
 				Ingresar
 			</a>
 			<a
-				className='link'
+				className='link-nav-items'
 				onClick={() => navigate(`${PublicInformationRoutes.INFORMATION}`)}
 			>
 				Información
 			</a>
-			<a className='link' onClick={() => navigate('/contact')}>
+			<a className='link-nav-items' onClick={() => navigate('/contact')}>
 				Contacto
 			</a>
 		</div>

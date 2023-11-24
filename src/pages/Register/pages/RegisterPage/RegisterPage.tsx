@@ -4,7 +4,7 @@ import {
 	PrivateRegisterRoutes,
 } from '@/models';
 import { ButtonPrimary, LabelTitle } from '@/styled-components';
-import { TextField } from '@mui/material';
+import { Alert, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
@@ -12,16 +12,23 @@ import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
 import './styles/RegisterPage.css';
 import {
 	addDocument,
-	loginWithGoogle,
-	registerEmailPassword,
+	loginWithGoogle
 } from '@/services';
-import { User, UserCredential } from 'firebase/auth';
-import { createUserAdapted, createUserCredentialAdapted } from '@/adapters';
+import { UserCredential } from 'firebase/auth';
+import { createUserCredentialAdapted } from '@/adapters';
+import { useState } from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useMutation } from '@apollo/client';
+import { CREATE_ACCOUNT } from '../../schemas';
+
 
 export interface RegisterPageProps {}
 
 const RegisterPage: React.FC<RegisterPageProps> = () => {
 	const navigate = useNavigate();
+	const [showPassword, setShowPassword] = useState(false);
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
+	const [createAccount, { data }] = useMutation(CREATE_ACCOUNT);
 
 	const {
 		register,
@@ -29,21 +36,27 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 		formState: { errors },
 	} = useForm<AuthUserCredential>();
 
-	const onHandleRegister: SubmitHandler<
-		AuthUserCredential
-	> = async dataUser => {
+	const onHandleRegister: SubmitHandler<AuthUserCredential> = async dataUser => {
 		try {
-			const data: User = await registerEmailPassword(dataUser);
-			const user: FirebaseUser = (await createUserAdapted(
-				data
-			)) as FirebaseUser;
-
-			await addDocument('user', user);
-			navigate(
-				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`,
-				{ replace: true }
-			);
-		} catch {}
+			await createAccount({
+				variables: {
+					createAccountInput: {
+						email: dataUser.email,
+						password: dataUser.password,
+						userName: dataUser.userName
+					}
+				}
+			});
+			const { isSuccess, message } = data.createAccount;
+			isSuccess ? 
+				navigate(
+					`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`,
+					{ replace: true }
+				)
+			:(<Alert severity="error">{ message }</Alert>)
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const registerGoogleHandle = async () => {
@@ -53,12 +66,12 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 				data
 			)) as FirebaseUser;
 
-			await addDocument('user', user);
+			await addDocument('users', user);
 			navigate(
 				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
 			);
 		} catch (error) {
-			console.log(error);
+			throw new Error(`No se pudo realizar el registro debido a ${error}`)
 		}
 	};
 
@@ -78,8 +91,27 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 				className='columnContainerCentered mt-3'
 			>
 				<TextField
+					id='userName'
+					label='Nombre Completo*'
+					type='text'
+					margin='normal'
+					{...register('userName', {
+						required: 'El nombre completo de usuario es requerido',
+					})}
+					error={errors.userName ? true : false}
+				/>
+				{errors.userName ? (
+					<span className='smallTextItalic redText'>
+						<strong>Error:</strong> Debes ingresar tu nombre completo.
+					</span>
+				) : (
+					<span className='smallTextItalic'>
+						<strong>Importante:</strong> Debes tu nombre completo.
+					</span>
+				)}
+				<TextField
 					id='email'
-					label='Correo electrónico'
+					label='Correo electrónico*'
 					type='email'
 					margin='normal'
 					{...register('email', {
@@ -98,21 +130,34 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 						gmail.
 					</span>
 				)}
-				<TextField
-					id='password-input'
-					label='Contraseña'
-					type='password'
-					margin='normal'
-					required
-					{...register('password', {
-						required: 'La contraseña debe tener mas de 6 caracteres',
-						minLength: 5,
-					})}
-					error={errors.password ? true : false}
-				/>
+				<FormControl sx={{ width: '100%' }} variant="outlined">
+					<InputLabel htmlFor="password-input">Contraseña * </InputLabel>
+					<OutlinedInput
+						id="password-input"
+						type={showPassword ? 'text' : 'password'}
+						required
+						endAdornment={
+							<InputAdornment position="end">
+								<IconButton
+									aria-label="toggle password visibility"
+									onClick={handleClickShowPassword}
+									edge="end"
+								>
+									{showPassword ? <VisibilityOff /> : <Visibility />}
+								</IconButton>
+							</InputAdornment>
+						}
+						{...register('password', {
+							required: 'La contraseña debe tener mas de 6 caracteres',
+							minLength: 5,
+						})}
+						error={errors.password ? true : false}
+						label="Contraseña"
+					/>
+				</FormControl>
 				{errors.password ? (
 					<span className='smallTextItalic redText'>
-						<strong>Error:</strong> Debes ingresar una constraseña de mas de 5
+						<strong>Error:</strong> Debes ingresar una constraseña de más de 5
 						caracteres.
 					</span>
 				) : (
@@ -127,7 +172,7 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 				</div>
 			</form>
 			<div className='mt-3'>
-				<span className='primaryText'>
+				<span className='primaryText textNormal'>
 					Sinaptico te apoya con la gestión de tus proyectos y tareas.
 				</span>
 			</div>

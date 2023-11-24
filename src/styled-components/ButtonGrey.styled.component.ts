@@ -4,6 +4,7 @@ export const ButtonGrey = styled.button`
 	background-color: transparent;
 	border: 1px solid var(--grey-text);
 	border-radius: 3px;
+	cursor: pointer;
 	color: var(--grey-text);
 	font-size: 1.3rem;
 	font-weight: 100;

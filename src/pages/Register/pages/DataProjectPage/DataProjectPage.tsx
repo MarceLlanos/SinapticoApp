@@ -10,11 +10,14 @@ import './styles/DataProjectPage.css';
 import { createProjectDocService } from '@/services/projectDocument.service';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '@/services';
+import { dateProjectVerification } from '@/helpers/dateProjectVerification.helper';
 
 export interface DataProjectPageProps {}
 
 const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 	const navigation = useNavigate();
+	
+
 	const {
 		register,
 		handleSubmit,
@@ -22,20 +25,24 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 	} = useForm<DataProject>();
 
 	const handleSubmitRegister: SubmitHandler<DataProject> = async data => {
-		const { assigment, description, nameProject, proffessorName } = data;
-		const date = data.dateDeliverProject;
-		const dataRef = {
-			assigment,
-			dateDeliverProject: date,
-			description,
-			nameProject,
-			proffessorName,
-		};
-		await createProjectDocService(dataRef);
-		navigation(
-			`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMCODE}`,
-			{ replace: true }
-		);
+		const { assigment, description, nameProject, proffessorName, dateDeliverProject} = data;
+		const date = new Date(dateDeliverProject);
+		if (!dateProjectVerification(dateDeliverProject)) {
+			return ``
+		} else {
+			const dataRef = {
+				assigment,
+				dateDeliverProject: date,
+				description,
+				nameProject,
+				proffessorName,
+			};
+			await createProjectDocService(dataRef);
+			navigation(
+				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMCODE}`,
+				{ replace: true }
+			);
+		}
 	};
 
 	return (

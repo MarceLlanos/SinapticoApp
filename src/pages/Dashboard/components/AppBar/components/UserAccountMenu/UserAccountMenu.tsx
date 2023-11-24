@@ -1,5 +1,5 @@
 import React, { MouseEvent, useState } from "react";
-import { Avatar, Box, Menu, MenuItem, Typography, styled } from "@mui/material";
+import { Avatar, Menu, MenuItem, Typography, styled } from "@mui/material";
 
 import "./style/index.css";
 
@@ -8,7 +8,7 @@ interface IUserAccountMenuProps {
   userName: string;
 }
 
-function stringToColor(string: string) {
+export function stringToColor(string: string) {
   let hash = 0;
   let i;
 

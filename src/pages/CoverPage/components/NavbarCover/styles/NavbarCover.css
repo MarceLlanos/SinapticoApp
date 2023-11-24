@@ -7,23 +7,23 @@
 	width: 90vw;
 }
 
-.link:not(:last-child) {
+.link-nav-items:not(:last-child) {
 	margin-right: 1.2rem;
 }
 
-.link {
+.link-nav-items {
 	color: var(--white-text);
 	font-size: 1.2rem;
 	font-weight: 200;
 	position: relative;
 }
 
-.link:hover {
+.link-nav-items:hover {
 	cursor: pointer;
 	color: var(--primary-text);
 }
 
-.link::after {
+.link-nav-items::after {
 	background-color: var(--primary-text);
 	bottom: 0;
 	content: '';
