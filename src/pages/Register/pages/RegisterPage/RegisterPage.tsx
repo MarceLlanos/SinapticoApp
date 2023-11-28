@@ -10,16 +10,13 @@ import { useNavigate } from 'react-router-dom';
 import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
 
 import './styles/RegisterPage.css';
-import {
-	addDocument,
-	loginWithGoogle
-} from '@/services';
+import { loginUserWithGoogle } from '@/services';
 import { UserCredential } from 'firebase/auth';
-import { createUserCredentialAdapted } from '@/adapters';
+import { adaptUserCredential } from '@/adapters';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useMutation } from '@apollo/client';
-import { CREATE_ACCOUNT } from '../../schemas';
+import { CREATE_ACCOUNT, CREATE_ACCOUNT_WITH_GOOGLE } from '@/schemas';
 
 
 export interface RegisterPageProps {}
@@ -28,7 +25,8 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
-	const [createAccount, { data }] = useMutation(CREATE_ACCOUNT);
+	const [createAccount] = useMutation(CREATE_ACCOUNT);
+	const [createAccountWithGoogle] = useMutation(CREATE_ACCOUNT_WITH_GOOGLE);
 
 	const {
 		register,
@@ -38,7 +36,8 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 
 	const onHandleRegister: SubmitHandler<AuthUserCredential> = async dataUser => {
 		try {
-			await createAccount({
+			
+			const { data } = await createAccount({
 				variables: {
 					createAccountInput: {
 						email: dataUser.email,
@@ -47,13 +46,19 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 					}
 				}
 			});
-			const { isSuccess, message } = data.createAccount;
-			isSuccess ? 
+			const { isSuccess, message, user } = data.createAccount;
+
+			if (isSuccess) {
+				localStorage.setItem('token', user.uid);
+				
 				navigate(
 					`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`,
 					{ replace: true }
 				)
-			:(<Alert severity="error">{ message }</Alert>)
+			} else {
+
+				(<Alert severity="error">{ message }</Alert>)
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -61,15 +66,31 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 
 	const registerGoogleHandle = async () => {
 		try {
-			const data: UserCredential = (await loginWithGoogle()) as UserCredential;
-			const user: FirebaseUser = (await createUserCredentialAdapted(
-				data
-			)) as FirebaseUser;
+			const data: UserCredential = (await loginUserWithGoogle()) as UserCredential;
+			const userResult: FirebaseUser = (await adaptUserCredential(data)) as FirebaseUser;
 
-			await addDocument('users', user);
-			navigate(
-				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
-			);
+			if (userResult.uid !== null) {
+				const { data } = await createAccountWithGoogle({
+					variables: {
+						user: {
+							uid: userResult.uid,
+							email: userResult.email,
+							userName: userResult.name,
+							photoUrl: userResult.photo,
+						}
+					}
+				});
+				const { isSuccess, message, user } = data.createAccountWithGoogle;
+
+				if (isSuccess) {
+					localStorage.setItem('token', userResult.uid);
+					
+					navigate(`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`);
+				} else {
+					(<Alert severity="error">{ message }</Alert>)
+				}
+
+			}
 		} catch (error) {
 			throw new Error(`No se pudo realizar el registro debido a ${error}`)
 		}

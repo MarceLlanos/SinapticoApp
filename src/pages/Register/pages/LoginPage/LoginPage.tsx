@@ -9,7 +9,7 @@ import {
 	PrivateRegisterRoutes,
 	PublicRegisterRoutes,
 } from '@/models';
-import { loginWithGoogle } from '@/services';
+
 import {
 	ButtonGrey,
 	ButtonPrimary,
@@ -17,6 +17,7 @@ import {
 	LinkPrimary,
 } from '@/styled-components';
 import {
+	Alert,
 	FormControl,
 	IconButton,
 	InputAdornment,
@@ -25,11 +26,12 @@ import {
 	TextField
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-
 import { UserCredential } from 'firebase/auth';
+
 import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
-import { createUserCredentialAdapted } from '@/adapters';
-import { LOGIN } from '../../schemas';
+import { adaptUserCredential } from '@/adapters';
+import { LOGIN, LOGIN_WITH_GOOGLE } from '@/schemas';
+import { loginUserWithGoogle } from '@/services';
 
 export interface LoginPageProps {}
 
@@ -37,19 +39,19 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
+	const [loginWithGoogle] = useMutation(LOGIN_WITH_GOOGLE);
+	const [login] = useMutation(LOGIN);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<AuthUserCredential>();
-	const [login, { data }] = useMutation(LOGIN);
+	
 
-	const handleSubmitLogin: SubmitHandler<
-		AuthUserCredential
-	> = async dataUser => {
+	const handleSubmitLogin: SubmitHandler< AuthUserCredential > = async dataUser => {
 		try {
-			const loginRegister = await login({
+			const { data } = await login({
 				variables: {
 					loginInput: {
 						email: dataUser.email,
@@ -57,23 +59,41 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 					}
 				}
 			});
-			console.log(loginRegister);
-			// navigate(
-			// 	`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
-			// );
+			const { isSuccess, message, user } = data.login;
+			if (isSuccess) {
+				localStorage.setItem('token', user.uid);
+				navigate(
+					`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
+				);
+			} else {
+				(<Alert severity="error">{ message }</Alert>)
+			}
 		} catch (error) {}
 	};
 
 	const handleGoogleLogin = async () => {
 		try {
-			const data: UserCredential = (await loginWithGoogle()) as UserCredential;
-			const user: FirebaseUser = (await createUserCredentialAdapted(
-				data
-			)) as FirebaseUser;
+			const data: UserCredential = (await loginUserWithGoogle()) as UserCredential;
+			const userData: FirebaseUser = (await adaptUserCredential(data)) as FirebaseUser;
 
-			navigate(
-				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
-			);
+			if (userData !== null) {
+				const { data } = await loginWithGoogle({
+					variables: {
+						email: userData.email
+					}
+				});
+
+				const { isSuccess, message, user } = data.loginWithGoogle;
+
+				if (isSuccess) {
+					localStorage.setItem('token', user.uid);
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
+					);
+				} else {
+					(<Alert severity="error">{ message }</Alert>)
+				}
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -86,7 +106,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
 			<div className='columnContainerCentered mt-3'>
 				<ButtonGoogleIcon
-					handleClick={handleGoogleLogin}
+					handleClick={ handleGoogleLogin }
 					title='Ingrese con Google'
 					iconLink='../../src/assets/icons/google.svg'
 				/>

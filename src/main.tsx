@@ -12,19 +12,24 @@ import App from "./App";
 import "./index.css";
 
 const httpLink = new HttpLink({ uri: 'http://localhost:4000' });
+
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('token');
+  // const token = localStorage.getItem('token');
+
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      // authorization: token ? `${token}` : '',
     },
   };
 });
+
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
+
+
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

@@ -1,4 +1,4 @@
-import { createUserCredentialAdapted } from '@/adapters';
+import { adaptUserCredential } from '@/adapters';
 import { auth, firestore, googleProvider } from '@/firebase';
 import { AuthUserCredential } from '@/models';
 import {
@@ -36,7 +36,7 @@ export const loginEmailPassword = async ({
 	return user;
 };
 
-export const loginWithGoogle = async () => {
+export const loginUserWithGoogle = async () => {
 	const userData = await signInWithPopup(auth, googleProvider)
 		.then(userResult => userResult)
 		.catch(error => {

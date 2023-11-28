@@ -33,12 +33,13 @@ function App() {
 							path={`${PublicRegisterRoutes.REGISTER}`}
 							element={<RegisterPage />}
 						/>
-						{/* <Route path='/*' element={<AuthGuard />}> */}
+						<Route element={<AuthGuard />}>
 							<Route
 								path={`/${PrivateRegisterRoutes.PRIVATE}/*`}
 								element={<Register />}
 							/>
-						{/* </Route> */}
+						</Route>
+						
 						<Route path={`${PrivateDashboardRoutes.PRIVATE}/*`} element={<AuthGuard />}>
 							<Route
 								path={`${PrivateDashboardRoutes.DASHBOARD}/:id`}
