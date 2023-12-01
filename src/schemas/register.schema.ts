@@ -59,9 +59,15 @@ export const LOGIN_WITH_GOOGLE = gql`
 
 `;
 
+export const LOGOUT = gql`
+    mutation logout($uid: String) {
+        logout(uid: $uid)
+    }
+`;
+
 export const GET_USER_BY_ID = gql`
-    query GetUserByID {
-        getUserByID {
+    query GetUserByID($uid: String) {
+        getUserByID(uid: $uid) {
             email
             uid
             userName
@@ -70,7 +76,7 @@ export const GET_USER_BY_ID = gql`
 `;
 
 export const IS_LOGGED_IN = gql`
-    query IsUserLoggedIn {
-        IsUserLoggedIn
+    query IsUserLoggedIn ($uid: String){
+        IsUserLoggedIn(uid: $uid)
     }
 `;

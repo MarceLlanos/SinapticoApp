@@ -6,12 +6,15 @@ import { InformationBody, NavbarCover } from './components';
 import { CoverPageBlur, CoverPageContainer } from './styled-components';
 
 import './styles/CoverPage.css';
+import { useRef } from 'react';
 
 export interface CoverPageProps {}
 
 const CoverPage: React.FC<CoverPageProps> = () => {
+	const createProjectRef = useRef<HTMLButtonElement>(null);
+	const joinTeamRef = useRef<HTMLButtonElement>(null);
 	const navigate = useNavigate();
-	
+
 	return (
 		<CoverPageContainer>
 			<CoverPageBlur>
@@ -19,6 +22,8 @@ const CoverPage: React.FC<CoverPageProps> = () => {
 				<InformationBody />
 				<div className='buttonContainer'>
 					<ButtonTransparent
+						ref={createProjectRef}
+						id='create-project'
 						onClick={() =>
 							navigate(`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`, { replace: true })
 						}
@@ -26,6 +31,8 @@ const CoverPage: React.FC<CoverPageProps> = () => {
 						<span>Crear un equipo de trabajo</span>
 					</ButtonTransparent>
 					<ButtonTransparent
+						ref={joinTeamRef}
+						id='joint-team'
 						onClick={() =>
 							navigate(`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`, { replace: true })
 						}

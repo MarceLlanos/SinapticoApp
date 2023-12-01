@@ -1,48 +1,46 @@
 import { TextField } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { DataProject, PrivateRegisterRoutes, Project } from '@/models';
+import { PrivateRegisterRoutes, ProjectInput } from '@/models';
 import { ButtonPrimary } from '@/styled-components';
 import { FormFrame, HeadFormTitle } from '../../components';
 
 import './styles/DataProjectPage.css';
 
-import { createProjectDocService } from '@/services/projectDocument.service';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '@/services';
-import { dateProjectVerification } from '@/helpers/dateProjectVerification.helper';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux';
+import { createProject } from '@/redux/asyncState/project.async';
+import { getProject } from '@/services/projectDocument.service';
+
 
 export interface DataProjectPageProps {}
 
 const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 	const navigation = useNavigate();
-	
+	const currentUSer = getCurrentUser();
+	const dispatch = useDispatch<AppDispatch>();
+	const uid = currentUSer?.uid!;
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<DataProject>();
+	} = useForm<ProjectInput>();
 
-	const handleSubmitRegister: SubmitHandler<DataProject> = async data => {
-		const { assigment, description, nameProject, proffessorName, dateDeliverProject} = data;
-		const date = new Date(dateDeliverProject);
-		if (!dateProjectVerification(dateDeliverProject)) {
-			return ``
-		} else {
-			const dataRef = {
-				assigment,
-				dateDeliverProject: date,
-				description,
-				nameProject,
-				proffessorName,
-			};
-			await createProjectDocService(dataRef);
+	const handleSubmitRegister: SubmitHandler<ProjectInput> = async data => {
+		const { isSuccess, message, id_project } = await dispatch(createProject(data)).unwrap();
+		const dataProject = await getProject(id_project!);
+		console.log(dataProject);
+		
+		if (isSuccess) {
 			navigation(
 				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMCODE}`,
 				{ replace: true }
 			);
 		}
+
 	};
 
 	return (
@@ -58,13 +56,13 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 					type='text'
 					autoComplete='current-password'
 					margin='normal'
-					{...register('nameProject', {
+					{...register('name_proj', {
 						required: 'Nombre del proyecto es requerido',
 						minLength: 10,
 					})}
-					error={errors.nameProject ? true : false}
+					error={errors.name_proj ? true : false}
 				/>
-				{errors.nameProject && (
+				{errors.name_proj && (
 					<span className='small-text-italic redText'>
 						<strong>Error:</strong>.
 					</span>
@@ -101,10 +99,10 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 					type='text'
 					autoComplete='current-password'
 					margin='normal'
-					{...register('proffessorName', {
+					{...register('professor', {
 						required: 'El nombre del docente es requerido',
 					})}
-					error={errors.proffessorName ? true : false}
+					error={errors.professor ? true : false}
 				/>
 				<TextField
 					id='outlined-date-input'
@@ -115,10 +113,10 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 					InputLabelProps={{
 						shrink: true,
 					}}
-					{...register('dateDeliverProject', {
+					{...register('date_release', {
 						required: 'La fecha de entrega del proyecto es requerido',
 					})}
-					error={errors.dateDeliverProject ? true : false}
+					error={errors.date_release ? true : false}
 				/>
 
 				<span className='greyTextCustom mt-3'>

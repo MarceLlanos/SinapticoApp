@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { useMutation } from '@apollo/client';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import {
 	AuthUserCredential,
-	FirebaseUser,
 	PrivateRegisterRoutes,
 	PublicRegisterRoutes,
 } from '@/models';
@@ -26,21 +24,22 @@ import {
 	TextField
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { UserCredential } from 'firebase/auth';
 
 import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
-import { adaptUserCredential } from '@/adapters';
-import { LOGIN, LOGIN_WITH_GOOGLE } from '@/schemas';
-import { loginUserWithGoogle } from '@/services';
+import { AppDispatch, login, loginWithGoogle } from '@/redux';
+import { useDispatch } from 'react-redux';
+import { getProjectsByUser } from '@/redux/asyncState/project.async';
+import { getCurrentUser } from '@/services';
 
 export interface LoginPageProps {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch<AppDispatch>();
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
-	const [loginWithGoogle] = useMutation(LOGIN_WITH_GOOGLE);
-	const [login] = useMutation(LOGIN);
+	const currentUser = getCurrentUser();
+	const uid = currentUser?.uid!;
 
 	const {
 		register,
@@ -51,20 +50,18 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
 	const handleSubmitLogin: SubmitHandler< AuthUserCredential > = async dataUser => {
 		try {
-			const { data } = await login({
-				variables: {
-					loginInput: {
-						email: dataUser.email,
-						password: dataUser.password
-					}
-				}
-			});
-			const { isSuccess, message, user } = data.login;
+			const { isSuccess, message } = await dispatch(login(dataUser)).unwrap();
+			const projects = await dispatch(getProjectsByUser(uid)).unwrap();
+			
 			if (isSuccess) {
-				localStorage.setItem('token', user.uid);
-				navigate(
-					`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
-				);
+				projects.length > 0
+					? navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMLIST}`
+					)
+					:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
+					);
 			} else {
 				(<Alert severity="error">{ message }</Alert>)
 			}
@@ -73,26 +70,20 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
 	const handleGoogleLogin = async () => {
 		try {
-			const data: UserCredential = (await loginUserWithGoogle()) as UserCredential;
-			const userData: FirebaseUser = (await adaptUserCredential(data)) as FirebaseUser;
+			const { isSuccess, message, user } = await dispatch(loginWithGoogle()).unwrap();
+			const projects = await dispatch(getProjectsByUser(currentUser?.uid!)).unwrap();
 
-			if (userData !== null) {
-				const { data } = await loginWithGoogle({
-					variables: {
-						email: userData.email
-					}
-				});
-
-				const { isSuccess, message, user } = data.loginWithGoogle;
-
-				if (isSuccess) {
-					localStorage.setItem('token', user.uid);
+			if (isSuccess) {
+				projects.length > 0
+					? navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMLIST}`
+					)
+					:
 					navigate(
 						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
 					);
-				} else {
-					(<Alert severity="error">{ message }</Alert>)
-				}
+			} else {
+				(<Alert severity="error">{ message }</Alert>)
 			}
 		} catch (error) {
 			console.log(error);

@@ -10,7 +10,8 @@ import {
 } from 'firebase/firestore';
 
 export async function addDocument(nameCollection: string, data: any) {
-	const docRef = await addDoc(collection(firestore, nameCollection), data);
+	const collectionPath = collection(firestore, nameCollection);
+	const docRef = await addDoc(collectionPath, data);
 	return docRef;
 }
 
@@ -23,8 +24,8 @@ export async function getDocumentById(nameCollection: string, docId: string) {
 	const docRef = doc(firestore, nameCollection, docId);
 	const querySnapshot = await getDoc(docRef);
 	return querySnapshot.exists()
-		? querySnapshot.data
-		: alert('No existe el documento que quiere obtener');
+		? querySnapshot.data()
+		: alert('No se encontró el documento');
 }
 
 export async function updateDocument(
