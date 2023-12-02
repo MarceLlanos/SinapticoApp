@@ -2,32 +2,32 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Chip, TextField } from '@mui/material';
 
-import { codeGenerator } from '@/helpers';
 import { FormFrame, HeadFormTitle } from '../../components';
 import { PrivateRegisterRoutes, TeamCode } from '@/models';
 
 import { ButtonPrimary } from '@/styled-components';
 
 import './style/index.css';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface ITeamCodePageProps {}
 
 const TeamCodePage: React.FC<ITeamCodePageProps> = props => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const { id_project, codeProject } = location.state;
+
 	const { register, handleSubmit } = useForm<TeamCode>();
 	const [copiedValue, setCopiedValue] = useState<Boolean>(false);
 
-	const handleCopieOnClick: SubmitHandler<TeamCode> = (data) => {
-		const { value } = data;
-
-		const textArea = document.createElement('textarea');
-		textArea.value = value;
-		document.body.appendChild(textArea);
-		textArea.select();
-		document.execCommand('copy');
-		document.body.removeChild(textArea);
-		setCopiedValue(true);
+	const handleCopieOnClick: SubmitHandler<TeamCode> = async (data) => {
+		try {
+			const { value } = data;
+			await navigator.clipboard.writeText(value);
+			setCopiedValue(true);
+		} catch (error) {
+			throw error;
+		}
 	};
 
 	useEffect(() => {
@@ -57,7 +57,7 @@ const TeamCodePage: React.FC<ITeamCodePageProps> = props => {
 					InputLabelProps={{
 						shrink: true,
 					}}
-					value='CHY4'
+					value={codeProject}
 					{...register('value')}
 				/>
 				<ButtonPrimary type='submit' className='ml-3 mr-3'>
@@ -76,7 +76,18 @@ const TeamCodePage: React.FC<ITeamCodePageProps> = props => {
 				escritorio de trabajo de Sinaptico.
 			</span>
 			<div className='mt-6'>
-				<ButtonPrimary onClick={() => navigate(PrivateRegisterRoutes.CONFIGUREDRIVE)}>Continuar</ButtonPrimary>
+				<ButtonPrimary
+					onClick={() =>
+						navigate(
+							`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CONFIGUREDRIVE}`,
+							{
+							state: id_project
+							}
+						)
+					}
+				>
+					Continuar
+				</ButtonPrimary>
 			</div>
 		</FormFrame>
 	);

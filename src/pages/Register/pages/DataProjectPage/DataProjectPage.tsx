@@ -12,6 +12,7 @@ import { getCurrentUser } from '@/services';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux';
 import { createProject } from '@/redux/asyncState/project.async';
+import { getProject } from '@/services/projectDocument.service';
 
 
 export interface DataProjectPageProps {}
@@ -45,13 +46,17 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 			date_release,
 		}
 		const { isSuccess, message, id_project } = await dispatch(createProject(projectData)).unwrap();
+		const project = await getProject(id_project!);
 
 		if (isSuccess) {
 			navigation(
 				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMCODE}`,
 				{
 					replace: true,
-					state: id_project
+					state: {
+						id_project,
+						codeProject: project?.code_project
+					}
 				}
 			);
 		} else {

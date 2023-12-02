@@ -1,7 +1,7 @@
 import { firestore } from "@/firebase";
 import { codeGenerator } from "@/helpers";
 import { ProjectInput, Project, ProjectResult } from "@/models";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { DocumentData, collection, getDocs, query, where } from "firebase/firestore";
 import { addDocument, deleteDocument, getDocumentById, updateDocument } from "./collection.service";
 import { getUser } from "./authentication.service";
 
@@ -38,7 +38,7 @@ export const createNewProject = async (dataProject: ProjectInput): Promise<Proje
             email: currentUser.email,
             photoUrl: currentUser.photoUrl
         }
-        console.log('======', docRef.id);
+
         await addDocument('team', {
             ...user,
             role: 'PO',
@@ -141,24 +141,8 @@ export const getProjectsByUserId = async (uid: string): Promise<Array<Project>> 
 export const getProject = async (id_project: string) => {
     try {
         const data = await getDocumentById('project', id_project);
-        console.log(data);
-        return data
+        return data;
     } catch (error) {
         throw error;
     }
 }
-
-export const getProjectCode = async (id_project: string) => {
-    const project = await getDocumentById('project', id_project);
-    console.log(project);
-}
-
-export const getProjectDrive = async (id_project: string) => {
-    const project = await getDocumentById('project', id_project);
-    console.log(project);
-}
-
-
-
-
-

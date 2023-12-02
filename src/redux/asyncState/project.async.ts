@@ -6,8 +6,6 @@ import {
     updateProjectData,
     getProjectsByUserId,
     deleteProjectData,
-    getProjectCode,
-    getProjectDrive,
     getProject
 } from "@/services/projectDocument.service";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -65,24 +63,6 @@ export const deleteProject = createAsyncThunk('project/deleteProject', async (id
 export const getProjectsByUser = createAsyncThunk('getProject/getProjectsByUser', async (uid: string) => {
     try {
         const projects = await getProjectsByUserId(uid);
-        return projects;
-    } catch (error) {
-        throw error;
-    }
-});
-
-export const getCodeProject = createAsyncThunk('getProject/getCodeProject', async (id_project: string) => {
-    try {
-        const projects = await getProjectCode(id_project);
-        return projects;
-    } catch (error) {
-        throw error;
-    }
-});
-
-export const getDriveProject = createAsyncThunk('getProject/getDriveProject', async (id_project: string) => {
-    try {
-        const projects = await getProjectDrive(id_project);
         return projects;
     } catch (error) {
         throw error;
