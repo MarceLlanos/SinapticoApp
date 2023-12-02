@@ -16,7 +16,6 @@ import {
 	UserGoogle,
 	UserInput, UserResult,
 	Result,
-	UserCombined
 } from '@/models/redux';
 import { adaptUserCredential } from '@/adapters';
 
@@ -181,18 +180,7 @@ export const loginUserWithGoogle = async (): Promise<UserResult> => {
 
 		return userResult;
 	} catch (error) {
-		const userResult: UserResult = {
-			isSuccess: false,
-			message: 'No se pudo realizar la autenticacion, por favor vuelva a intentar',
-			user: {
-				uid: '',
-				email: '',
-				photoUrl: '',
-				userName: '',
-			}
-		}
-		console.log(error);
-		return userResult;
+		throw error;
 	}
 };
 export const logout = async (): Promise<Result> => {
@@ -216,12 +204,12 @@ export const logout = async (): Promise<Result> => {
 	}
 };
 
-export const getUser = async (uid: string): Promise<UserCombined> => {
+export const getUser = async (uid: string): Promise<UserGoogle> => {
 	const userQuery = query(userRef, where('uid', '==', uid));
 	const userSnapshot = await getDocs(userQuery);
 	const user = userSnapshot.docs[0].data();
 
-	const userResult: UserCombined = {
+	const userResult: UserGoogle = {
 		uid: user.uid,
 		userName: user.userName,
 		email: user.email,

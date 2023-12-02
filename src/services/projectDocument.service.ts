@@ -3,24 +3,24 @@ import { codeGenerator } from "@/helpers";
 import { ProjectInput, Project, ProjectResult } from "@/models";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { addDocument, deleteDocument, getDocumentById, updateDocument } from "./collection.service";
-import { getCurrentUser } from "./authentication.service";
+import { getUser } from "./authentication.service";
 
 const projectRef = collection(firestore, 'project');
-const currentUser = getCurrentUser();
 export const createNewProject = async (dataProject: ProjectInput): Promise<ProjectResult> => {
     try {
         const {
+            user_id,
             name_proj,
             description,
             assigment,
             professor,
             date_release,
         } = dataProject;
+
         const codeGenerated = codeGenerator();
         const dateProjectRelease = new Date(date_release);
-
-        const docRef = await addDocument('project', {
-            user_id: currentUser?.uid,
+        const projectData = {
+            user_id,
             name_proj,
             description,
             assigment,
@@ -28,14 +28,17 @@ export const createNewProject = async (dataProject: ProjectInput): Promise<Proje
             date_release: dateProjectRelease,
             code_project: codeGenerated,
             createAt: new Date()
-        });
-        const user = {
-            uid: currentUser?.uid,
-            userName: currentUser?.displayName,
-            email: currentUser?.email,
-            photoUrl: currentUser?.photoURL
         }
 
+        const docRef = await addDocument('project', projectData);
+        const currentUser = await getUser(user_id);
+        const user = {
+            uid: currentUser.uid,
+            userName: currentUser.userName,
+            email: currentUser.email,
+            photoUrl: currentUser.photoUrl
+        }
+        console.log('======', docRef.id);
         await addDocument('team', {
             ...user,
             role: 'PO',
@@ -138,6 +141,7 @@ export const getProjectsByUserId = async (uid: string): Promise<Array<Project>> 
 export const getProject = async (id_project: string) => {
     try {
         const data = await getDocumentById('project', id_project);
+        console.log(data);
         return data
     } catch (error) {
         throw error;

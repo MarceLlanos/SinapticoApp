@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material';
+import { Alert, TextField } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { PrivateRegisterRoutes, ProjectInput } from '@/models';
@@ -12,7 +12,6 @@ import { getCurrentUser } from '@/services';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux';
 import { createProject } from '@/redux/asyncState/project.async';
-import { getProject } from '@/services/projectDocument.service';
 
 
 export interface DataProjectPageProps {}
@@ -30,15 +29,33 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 	} = useForm<ProjectInput>();
 
 	const handleSubmitRegister: SubmitHandler<ProjectInput> = async data => {
-		const { isSuccess, message, id_project } = await dispatch(createProject(data)).unwrap();
-		const dataProject = await getProject(id_project!);
-		console.log(dataProject);
-		
+		const {
+			name_proj,
+			description,
+			assigment,
+			professor,
+			date_release,
+		} = data;
+		const projectData: ProjectInput = {
+			user_id: uid,
+			name_proj,
+			description,
+			assigment,
+			professor,
+			date_release,
+		}
+		const { isSuccess, message, id_project } = await dispatch(createProject(projectData)).unwrap();
+
 		if (isSuccess) {
 			navigation(
 				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMCODE}`,
-				{ replace: true }
+				{
+					replace: true,
+					state: id_project
+				}
 			);
+		} else {
+			<Alert severity="error">{ message }</Alert>
 		}
 
 	};

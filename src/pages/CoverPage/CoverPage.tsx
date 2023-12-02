@@ -6,13 +6,10 @@ import { InformationBody, NavbarCover } from './components';
 import { CoverPageBlur, CoverPageContainer } from './styled-components';
 
 import './styles/CoverPage.css';
-import { useRef } from 'react';
 
 export interface CoverPageProps {}
 
 const CoverPage: React.FC<CoverPageProps> = () => {
-	const createProjectRef = useRef<HTMLButtonElement>(null);
-	const joinTeamRef = useRef<HTMLButtonElement>(null);
 	const navigate = useNavigate();
 
 	return (
@@ -22,19 +19,25 @@ const CoverPage: React.FC<CoverPageProps> = () => {
 				<InformationBody />
 				<div className='buttonContainer'>
 					<ButtonTransparent
-						ref={createProjectRef}
-						id='create-project'
 						onClick={() =>
-							navigate(`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`, { replace: true })
+							navigate(
+								`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`,
+								{
+									replace: true,
+									state: `${PrivateRegisterRoutes.CREATEPROJECT}`
+								})
 						}
 					>
 						<span>Crear un equipo de trabajo</span>
 					</ButtonTransparent>
 					<ButtonTransparent
-						ref={joinTeamRef}
-						id='joint-team'
 						onClick={() =>
-							navigate(`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`, { replace: true })
+							navigate(
+								`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`,
+								{
+									replace: true,
+									state: `${PrivateRegisterRoutes.JOINTEAM}`
+								})
 						}
 					>
 						<span>Unirse a un Equipo</span>

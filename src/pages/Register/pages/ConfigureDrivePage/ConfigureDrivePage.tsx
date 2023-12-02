@@ -11,7 +11,7 @@ import { PrivateRegisterRoutes } from '@/models';
 
 interface IConfigureDrivePageProps {
 
-}
+} 
 
 const ConfigureDrivePage: React.FC<IConfigureDrivePageProps> = () => {
     const navigate = useNavigate();

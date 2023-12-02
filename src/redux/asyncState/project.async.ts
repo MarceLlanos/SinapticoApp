@@ -15,6 +15,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const createProject = createAsyncThunk('project/createProject', async (projectInput: ProjectInput) => {
     try {
         const { isSuccess, message, id_project } = await createNewProject(projectInput);
+
         return {
             isSuccess,
             message,

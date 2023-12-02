@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import {
 	AuthUserCredential,
 	PrivateRegisterRoutes,
+	Project,
 	PublicRegisterRoutes,
 } from '@/models';
 
@@ -35,11 +36,14 @@ export interface LoginPageProps {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const currentUser = getCurrentUser();
 	const dispatch = useDispatch<AppDispatch>();
 	const [showPassword, setShowPassword] = useState(false);
-	const handleClickShowPassword = () => setShowPassword((show) => !show);
-	const currentUser = getCurrentUser();
 	const uid = currentUser?.uid!;
+	const beforeUrl = location.state;
+	
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
 
 	const {
 		register,
@@ -47,46 +51,62 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 		formState: { errors },
 	} = useForm<AuthUserCredential>();
 	
+	const goToPage = (isSuccess: boolean, message: string, projects: Array<Project>) => {
+		if (isSuccess) {
+			switch (beforeUrl) {
+				case PrivateRegisterRoutes.CREATEPROJECT:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
+					);
+					break;
+				case PrivateRegisterRoutes.JOINTEAM:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`
+					);
+					break;
+				case PublicRegisterRoutes.LOGIN:
+					projects.length > 0
+					? navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMLIST}`
+					)
+					:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`
+					);
+				default:
+					projects.length > 0
+					? navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMLIST}`
+					)
+					: navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`
+					);
+					break;
+			}
+			
+		} else {
+			(<Alert severity="error">{ message }</Alert>)
+		}
+	}
 
 	const handleSubmitLogin: SubmitHandler< AuthUserCredential > = async dataUser => {
 		try {
 			const { isSuccess, message } = await dispatch(login(dataUser)).unwrap();
 			const projects = await dispatch(getProjectsByUser(uid)).unwrap();
 			
-			if (isSuccess) {
-				projects.length > 0
-					? navigate(
-						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMLIST}`
-					)
-					:
-					navigate(
-						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
-					);
-			} else {
-				(<Alert severity="error">{ message }</Alert>)
-			}
-		} catch (error) {}
+			goToPage(isSuccess, message, projects);
+		} catch (error) {
+			throw error;
+		}
 	};
 
 	const handleGoogleLogin = async () => {
 		try {
 			const { isSuccess, message, user } = await dispatch(loginWithGoogle()).unwrap();
-			const projects = await dispatch(getProjectsByUser(currentUser?.uid!)).unwrap();
-
-			if (isSuccess) {
-				projects.length > 0
-					? navigate(
-						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMLIST}`
-					)
-					:
-					navigate(
-						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
-					);
-			} else {
-				(<Alert severity="error">{ message }</Alert>)
-			}
+			const projects = await dispatch(getProjectsByUser(uid)).unwrap();
+			goToPage(isSuccess, message, projects);
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
 	};
 

@@ -13,11 +13,11 @@ import {
 	TextField
 } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
 
 import './styles/RegisterPage.css';
-import { RefObject, createRef, useState } from 'react';
+import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, createUser, loginWithGoogle } from '@/redux';
@@ -28,14 +28,13 @@ export interface RegisterPageProps {}
 
 const RegisterPage: React.FC<RegisterPageProps> = () => {
 	const navigate = useNavigate();
-	const [showPassword, setShowPassword] = useState(false);
-	const handleClickShowPassword = () => setShowPassword((show) => !show);
+	const location = useLocation();
 	const dispatch = useDispatch<AppDispatch>();
-
-	const urlRef: RefObject<HTMLElement> = createRef<HTMLElement>();
-	const loginRef: HTMLElement = document.getElementById('login')!;
-	const createProjectRef: HTMLElement = document.getElementById('create-project')!;
-	console.log(createProjectRef);
+	
+	const [showPassword, setShowPassword] = useState(false);
+	const urlBefore = location.state;
+	
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
 
 	const {
 		register,
@@ -45,29 +44,27 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 
 	const goToPage = (isSuccess: boolean, message: string) => {
 		if (isSuccess) {
-				switch (urlRef.current) {
-					case loginRef:
-						navigate(
-							`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`,
-							{ replace: true }
-						)
-						break;
-					case createProjectRef:
-						navigate(
-							`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`,
-							{ replace: true }
-						)
-						break;
-					default:
-						navigate(
-							`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`,
-							{ replace: true }
-						)
-						break;
-				}
-			} else {
-				(<Alert severity="error">{ message }</Alert>)
+			switch (urlBefore) {
+				case PrivateRegisterRoutes.CREATEPROJECT:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
+					);
+					break;
+				case PrivateRegisterRoutes.JOINTEAM:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`
+					);
+					break;
+				default:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`
+					);
+					break;
 			}
+			
+		} else {
+			(<Alert severity="error">{ message }</Alert>)
+		}
 	}
 
 	const onHandleRegister: SubmitHandler<UserInput> = async dataUser => {

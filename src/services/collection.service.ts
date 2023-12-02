@@ -1,5 +1,6 @@
 import { firestore } from '@/firebase';
 import {
+	DocumentData,
 	addDoc,
 	collection,
 	deleteDoc,
@@ -21,11 +22,20 @@ export async function getDocuments(nameCollection: string) {
 }
 
 export async function getDocumentById(nameCollection: string, docId: string) {
-	const docRef = doc(firestore, nameCollection, docId);
-	const querySnapshot = await getDoc(docRef);
-	return querySnapshot.exists()
-		? querySnapshot.data()
-		: alert('No se encontró el documento');
+	try {
+		const docRef = doc(firestore, nameCollection, docId);
+		const docSnapshot = await getDoc(docRef);
+
+		if (docSnapshot.exists()) {
+			return docSnapshot.data() as DocumentData;
+		} else {
+			console.warn(`No se encontró el documento con ID: ${docId} en la colección: ${nameCollection}`);
+			return null;
+		}
+	} catch (error) {
+		console.error('Error al obtener el documento:', error);
+		return null;
+	}
 }
 
 export async function updateDocument(

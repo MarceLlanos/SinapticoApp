@@ -7,7 +7,7 @@ import { useRef } from 'react';
 export interface NavbarCoverProps {}
 
 const NavbarCover: React.FC<NavbarCoverProps> = () => {
-	const loginRef = useRef<HTMLAnchorElement>(null);
+	// const loginRef = useRef<HTMLAnchorElement>(null);
 
 	const navigate = useNavigate();
 
@@ -15,9 +15,12 @@ const NavbarCover: React.FC<NavbarCoverProps> = () => {
 		<div className='container-list'>
 			<a
 				className='link-nav-items'
-				ref={loginRef}
-				id='login'
-				onClick={() => navigate(`${PublicRegisterRoutes.LOGIN}`)}
+				onClick={() => navigate(
+					`${PublicRegisterRoutes.LOGIN}`,
+					{
+						state: `${PublicRegisterRoutes.LOGIN}`
+					}
+				)}
 			>
 				Ingresar
 			</a>
