@@ -8,6 +8,7 @@ export interface ProjectInput {
 }
 
 export interface DriveInput {
+	id_project: string
 	drive_link: string
 }
 

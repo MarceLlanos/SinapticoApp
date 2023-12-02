@@ -1,13 +1,16 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './style/configureDrive.css';
 
 import { ButtonGoogleIcon, HeadFormTitle, SideImageFrame } from '../../components';
-import { TextField } from '@mui/material';
+import { Chip, TextField } from '@mui/material';
 import { ButtonGrey, ButtonPrimary } from '@/styled-components';
-import { Controller, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { PrivateRegisterRoutes } from '@/models';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { PrivateDashboardRoutes, PrivateRegisterRoutes } from '@/models';
+import { AppDispatch } from '@/redux';
+import { useDispatch } from 'react-redux';
+import { addDriveToProject } from '@/redux/asyncState/project.async';
 
 interface IConfigureDrivePageProps {
 
@@ -15,7 +18,12 @@ interface IConfigureDrivePageProps {
 
 const ConfigureDrivePage: React.FC<IConfigureDrivePageProps> = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const dispatch = useDispatch<AppDispatch>();
+
+    const [savedDrive, setsavedDrive] = useState<Boolean>(false);
     const { register, handleSubmit, control, setValue } = useForm();
+    const urlData = location.state;
 
     const openGoogleDrive = () => {
          window.open('https://drive.google.com', '_blank');
@@ -27,8 +35,29 @@ const ConfigureDrivePage: React.FC<IConfigureDrivePageProps> = () => {
         })
     }
 
-    const handleOnSave = () => {
-        console.log('form');
+    const savedDriveLinkToProject: SubmitHandler<FieldValues> = async (data) => {
+        const { drive_link } = data;
+        const dataLink = {
+            id_project: urlData,
+            drive_link
+        }
+        const result = await dispatch(addDriveToProject(dataLink)).unwrap();
+        const { isSuccess, message } = result;
+        isSuccess ? setsavedDrive(isSuccess) : setsavedDrive(isSuccess);
+    }
+
+    useEffect(() => {
+        setTimeout(() => {
+            setsavedDrive(false);
+        }, 3000);
+    }, [savedDrive]);
+    
+
+    const goToNexPage = async () => {
+        navigate(
+            `/${PrivateDashboardRoutes.DASHBOARD}/project=${urlData}`,
+            { replace: true, state: urlData }
+        )
     }
 
     return (
@@ -51,31 +80,38 @@ const ConfigureDrivePage: React.FC<IConfigureDrivePageProps> = () => {
                     iconLink='../../src/assets/icons/drive.png'
                 />
             </div>
-            <form className='driveForm' onSubmit={handleSubmit(handleOnSave)}>
+            <form className='driveForm' onSubmit={handleSubmit(savedDriveLinkToProject)}>
                 <Controller
-                    name='link'
+                    name='drive_link'
                     control={control}
                     defaultValue=''
                     render={({ field }) => (
                         <TextField
                             {...field}
-                            id='link'
+                            id='drive_link'
                             label='Pega el link aquí… '
                             type='text'
                             onClick={handleInputPaste}
                             sx={{
                                 marginRight: "10px"
                             }}
-                            {...register('link', {
+                            {...register('drive_link', {
                             	required: 'Debe ingresar el link de drive donde se realizara el proyecto!',
-                            // 	pattern: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.]{1}[a-zA-Z]{2,}$/,
                             })}
-                            // error={errors.link ? true : false}
                         />
                     )}
                 />
                 <ButtonGrey type='submit'>Guardar</ButtonGrey>
             </form>
+            {
+                savedDrive &&
+                <Chip 
+                    label="Drive agregado con exito!"
+                    color="success"
+                    variant="outlined"
+                    className='mt-1'
+                />
+            }
             <article className='textLight greyDarkText mt-1'>
                 <h3 className='textLight mb-1'>Paso 2</h3>
                 <p>Crea los archivos que necesitaras para el proyecto.</p>
@@ -88,7 +124,11 @@ const ConfigureDrivePage: React.FC<IConfigureDrivePageProps> = () => {
                 </ul>
                 <p className='ml-3 mb-1'>Ademas que puedes usarlo para almacenar PDF’s, imágenes, videos, etc.</p>
             </article>
-            <ButtonPrimary onClick={() => navigate(PrivateRegisterRoutes.TEAMLIST, { replace: true }) }>Continuar y terminar</ButtonPrimary>
+            <ButtonPrimary
+                onClick={goToNexPage}
+            >
+                Continuar y terminar
+            </ButtonPrimary>
 
         </SideImageFrame>
     );

@@ -1,6 +1,6 @@
 import { firestore } from "@/firebase";
 import { codeGenerator } from "@/helpers";
-import { ProjectInput, Project, ProjectResult } from "@/models";
+import { ProjectInput, Project, ProjectResult, DriveInput } from "@/models";
 import { DocumentData, collection, getDocs, query, where } from "firebase/firestore";
 import { addDocument, deleteDocument, getDocumentById, updateDocument } from "./collection.service";
 import { getUser } from "./authentication.service";
@@ -60,10 +60,10 @@ export const createNewProject = async (dataProject: ProjectInput): Promise<Proje
     }
 };
 
-export const addDrive = async (id_project: string, driveLink: string): Promise<ProjectResult> => {
+export const addDrive = async ({ id_project, drive_link }: DriveInput): Promise<ProjectResult> => {
     try {
 
-        await updateDocument('project', id_project, { drive_link: driveLink });
+        await updateDocument('project', id_project, { drive_link });
 
         return {
             isSuccess: true,

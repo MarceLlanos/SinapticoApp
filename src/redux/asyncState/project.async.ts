@@ -1,4 +1,4 @@
-import { ProjectInput } from "@/models";
+import { DriveInput, ProjectInput } from "@/models";
 import { Result } from "@/models/redux";
 import {
     addDrive,
@@ -24,9 +24,9 @@ export const createProject = createAsyncThunk('project/createProject', async (pr
     }
 });
 
-export const addDriveToProject = createAsyncThunk<Result, { id_project: string, drive_link: string }>('project/addDriveToProject', async ({ id_project, drive_link }) => {
+export const addDriveToProject = createAsyncThunk('project/addDriveToProject', async (data: DriveInput) => {
     try {
-        const { isSuccess, message } = await addDrive(id_project, drive_link);
+        const { isSuccess, message } = await addDrive(data);
         return {
             isSuccess,
             message
