@@ -1,11 +1,41 @@
 import { firestore } from "@/firebase";
 import { codeGenerator } from "@/helpers";
-import { ProjectInput, Project, ProjectResult, DriveInput } from "@/models";
-import { DocumentData, collection, getDocs, query, where } from "firebase/firestore";
+import {
+    ProjectInput,
+    Project,
+    ProjectResult,
+    DriveInput,
+    CodesProject,
+    UserTeamRoles
+} from "@/models";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { addDocument, deleteDocument, getDocumentById, updateDocument } from "./collection.service";
-import { getUser } from "./authentication.service";
+import { addMemberToProject } from "./team.service";
 
 const projectRef = collection(firestore, 'project');
+const codeRef = collection(firestore, 'codesProject');
+const usersCollectionRef = collection(firestore, 'team');
+
+export const isCodeAlreadyGenerated = async (code: string): Promise<Boolean> => {
+    try {
+        const queryRef = query(codeRef, where('code_project', '==', code));
+        const querySnapshot = await getDocs(queryRef);
+        if (querySnapshot.empty) {
+            return false;
+        } else {
+            return true;
+        }
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const codesGenerated = async (codeData: CodesProject) => {
+    const codeRef = await addDocument('codesProject', codeData);
+    return codeRef;
+}
+
 export const createNewProject = async (dataProject: ProjectInput): Promise<ProjectResult> => {
     try {
         const {
@@ -18,6 +48,7 @@ export const createNewProject = async (dataProject: ProjectInput): Promise<Proje
         } = dataProject;
 
         const codeGenerated = codeGenerator();
+        const verifyCode = await isCodeAlreadyGenerated(codeGenerated);
         const dateProjectRelease = new Date(date_release);
         const projectData = {
             user_id,
@@ -30,28 +61,31 @@ export const createNewProject = async (dataProject: ProjectInput): Promise<Proje
             createAt: new Date()
         }
 
-        const docRef = await addDocument('project', projectData);
-        const currentUser = await getUser(user_id);
-        const user = {
-            uid: currentUser.uid,
-            userName: currentUser.userName,
-            email: currentUser.email,
-            photoUrl: currentUser.photoUrl
+
+        if (verifyCode === false) {
+            const docRef = await addDocument('project', projectData);
+            await codesGenerated({
+                id_project: docRef.id,
+                code_project: codeGenerated
+            });
+
+            await addMemberToProject({
+                id_project: docRef.id,
+                role: UserTeamRoles.PO,
+                user_id: user_id,
+            });
+
+            return {
+                isSuccess: true,
+                message: 'Proyecto creado satisfactoriamente!',
+                id_project: docRef.id
+            }
+        } else {
+            return {
+                isSuccess: false,
+                message: 'Por favor vuelva a intentar, si vuelve a ocurrir avise al administrador de la pagina!'
+            }
         }
-
-        await addDocument('team', {
-            ...user,
-            role: 'PO',
-            id_project: docRef.id,
-            timeJoin: new Date()
-        })
-
-        return {
-            isSuccess: true,
-            message: 'Proyecto creado satisfactoriamente!',
-            id_project: docRef.id
-        }
-
     } catch (error) {
         return {
             isSuccess: false,
@@ -108,41 +142,41 @@ export const deleteProjectData = async (id_project: string): Promise<ProjectResu
     }
 }
 
-export const getProjectsByUserId = async (uid: string): Promise<Array<Project>> => {
-    try {
-        const userProjectsQuery = query(projectRef, where('userId', '==', uid));
-        const userProjectsSnapshot = await getDocs(userProjectsQuery);
-        const userProjects: Array<Project> = [];
-        userProjectsSnapshot.docs.map((doc) => {
-            const { id } = doc;
-            const data = doc.data();
-            const project = {
-                id_project: id,
-                user_id: data.user_id,
-                name_proj: data.name_proj,
-                description: data.description,
-                assigment: data.assigment,
-                professor: data.professor,
-                date_release: data.date_release,
-                code_project: data.code_project,
-                drive_link: data.drive_link,
-                createAt: data.createAt,
-            }
-
-            userProjects.push(project);
-        });
-        return userProjects;
-
-    } catch (error) {
-        throw error;
-    }
-}
-
-export const getProject = async (id_project: string) => {
+export const getProject = async (id_project: string): Promise<Project> => {
     try {
         const data = await getDocumentById('project', id_project);
-        return data;
+
+        const project: Project = {
+            id_project: id_project,
+            user_id: data!.user_id,
+            name_proj: data!.name_proj,
+            description: data!.description,
+            assigment: data!.assigment,
+            professor: data!.professor,
+            date_release: data!.date_release,
+            code_project: data!.code_project,
+            drive_link: data!.drive_link,
+            createAt: data!.createAt,
+        }
+
+        return project;
     } catch (error) {
         throw error;
     }
 }
+
+export const getProjectsByUserId = async (uid: string): Promise<Project[]> => {
+    try {
+        const queryGetMember = query(usersCollectionRef, where('uid', '==', uid));
+        const querySnapshot = await getDocs(queryGetMember);
+
+        const projectsIds = querySnapshot.docs.map((doc) => doc.data());
+        const projects: Project[] = await Promise.all(projectsIds.map(async data =>
+            await getProject(data.id_project)
+        ));
+        return projects;
+    } catch (error) {
+        throw error;
+    }
+}
+

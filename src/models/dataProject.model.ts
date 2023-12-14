@@ -30,3 +30,8 @@ export interface ProjectResult {
 	message: string,
 	id_project?: string
 }
+
+export interface CodesProject {
+	id_project: string
+	code_project: string
+}

@@ -37,7 +37,7 @@ export const verifyIfEmailExist = async (email: string): Promise<boolean> => {
 		throw error;
 	}
 
-}
+};
 
 export const verifyIfEmailExistOnUser = async (uid: string): Promise<boolean> => {
 	try {
@@ -51,7 +51,7 @@ export const verifyIfEmailExistOnUser = async (uid: string): Promise<boolean> =>
 		console.error('Error verificando si el usuario existe:', error);
 		throw error;
 	}
-}
+};
 
 export const createAccountEmailPassword = async ({ email, password, userName }: UserInput) => {
 	try {
@@ -160,12 +160,13 @@ export const loginUserWithGoogle = async (): Promise<UserResult> => {
 			.catch(error => {
 				throw error;
 			});
+
 		const result: FirebaseUser = (await adaptUserCredential(userData)) as FirebaseUser;
 		const verifyUserExist = await verifyIfEmailExistOnUser(result.uid);
 		const userGoogle: UserGoogle = {
 			uid: result.uid,
 			email: result.email,
-			photoUrl: result.photo!,
+			photoUrl: result?.photo!,
 			userName: result.name!,
 		}
 		if (verifyUserExist === false) {

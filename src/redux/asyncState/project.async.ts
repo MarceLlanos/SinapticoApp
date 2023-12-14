@@ -60,7 +60,7 @@ export const deleteProject = createAsyncThunk('project/deleteProject', async (id
     }
 })
 
-export const getProjectsByUser = createAsyncThunk('getProject/getProjectsByUser', async (uid: string) => {
+export const getProjectsByUser = createAsyncThunk('getProjects/getProjectsByUser', async (uid: string) => {
     try {
         const projects = await getProjectsByUserId(uid);
         return projects;

@@ -30,7 +30,7 @@ import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
 import { AppDispatch, login, loginWithGoogle } from '@/redux';
 import { useDispatch } from 'react-redux';
 import { getProjectsByUser } from '@/redux/asyncState/project.async';
-import { getCurrentUser } from '@/services';
+import { getCurrentUser, getProjectsByUserId } from '@/services';
 
 export interface LoginPageProps {}
 
@@ -92,7 +92,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	const handleSubmitLogin: SubmitHandler< AuthUserCredential > = async dataUser => {
 		try {
 			const { isSuccess, message } = await dispatch(login(dataUser)).unwrap();
-			const projects = await dispatch(getProjectsByUser(uid)).unwrap();
+			const projects = await getProjectsByUserId(uid);
 			
 			goToPage(isSuccess, message, projects);
 		} catch (error) {
@@ -103,7 +103,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	const handleGoogleLogin = async () => {
 		try {
 			const { isSuccess, message, user } = await dispatch(loginWithGoogle()).unwrap();
-			const projects = await dispatch(getProjectsByUser(uid)).unwrap();
+			const projects = await getProjectsByUserId(uid);
 			goToPage(isSuccess, message, projects);
 		} catch (error) {
 			throw error;

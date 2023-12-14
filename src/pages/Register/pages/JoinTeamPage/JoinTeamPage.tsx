@@ -1,76 +1,98 @@
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style/index.css';
 import { RegisterFrame } from '../../components';
 import { ButtonGrey, ButtonPrimary, LabelTitle } from '@/styled-components';
 import { TextField } from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { PrivateRegisterRoutes } from '@/models';
-
+import { PrivateDashboardRoutes, PrivateRegisterRoutes, Project, UserTeamInput } from '@/models';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux';
+import { joinTeam } from '@/redux/asyncState/team.async';
+import { getCurrentUser } from '@/services';
+import { getProjectsByUser } from '@/redux/asyncState/project.async';
 
 interface IJoinTeamPageProps {
 
 }
 
 const JoinTeamPage: React.FC<IJoinTeamPageProps> = () => {
-
-	const { handleSubmit, control, setValue } = useForm();
-	const [showHoverText, setShowHoverText] = useState(false);
 	const navigate = useNavigate();
+	const dispatch = useDispatch<AppDispatch>();
+	const currentUSer = getCurrentUser();
 
-	const handleInputPaste = () => {
-		navigator.clipboard.readText().then((clipboardText:string) => {
-			setValue('textField', clipboardText)
-		})
+	const uid = currentUSer?.uid;
+	const { register, handleSubmit} = useForm<UserTeamInput>();
+	const [showHoverText, setShowHoverText] = useState(false);
+	const [hasProjects, setHasProjects] = useState(false);
+	const [emptyCode, setEmptyCode] = useState(false)
+	
+	const userHasProjects = async ():Promise<Project[]> => {
+		const projects = await dispatch(getProjectsByUser(uid!)).unwrap();
+		return projects;
 	}
 
-	const onSubmit = (data: any) => {
-		console.log(data);
+	const joinTeamAction: SubmitHandler<UserTeamInput> = async (data) => {
+		console.log(data.code_project);
+		if (data.code_project !== '') {
+			setEmptyCode(true);
+			const userData: UserTeamInput = {
+				user_id: uid!,
+				code_project: data.code_project
+			}
+			const { isSuccess, message, id_project } = await dispatch(joinTeam(userData)).unwrap();
+			navigate(
+				`/${PrivateDashboardRoutes.PRIVATE}/${PrivateDashboardRoutes.DASHBOARD}/project=${id_project}`,
+				{ replace: true, state: id_project }
+			)
+			return {
+				isSuccess,
+				message
+			}
+		} else {
+			return;
+		}
+
 	}
+
+	useEffect(() => {
+		userHasProjects.length > 0
+			? setHasProjects(true)
+			: setHasProjects(false)
+	}, [hasProjects])
+	
 	return (
 		<RegisterFrame>
 			<LabelTitle>Únete a un Equipo</LabelTitle>
 
 			<form
-				onSubmit={handleSubmit(onSubmit)}
+				onSubmit={handleSubmit(joinTeamAction)}
 				className='columnContainerCentered mt-3'
 			>
-				<Controller
-					name='textField'
-					control={control}
-					defaultValue=''
-					render={({ field }) => (
-						<div
-							className='input-wrapper'
-							onMouseEnter={() => setShowHoverText(true)}
-							onMouseLeave={() => setShowHoverText(false)}
-						>				
-							<TextField
-								{...field}
-								id='textField'
-								label='Código de equipo'
-								type='text'
-								margin='normal'
-								onClick={handleInputPaste}
-								fullWidth
-							/>
-							{showHoverText && (
-								<div className='hover-text textLight'>Haz clic para pegar el código</div>
-							)}
-						</div>
-					)}
+			<div
+				className='input-wrapper'
+				onMouseEnter={() => setShowHoverText(true)}
+				onMouseLeave={() => setShowHoverText(false)}
+			>	
+				<TextField
+					id='textField'
+					label='Código de equipo'
+					type='text'
+					margin='normal'
+					fullWidth
+					{...register('code_project', {
+					required: 'Debe ingresar un código valido',
+					minLength: 5,
+					})}
 				/>
+				{showHoverText && (
+					<div className='hover-text textLight'>Ingrese el código de equipo</div>
+				)}
+			</div>
 				
-				{/* {errors.teamCode ? (
-					<span className='smallTextItalic redText'>
-						<strong>Error:</strong> Debes ingresar el código de 5 digitos facilitado por el encargado de tu equipo.
-					</span>
-				) : ( */}
-					<span className='smallTextItalic'>
-						<strong>Importante:</strong> Debes ingresar el código que te será facilitado por el <br/>encargado de tu equipo.
-					</span>
-				{/* )} */}
+				<span className='smallTextItalic'>
+					<strong>Importante:</strong> Debes ingresar el código que te será facilitado por el <br/>encargado de tu equipo.
+				</span>
 
 				<div className='rowContainer mb-3 mt-1'>
 					<ButtonPrimary type='submit'>Siguiente</ButtonPrimary>
@@ -87,7 +109,9 @@ const JoinTeamPage: React.FC<IJoinTeamPageProps> = () => {
 				>
 					Crear equipo
 				</ButtonGrey>
+
 				<ButtonGrey
+					disabled={ hasProjects }
 					onClick={() => navigate(`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMLIST}`, { replace: true })}
 				>
 					Ver tus equipos
