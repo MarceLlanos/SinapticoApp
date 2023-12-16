@@ -4,7 +4,7 @@ import './style/index.css';
 import { BarTitle, DashboardFrameContainer } from '../../components';
 import { Box } from '@mui/material';
 import { DoughnutChartCustom, StatCards, TableDailyReport, TableStats } from './components';
-import { difficultyTask } from '@/models/taskDifficulty.model';
+import { difficultyTask } from '@/models/task.model';
 
 interface IStaticsPageProps {
 

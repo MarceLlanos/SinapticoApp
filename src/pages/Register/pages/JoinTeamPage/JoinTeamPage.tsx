@@ -3,93 +3,98 @@ import './style/index.css';
 import { RegisterFrame } from '../../components';
 import { ButtonGrey, ButtonPrimary, LabelTitle } from '@/styled-components';
 import { TextField } from '@mui/material';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { PrivateDashboardRoutes, PrivateRegisterRoutes, Project, UserTeamInput } from '@/models';
+import {
+	PrivateDashboardRoutes,
+	PrivateRegisterRoutes,
+	Project,
+	UserTeamInput
+} from '@/models';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux';
 import { joinTeam } from '@/redux/asyncState/team.async';
 import { getCurrentUser } from '@/services';
 import { getProjectsByUser } from '@/redux/asyncState/project.async';
 
-interface IJoinTeamPageProps {
-
-}
+interface IJoinTeamPageProps {}
 
 const JoinTeamPage: React.FC<IJoinTeamPageProps> = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
-	const currentUSer = getCurrentUser();
+	const currentUser = getCurrentUser();
+	const { register, handleSubmit, control, setValue } = useForm();
 
-	const uid = currentUSer?.uid;
-	const { register, handleSubmit} = useForm<UserTeamInput>();
-	const [showHoverText, setShowHoverText] = useState(false);
+	const uid = currentUser?.uid;
 	const [hasProjects, setHasProjects] = useState(false);
-	const [emptyCode, setEmptyCode] = useState(false)
 	
 	const userHasProjects = async ():Promise<Project[]> => {
 		const projects = await dispatch(getProjectsByUser(uid!)).unwrap();
 		return projects;
 	}
 
-	const joinTeamAction: SubmitHandler<UserTeamInput> = async (data) => {
-		console.log(data.code_project);
-		if (data.code_project !== '') {
-			setEmptyCode(true);
-			const userData: UserTeamInput = {
-				user_id: uid!,
-				code_project: data.code_project
-			}
-			const { isSuccess, message, id_project } = await dispatch(joinTeam(userData)).unwrap();
-			navigate(
-				`/${PrivateDashboardRoutes.PRIVATE}/${PrivateDashboardRoutes.DASHBOARD}/project=${id_project}`,
-				{ replace: true, state: id_project }
-			)
-			return {
-				isSuccess,
-				message
-			}
-		} else {
-			return;
-		}
+	const handleInputPaste = () => {
+		navigator.clipboard.readText().then((clipboardText:string) => {
+			setValue('code', clipboardText)
+		})
+	}
 
+	const joinTeamAction: SubmitHandler<FieldValues> = async (data) => {
+		try {
+			const { code_project } = data;
+			if (code_project !== '') {
+				const userData: UserTeamInput = {
+					user_id: uid!,
+					code_project: code_project
+				}
+				const { isSuccess, id_project } = await dispatch(joinTeam(userData)).unwrap();
+				if (isSuccess) {
+					navigate(
+						`/${PrivateDashboardRoutes.PRIVATE}/${PrivateDashboardRoutes.DASHBOARD}/${id_project}`,
+						{ replace: true, state: id_project }
+					)
+				}
+			} 
+			
+		} catch (error) {
+			throw error;
+		}
 	}
 
 	useEffect(() => {
 		userHasProjects.length > 0
 			? setHasProjects(true)
 			: setHasProjects(false)
-	}, [hasProjects])
+	}, [hasProjects]);
 	
 	return (
 		<RegisterFrame>
 			<LabelTitle>Únete a un Equipo</LabelTitle>
 
 			<form
-				onSubmit={handleSubmit(joinTeamAction)}
 				className='columnContainerCentered mt-3'
+				onSubmit={handleSubmit(joinTeamAction)}
 			>
-			<div
-				className='input-wrapper'
-				onMouseEnter={() => setShowHoverText(true)}
-				onMouseLeave={() => setShowHoverText(false)}
-			>	
-				<TextField
-					id='textField'
-					label='Código de equipo'
-					type='text'
-					margin='normal'
-					fullWidth
-					{...register('code_project', {
-					required: 'Debe ingresar un código valido',
-					minLength: 5,
-					})}
+				<Controller
+					name='code_project'
+					control={control}
+					defaultValue=''
+					render={({ field }) => (
+						<TextField
+							{...field}
+							id='code_project'
+							label='Código de equipo'
+							type='text'
+							onClick={handleInputPaste}
+							sx={{
+								marginRight: "10px"
+							}}
+							{...register('code_project', {
+								required: 'Debe ingresar el link de drive donde se realizara el proyecto!',
+							})}
+						/>
+					)}
 				/>
-				{showHoverText && (
-					<div className='hover-text textLight'>Ingrese el código de equipo</div>
-				)}
-			</div>
-				
 				<span className='smallTextItalic'>
 					<strong>Importante:</strong> Debes ingresar el código que te será facilitado por el <br/>encargado de tu equipo.
 				</span>
@@ -111,7 +116,6 @@ const JoinTeamPage: React.FC<IJoinTeamPageProps> = () => {
 				</ButtonGrey>
 
 				<ButtonGrey
-					disabled={ hasProjects }
 					onClick={() => navigate(`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMLIST}`, { replace: true })}
 				>
 					Ver tus equipos

@@ -37,8 +37,8 @@ export const getCodeProjectData = async (code: string): Promise<CodesProject> =>
         } else {
             const data = querySnapshot.docs[0].data();
             return {
-                id_project: data.is_project,
-                code_project: data.cpde_project
+                id_project: data.id_project,
+                code_project: data.code_project
             }
         }
     } catch (error) {

@@ -1,11 +1,7 @@
 import React, { lazy } from "react";
 import { Navigate, Route } from "react-router-dom";
-
 import { NotFoundPage } from "@/utilities";
 import { PrivateDashboardRoutes } from "@/models";
-
-import "./style/dashboard.css";
-
 
 const ChatPage = lazy(() => import('./pages/ChatPage/ChatPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage/DashboardPage'));
@@ -19,57 +15,56 @@ const TaskBoardPage = lazy(() => import('./pages/TaskBoardPage/TaskBoardPage'));
 const TaskListPage = lazy(() => import('./pages/TaskListPage/TaskListPage'));
 const TeamPage = lazy(() => import('./pages/TeamPage/TeamPage'));
 
-
-interface IDashboardProps {}
+interface IDashboardProps { }
 
 const Dashboard: React.FC<IDashboardProps> = () => {
   return (
     <NotFoundPage>
       <Route
-        path="/"
-        element={<Navigate to={`${PrivateDashboardRoutes.DASHBOARD}/project=:project`} />}
+				path='/'
+				element={<Navigate to={`/${PrivateDashboardRoutes.DASHBOARD}/:project`}/>}
       />
       <Route
-        path={`${PrivateDashboardRoutes.DASHBOARD}/project=:project`}
+        path={`/${PrivateDashboardRoutes.DASHBOARD}/:project`}
         element={<DashboardPage />}
       />
       <Route
-        path={`${PrivateDashboardRoutes.TASKBOARD}/project=:project`}
+        path={`/${PrivateDashboardRoutes.TASKBOARD}/:project`}
         element={<TaskBoardPage />}
       />
       <Route
-        path={`${PrivateDashboardRoutes.DRIVEBOARD}/project=:project`}
+        path={`/${PrivateDashboardRoutes.DRIVEBOARD}/:project`}
         element={<DriveConfigurationPage />}
       />
       <Route
-        path={`${PrivateDashboardRoutes.DAILYREPORT}/project=:project`}
+        path={`/${PrivateDashboardRoutes.DAILYREPORT}/:project`}
         element={<DailyReportPage />}
       />
       <Route
-        path={`${PrivateDashboardRoutes.TASKLIST}/project=:project`}
+        path={`/${PrivateDashboardRoutes.TASKLIST}/:project`}
         element={<TaskListPage />}
       />
       <Route
-        path={`${PrivateDashboardRoutes.STATICS}/project=:project`}
+        path={`/${PrivateDashboardRoutes.STATICS}/:project`}
         element={<StaticsPage />} />
       <Route
-        path={`${PrivateDashboardRoutes.PHASESREVIEW}/project=:project`}
+        path={`/${PrivateDashboardRoutes.PHASESREVIEW}/:project`}
         element={<PhaseReviewPage />}
       />
       <Route
-        path={`${PrivateDashboardRoutes.TEAM}/project=:project`}
+        path={`/${PrivateDashboardRoutes.TEAM}/:project`}
         element={<TeamPage />}
       />
       <Route
-        path={`${PrivateDashboardRoutes.CHAT}/project=:project`}
+        path={`/${PrivateDashboardRoutes.CHAT}/:project`}
         element={<ChatPage />}
       />
       <Route
-        path={`${PrivateDashboardRoutes.HELP}/project=:project`}
+        path={`/${PrivateDashboardRoutes.HELP}/:project`}
         element={<HelpPage />}
       />
       <Route
-        path={`${PrivateDashboardRoutes.SETTINGS}/project=:project`}
+        path={`/${PrivateDashboardRoutes.SETTINGS}/:project`}
         element={<SettingsPage />}
       />
     </NotFoundPage>

@@ -69,7 +69,6 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 
 	const onHandleRegister: SubmitHandler<UserInput> = async dataUser => {
 		try {
-
 			const result = await dispatch(createUser(dataUser)).unwrap();
 			const { isSuccess, message, user } = result;
 

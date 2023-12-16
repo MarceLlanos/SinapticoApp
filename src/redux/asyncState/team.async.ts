@@ -10,11 +10,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const joinTeam = createAsyncThunk('team/joinTeam', async (userInput: UserTeamInput) => {
     try {
-        const { isSuccess, message, id_project } = await addMemberWithCodeProject(userInput);
+        const { isSuccess, id_project } = await addMemberWithCodeProject(userInput);
 
         return {
             isSuccess,
-            message,
             id_project
         }
     } catch (error) {

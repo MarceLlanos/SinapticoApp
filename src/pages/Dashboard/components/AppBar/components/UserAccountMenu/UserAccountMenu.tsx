@@ -92,7 +92,7 @@ const UserAccountMenu: React.FC<IUserAccountMenuProps> = ({
             {urlImage.length === 0 ? (
                 <CustomAvatar {...stringAvatar(userName)} />
             ) : (
-                <CustomAvatar alt="Remy Sharp" src={urlImage} />
+                <CustomAvatar alt={userName} src={urlImage} />
             )}
         </div>
         { renderUserMenu }

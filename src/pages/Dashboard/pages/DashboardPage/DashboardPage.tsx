@@ -1,15 +1,27 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DashboardFrameContainer } from '../../components';
 
 import './style/index.css';
 import { InformationBody } from '@/pages/CoverPage/components';
+import { getCurrentUser, getUser } from '@/services';
+import { UserGoogle } from '@/models';
 
 interface IDashboardPageProps {
 
 }
 
 const DashboardPage: React.FC<IDashboardPageProps> = (props) => {
+    const currentUser = getCurrentUser();
+    const [userLogged, setUserLogged] = useState<UserGoogle>();
+    
+    useEffect(() => {
+        async () => {
+            const user = await getUser(currentUser?.uid!)
+            setUserLogged(user)
+        };
+    }, []);
+    
     return (
         <DashboardFrameContainer>
             <div className="informationContainer dashboardPageContainer mt-3">
@@ -22,7 +34,7 @@ const DashboardPage: React.FC<IDashboardPageProps> = (props) => {
                 </div>
                 <div className="bodyInfo textLight primaryText mt-3">
                     <p>
-                        Hola <strong>Eric Jordan!</strong>, tu eres el encargado del proyecto,
+                        Hola <strong>{ userLogged?.userName }!</strong>, tu eres el encargado del proyecto,
                         <br/>
                         te recordamos que estas son tus funciones:
                     </p>

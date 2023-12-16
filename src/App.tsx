@@ -1,16 +1,12 @@
 import { Suspense, lazy } from "react";
 import { Route, BrowserRouter as Router } from "react-router-dom";
-
 import { AuthGuard } from "./guards";
 import {
 	PrivateDashboardRoutes,
 	PrivateRegisterRoutes,
 	PublicRegisterRoutes
 } from "./models";
-import {
-	CoverPage,
-
-} from "./pages";
+import { CoverPage } from "./pages";
 import { NotFoundPage } from "./utilities";
 
 const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard'));
@@ -39,13 +35,11 @@ function App() {
 								element={<Register />}
 							/>
 						</Route>
-						<Route element={<AuthGuard />}>
-							<Route
-								path={`${PrivateDashboardRoutes.PRIVATE}/*`}
-								element={<Dashboard />}
-							/>
-						</Route>
-					</NotFoundPage>
+						<Route
+							path={`/${PrivateDashboardRoutes.PRIVATE}/*`}
+							element={<Dashboard />}
+						/>
+				</NotFoundPage>
 				</Router>
 			</Suspense>
 		</div>
