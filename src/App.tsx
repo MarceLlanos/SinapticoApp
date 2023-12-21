@@ -36,7 +36,7 @@ function App() {
 							/>
 						</Route>
 						<Route
-							path={`/${PrivateDashboardRoutes.PRIVATE}/*`}
+							path={`/*`}
 							element={<Dashboard />}
 						/>
 				</NotFoundPage>

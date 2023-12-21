@@ -166,6 +166,7 @@ export const getTeamMembers = async (id_project: string): Promise<UserTeam[]> =>
 }
 export const getATeamMember = async (data: MemberInput): Promise<UserTeam> => {
     try {
+        console.log(data);
         const queryGetMember = query(usersCollectionRef, where('id_project', '==', data.id_project), where('user_id', '==', data.user_id));
 
         const querySnapshot = await getDocs(queryGetMember);

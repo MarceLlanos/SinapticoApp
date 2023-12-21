@@ -125,7 +125,7 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 						required: 'El nombre del docente es requerido',
 					})}
 					error={errors.professor ? true : false}
-				/>
+				/> 
 				<TextField
 					id='outlined-date-input'
 					label='Fecha de entrega del proyecto'

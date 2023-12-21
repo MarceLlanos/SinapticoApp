@@ -59,7 +59,7 @@ export const getMembersTeam = createAsyncThunk('getTeamMembers/getMembersTeam', 
 
 export const getMemberTeam = createAsyncThunk('getAMemberteam/getMemberTeam', async (userInput: MemberInput) => {
     try {
-        const member = await getATeamMember(userInput);
+        const member: UserTeam = await getATeamMember(userInput);
 
         return member
     } catch (error) {

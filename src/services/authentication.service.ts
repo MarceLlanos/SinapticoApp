@@ -206,16 +206,20 @@ export const logout = async (): Promise<Result> => {
 };
 
 export const getUser = async (uid: string): Promise<UserGoogle> => {
-	const userQuery = query(userRef, where('uid', '==', uid));
-	const userSnapshot = await getDocs(userQuery);
-	const user = userSnapshot.docs[0].data();
+	try {
+		const userQuery = query(userRef, where('uid', '==', uid));
+		const userSnapshot = await getDocs(userQuery);
+		const user = userSnapshot.docs[0].data();
 
-	const userResult: UserGoogle = {
-		uid: user.uid,
-		userName: user.userName,
-		email: user.email,
-		photoUrl: user.photoUrl || null,
-	};
+		const userResult: UserGoogle = {
+			uid: user.uid,
+			userName: user.userName,
+			email: user.email,
+			photoUrl: user.photoUrl || '',
+		};
 
-	return userResult;
+		return userResult;
+	} catch (error) {
+		throw error;
+	}
 };

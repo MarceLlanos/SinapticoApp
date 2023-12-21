@@ -1,11 +1,14 @@
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import { Avatar, Menu, MenuItem, Typography, styled } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux";
+import { getMemberTeam } from "@/redux/asyncState/team.async";
 
 import "./style/index.css";
 
 interface IUserAccountMenuProps {
-  urlImage: string;
-  userName: string;
+  userName: string
+  photoUrl: string
 }
 
 export function stringToColor(string: string) {
@@ -43,10 +46,7 @@ const CustomAvatar = styled(Avatar)({
   height: 34
 });
 
-const UserAccountMenu: React.FC<IUserAccountMenuProps> = ({
-  urlImage,
-  userName
-}) => {
+const UserAccountMenu: React.FC<IUserAccountMenuProps> = ({userName, photoUrl}) => {
   const [userMenu, setUserMenu] = useState<null | HTMLElement>(null);
   const settings = ["Perfil", "Salir"];
 
@@ -84,18 +84,18 @@ const UserAccountMenu: React.FC<IUserAccountMenuProps> = ({
 
   return (
     <>
-        <div
-          onClick={handleUserOpenMenu}
-          className="user-container ml-1"
-        >
-            <p className="textLight greyText mr-1 mt-1">{userName}</p>
-            {urlImage.length === 0 ? (
-                <CustomAvatar {...stringAvatar(userName)} />
-            ) : (
-                <CustomAvatar alt={userName} src={urlImage} />
-            )}
-        </div>
-        { renderUserMenu }
+      <div
+        onClick={handleUserOpenMenu}
+        className="user-container ml-1"
+      >
+        <p className="textLight greyText mr-1 mt-1">{userName}</p>
+        {
+          photoUrl.length > 0
+          ? (<CustomAvatar alt={userName} src={photoUrl} />)
+          : (<CustomAvatar {...stringAvatar(userName)} />)
+        }
+      </div>
+      { renderUserMenu }
     </>
   );
 };

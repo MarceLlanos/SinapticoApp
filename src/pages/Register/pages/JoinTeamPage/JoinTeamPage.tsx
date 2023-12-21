@@ -50,7 +50,7 @@ const JoinTeamPage: React.FC<IJoinTeamPageProps> = () => {
 				const { isSuccess, id_project } = await dispatch(joinTeam(userData)).unwrap();
 				if (isSuccess) {
 					navigate(
-						`/${PrivateDashboardRoutes.PRIVATE}/${PrivateDashboardRoutes.DASHBOARD}/${id_project}`,
+						`/${PrivateDashboardRoutes.DASHBOARD}/${id_project}/${uid}`,
 						{ replace: true, state: id_project }
 					)
 				}

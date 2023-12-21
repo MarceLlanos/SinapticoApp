@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
     project: projectSlice,
     team: teamSlice,
     teamMemebers: getTeamMembersSlice,
-    Member: getAMemberSlice,
+    member: getAMemberSlice,
 });
 
 export const storeReduxApp = configureStore({

@@ -11,6 +11,7 @@ import { PrivateDashboardRoutes, PrivateRegisterRoutes } from '@/models';
 import { AppDispatch } from '@/redux';
 import { useDispatch } from 'react-redux';
 import { addDriveToProject } from '@/redux/asyncState/project.async';
+import { getCurrentUser } from '@/services';
 
 interface IConfigureDrivePageProps {
 
@@ -20,10 +21,12 @@ const ConfigureDrivePage: React.FC<IConfigureDrivePageProps> = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const dispatch = useDispatch<AppDispatch>();
+	const user = getCurrentUser();
 
 	const [savedDrive, setSavedDrive] = useState<Boolean>(false);
 	const { register, handleSubmit, control, setValue } = useForm();
 	const urlData = location.state;
+	const user_id = user?.uid;
 
 	const openGoogleDrive = () => {
 		 window.open('https://drive.google.com', '_blank');
@@ -55,9 +58,10 @@ const ConfigureDrivePage: React.FC<IConfigureDrivePageProps> = () => {
 
 	const goToNexPage = async () => {
 		navigate(
-			`/${PrivateDashboardRoutes.PRIVATE}/${PrivateDashboardRoutes.DASHBOARD}/${urlData}`,
+			`/${PrivateDashboardRoutes.DASHBOARD}/${urlData}/${user_id}`,
 			{ replace: true, state: urlData }
 		)
+
 	}
 
 	return (

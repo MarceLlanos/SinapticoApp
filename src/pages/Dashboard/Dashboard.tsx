@@ -20,51 +20,51 @@ interface IDashboardProps { }
 const Dashboard: React.FC<IDashboardProps> = () => {
   return (
     <NotFoundPage>
-      <Route
+      {/* <Route
 				path='/'
 				element={<Navigate to={`/${PrivateDashboardRoutes.DASHBOARD}/:project`}/>}
-      />
+      /> */}
       <Route
-        path={`/${PrivateDashboardRoutes.DASHBOARD}/:project`}
+        path={`/${PrivateDashboardRoutes.DASHBOARD}/:project/:uid`}
         element={<DashboardPage />}
       />
       <Route
-        path={`/${PrivateDashboardRoutes.TASKBOARD}/:project`}
+        path={`/${PrivateDashboardRoutes.TASKBOARD}/:project:uid`}
         element={<TaskBoardPage />}
       />
       <Route
-        path={`/${PrivateDashboardRoutes.DRIVEBOARD}/:project`}
+        path={`/${PrivateDashboardRoutes.DRIVEBOARD}/:project:uid`}
         element={<DriveConfigurationPage />}
       />
       <Route
-        path={`/${PrivateDashboardRoutes.DAILYREPORT}/:project`}
+        path={`/${PrivateDashboardRoutes.DAILYREPORT}/:project:uid`}
         element={<DailyReportPage />}
       />
       <Route
-        path={`/${PrivateDashboardRoutes.TASKLIST}/:project`}
+        path={`/${PrivateDashboardRoutes.TASKLIST}/:project:uid`}
         element={<TaskListPage />}
       />
       <Route
-        path={`/${PrivateDashboardRoutes.STATICS}/:project`}
+        path={`/${PrivateDashboardRoutes.STATICS}/:project:uid`}
         element={<StaticsPage />} />
       <Route
-        path={`/${PrivateDashboardRoutes.PHASESREVIEW}/:project`}
+        path={`/${PrivateDashboardRoutes.PHASESREVIEW}/:project:uid`}
         element={<PhaseReviewPage />}
       />
       <Route
-        path={`/${PrivateDashboardRoutes.TEAM}/:project`}
+        path={`/${PrivateDashboardRoutes.TEAM}/:project/:uid`}
         element={<TeamPage />}
       />
       <Route
-        path={`/${PrivateDashboardRoutes.CHAT}/:project`}
+        path={`/${PrivateDashboardRoutes.CHAT}/:project/:uid`}
         element={<ChatPage />}
       />
       <Route
-        path={`/${PrivateDashboardRoutes.HELP}/:project`}
+        path={`/${PrivateDashboardRoutes.HELP}/:project/:uid`}
         element={<HelpPage />}
       />
       <Route
-        path={`/${PrivateDashboardRoutes.SETTINGS}/:project`}
+        path={`/${PrivateDashboardRoutes.SETTINGS}/:project/:uid`}
         element={<SettingsPage />}
       />
     </NotFoundPage>

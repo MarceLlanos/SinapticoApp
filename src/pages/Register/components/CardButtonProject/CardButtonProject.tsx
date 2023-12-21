@@ -10,18 +10,19 @@ interface ICardButtonProjectProps {
 	materia: string;
 	proyecto: string;
 	project_id: string;
+	uid: string
 }
 
 const CardButtonProject: React.FC<ICardButtonProjectProps> = (props) => {
-	const { materia, proyecto, projectRelease, project_id } = props;
+	const { materia, proyecto, projectRelease, project_id, uid } = props;
 	const navigate = useNavigate();
 	const date = formatDate(projectRelease);
 	
 	const goToProjectDashboard = () => {
 		navigate(
-			`/${PrivateDashboardRoutes.PRIVATE}/${PrivateDashboardRoutes.DASHBOARD}/${project_id}`,
+			`/${PrivateDashboardRoutes.DASHBOARD}/${project_id}/${uid}`,
 			{ replace: true, state: project_id }
-		);
+		)
 	}
 
 	return (

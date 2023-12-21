@@ -4,23 +4,25 @@ import { DashboardFrameContainer } from '../../components';
 
 import './style/index.css';
 import { InformationBody } from '@/pages/CoverPage/components';
-import { getCurrentUser, getUser } from '@/services';
+import { getUser } from '@/services';
 import { UserGoogle } from '@/models';
+import { useParams } from 'react-router-dom';
 
 interface IDashboardPageProps {
 
 }
 
 const DashboardPage: React.FC<IDashboardPageProps> = (props) => {
-    const currentUser = getCurrentUser();
     const [userLogged, setUserLogged] = useState<UserGoogle>();
+    const { project, uid } = useParams();
     
     useEffect(() => {
-        async () => {
-            const user = await getUser(currentUser?.uid!)
+        const fetchData = async () => {
+            const user = await getUser(uid!);
             setUserLogged(user)
         };
-    }, []);
+        fetchData();
+    }, [userLogged]);
     
     return (
         <DashboardFrameContainer>

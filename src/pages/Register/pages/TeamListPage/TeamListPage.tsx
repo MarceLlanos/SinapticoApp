@@ -44,7 +44,8 @@ const TeamListPage: React.FC<ITeamListPageProps> = (props) => {
                             projectRelease={project.date_release}
                             materia= {project.assigment}
                             proyecto= {project.name_proj}
-                            project_id= {project.id_project}
+                            project_id={project.id_project}
+                            uid = {user?.uid!}
                         />
                     ))
                 }

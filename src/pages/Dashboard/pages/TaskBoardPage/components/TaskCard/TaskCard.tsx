@@ -11,8 +11,6 @@ interface ITaskCardProps {
     colorTask: string;
 }
 
-
-
 const TaskCard: React.FC<ITaskCardProps> = ({ colorTask }) => {
     const [openModal, setOpenModal] = useState<boolean>(false);
 

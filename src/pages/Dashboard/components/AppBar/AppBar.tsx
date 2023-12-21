@@ -3,23 +3,37 @@ import React, { useEffect, useState } from 'react';
 
 import { IconBadgeButton, InputSearch, UserAccountMenu } from './components';
 import './style/index.css';
-import { getCurrentUser, getUser } from '@/services';
-import { UserGoogle } from '@/models';
+import { useParams } from 'react-router-dom';
+import { getMemberTeam } from '@/redux/asyncState/team.async';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux';
 
 interface IAppBarProps {}
 
+const AppBar: React.FC<IAppBarProps> = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { project, uid } = useParams();
+    const [photoUrl, setPhotoImage] = useState<string>('');
+    const [user, setUser] = useState<string>('');
 
-const AppBar: React.FC<IAppBarProps> = (props) => {
-    const currentUser = getCurrentUser();
-    const [userLogged, setUserLogged] = useState<UserGoogle>();
-    
     useEffect(() => {
-        async () => {
-            const user = await getUser(currentUser?.uid!)
-            setUserLogged(user)
-        };
-    }, []);
+    const fetchData = async () => {
+        try {
+        const { userName, photoUrl } = await dispatch(
+          getMemberTeam({
+            id_project: project!,
+            user_id: uid!
+          })).unwrap();
 
+        setPhotoImage(photoUrl!);
+        setUser(userName);
+      } catch (error) {
+        throw error;
+      }
+    };
+    fetchData();
+    }, []);
+    
     return (
         <div className="appBarContainer">
             <div className="leftContainer">
@@ -27,10 +41,7 @@ const AppBar: React.FC<IAppBarProps> = (props) => {
             </div>
             <div className="rightContainer">
                 <IconBadgeButton />
-                <UserAccountMenu
-                    urlImage={userLogged?.photoUrl!}
-                    userName={userLogged?.userName!}
-                />
+                <UserAccountMenu userName={ user } photoUrl={ photoUrl } />
             </div>
         </div>
     );
