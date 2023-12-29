@@ -1,41 +1,68 @@
-import { TextField } from '@mui/material';
+import { Alert, TextField } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { DataProject, PrivateRegisterRoutes, Project } from '@/models';
+import { PrivateRegisterRoutes, ProjectInput } from '@/models';
 import { ButtonPrimary } from '@/styled-components';
 import { FormFrame, HeadFormTitle } from '../../components';
 
 import './styles/DataProjectPage.css';
 
-import { createProjectDocService } from '@/services/projectDocument.service';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '@/services';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux';
+import { createProject } from '@/redux/asyncState/project.async';
+import { getProject } from '@/services/projectDocument.service';
+
 
 export interface DataProjectPageProps {}
 
 const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 	const navigation = useNavigate();
+	const currentUSer = getCurrentUser();
+	const dispatch = useDispatch<AppDispatch>();
+	const uid = currentUSer?.uid!;
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<DataProject>();
+	} = useForm<ProjectInput>();
 
-	const handleSubmitRegister: SubmitHandler<DataProject> = async data => {
-		const { assigment, description, nameProject, proffessorName } = data;
-		const date = data.dateDeliverProject;
-		const dataRef = {
-			assigment,
-			dateDeliverProject: date,
+	const handleSubmitRegister: SubmitHandler<ProjectInput> = async data => {
+		const {
+			name_proj,
 			description,
-			nameProject,
-			proffessorName,
-		};
-		await createProjectDocService(dataRef);
-		navigation(
-			`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMCODE}`,
-			{ replace: true }
-		);
+			assigment,
+			professor,
+			date_release,
+		} = data;
+		const projectData: ProjectInput = {
+			user_id: uid,
+			name_proj,
+			description,
+			assigment,
+			professor,
+			date_release,
+		}
+		const { isSuccess, message, id_project } = await dispatch(createProject(projectData)).unwrap();
+		const project = await getProject(id_project!);
+
+		if (isSuccess) {
+			navigation(
+				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMCODE}`,
+				{
+					replace: true,
+					state: {
+						id_project,
+						codeProject: project?.code_project
+					}
+				}
+			);
+		} else {
+			<Alert severity="error">{ message }</Alert>
+		}
+
 	};
 
 	return (
@@ -51,13 +78,13 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 					type='text'
 					autoComplete='current-password'
 					margin='normal'
-					{...register('nameProject', {
+					{...register('name_proj', {
 						required: 'Nombre del proyecto es requerido',
 						minLength: 10,
 					})}
-					error={errors.nameProject ? true : false}
+					error={errors.name_proj ? true : false}
 				/>
-				{errors.nameProject && (
+				{errors.name_proj && (
 					<span className='small-text-italic redText'>
 						<strong>Error:</strong>.
 					</span>
@@ -94,11 +121,11 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 					type='text'
 					autoComplete='current-password'
 					margin='normal'
-					{...register('proffessorName', {
+					{...register('professor', {
 						required: 'El nombre del docente es requerido',
 					})}
-					error={errors.proffessorName ? true : false}
-				/>
+					error={errors.professor ? true : false}
+				/> 
 				<TextField
 					id='outlined-date-input'
 					label='Fecha de entrega del proyecto'
@@ -108,10 +135,10 @@ const DataProjectPage: React.FC<DataProjectPageProps> = () => {
 					InputLabelProps={{
 						shrink: true,
 					}}
-					{...register('dateDeliverProject', {
+					{...register('date_release', {
 						required: 'La fecha de entrega del proyecto es requerido',
 					})}
-					error={errors.dateDeliverProject ? true : false}
+					error={errors.date_release ? true : false}
 				/>
 
 				<span className='greyTextCustom mt-3'>

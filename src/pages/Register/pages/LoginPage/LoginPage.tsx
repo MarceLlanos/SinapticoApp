@@ -1,62 +1,112 @@
-import { createUserAdapted } from '@/adapters/FirebaseUser.adapter';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import {
 	AuthUserCredential,
-	FirebaseUser,
 	PrivateRegisterRoutes,
+	Project,
 	PublicRegisterRoutes,
 } from '@/models';
-import { loginEmailPassword, loginWithGoogle } from '@/services';
+
 import {
 	ButtonGrey,
 	ButtonPrimary,
 	LabelTitle,
 	LinkPrimary,
 } from '@/styled-components';
-import { TextField } from '@mui/material';
-import { User, UserCredential } from 'firebase/auth';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import {
+	Alert,
+	FormControl,
+	IconButton,
+	InputAdornment,
+	InputLabel,
+	OutlinedInput,
+	TextField
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+
 import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
-import { createUserCredentialAdapted } from '@/adapters';
+import { AppDispatch, login, loginWithGoogle } from '@/redux';
+import { useDispatch } from 'react-redux';
+import { getProjectsByUser } from '@/redux/asyncState/project.async';
+import { getCurrentUser, getProjectsByUserId } from '@/services';
 
 export interface LoginPageProps {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
 	const navigate = useNavigate();
-
+	const location = useLocation();
+	const currentUser = getCurrentUser();
+	const dispatch = useDispatch<AppDispatch>();
+	const [showPassword, setShowPassword] = useState(false);
+	const uid = currentUser?.uid!;
+	const beforeUrl = location.state;
+	
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<AuthUserCredential>();
+	
+	const goToPage = (isSuccess: boolean, message: string, projects: Array<Project>) => {
+		if (isSuccess) {
+			switch (beforeUrl) {
+				case PrivateRegisterRoutes.CREATEPROJECT:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
+					);
+					break;
+				case PrivateRegisterRoutes.JOINTEAM:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`
+					);
+					break;
+				case PublicRegisterRoutes.LOGIN:
+					projects.length > 0
+					? navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMLIST}`
+					)
+					:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`
+					);
+				default:
+					projects.length > 0
+					? navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.TEAMLIST}`
+					)
+					: navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`
+					);
+					break;
+			}
+			
+		} else {
+			(<Alert severity="error">{ message }</Alert>)
+		}
+	}
 
-	const handleSubmitLogin: SubmitHandler<
-		AuthUserCredential
-	> = async dataUser => {
+	const handleSubmitLogin: SubmitHandler< AuthUserCredential > = async dataUser => {
 		try {
-			const data: User = await loginEmailPassword(dataUser);
-			const user: FirebaseUser = (await createUserAdapted(
-				data
-			)) as FirebaseUser;
-			navigate(
-				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
-			);
-		} catch (error) {}
+			const { isSuccess, message } = await dispatch(login(dataUser)).unwrap();
+			const projects = await getProjectsByUserId(uid);
+			
+			goToPage(isSuccess, message, projects);
+		} catch (error) {
+			throw error;
+		}
 	};
 
 	const handleGoogleLogin = async () => {
 		try {
-			const data: UserCredential = (await loginWithGoogle()) as UserCredential;
-			const user: FirebaseUser = (await createUserCredentialAdapted(
-				data
-			)) as FirebaseUser;
-
-			navigate(
-				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
-			);
+			const { isSuccess, message, user } = await dispatch(loginWithGoogle()).unwrap();
+			const projects = await getProjectsByUserId(uid);
+			goToPage(isSuccess, message, projects);
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
 	};
 
@@ -67,7 +117,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
 			<div className='columnContainerCentered mt-3'>
 				<ButtonGoogleIcon
-					handleClick={handleGoogleLogin}
+					handleClick={ handleGoogleLogin }
 					title='Ingrese con Google'
 					iconLink='../../src/assets/icons/google.svg'
 				/>
@@ -97,21 +147,39 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 					</span>
 				)}
 
-				<TextField
-					id='outlined-password-input'
-					label='Contraseña'
-					type='password'
-					autoComplete='current-password'
-					margin='normal'
-					{...register('password', {
-						required: true,
-						minLength: 5,
-					})}
-					error={errors.password ? true : false}
-				/>
-				{errors.password && (
-					<span className='small-text-italic redText'>
-						<strong>Error:</strong> Debes ingresar una constraseña de mas de 5
+				<FormControl sx={{ width: '100%' }} variant="outlined" className='mt-1'>
+					<InputLabel htmlFor="password-input">Contraseña * </InputLabel>
+					<OutlinedInput
+						id="password-input"
+						type={showPassword ? 'text' : 'password'}
+						required
+						endAdornment={
+							<InputAdornment position="end">
+								<IconButton
+									aria-label="toggle password visibility"
+									onClick={handleClickShowPassword}
+									edge="end"
+								>
+									{showPassword ? <VisibilityOff /> : <Visibility />}
+								</IconButton>
+							</InputAdornment>
+						}
+						{...register('password', {
+							required: 'La contraseña debe tener mas de 6 caracteres',
+							minLength: 5,
+						})}
+						error={errors.password ? true : false}
+						label="Contraseña"
+					/>
+				</FormControl>
+				{errors.password ? (
+					<span className='smallTextItalic redText'>
+						<strong>Error:</strong> Debes ingresar una constraseña de más de 5
+						caracteres.
+					</span>
+				) : (
+					<span className='smallTextItalic'>
+						<strong>Importante:</strong> La contraseña debe tener por lo menos 6
 						caracteres.
 					</span>
 				)}

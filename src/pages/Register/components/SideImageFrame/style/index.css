@@ -9,6 +9,7 @@
     flex: 1;
     height: calc(100vh);
     margin: 0 10px 0 30px;
+    overflow-y: auto;
 }
 
 .sideImageContainerItem {

@@ -9,7 +9,6 @@ interface ISideImageFrameProps {
 }
 
 const SideImageFrame: React.FC<ISideImageFrameProps> = ({ children, image }) => {
-    console.log(image);
     return (
         <div className='sideContainer'>
             <div className='sideContainerItem mt-1'>

@@ -6,7 +6,6 @@ import { PrivateRegisterRoutes } from '@/models';
 
 import './styles/RegisterPages.css';
 
-
 const DataProjectPage = lazy(() => import('./pages/DataProjectPage/DataProjectPage'));
 const ConfigureDrivePage = lazy(() => import('./pages/ConfigureDrivePage/ConfigureDrivePage'));
 const JoinTeamPage = lazy(() => import('./pages/JoinTeamPage/JoinTeamPage'));
@@ -42,7 +41,6 @@ const Register: React.FC<RegisterPagesProps> = () => {
 				path={PrivateRegisterRoutes.CONFIGUREDRIVE}
 				element={<ConfigureDrivePage />}
 			/>
-			{/* <Route path={`${PrivateRegisterRoutes.TEAMROLE}/*`} element={< />}/> */}
 		</NotFoundPage>
 	);
 };

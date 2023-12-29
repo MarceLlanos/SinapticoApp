@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const ButtonPrimary = styled.button`
-    background-color: ${({ disabled }) => disabled ? 'var(--grey-text)' : 'var(--primary-text)'};
-    border: 1px solid ${({ disabled }) => disabled ? 'var(--grey-text)' : 'var(--primary-text)'};
+    background-color: var(--primary-text);
+    border: 1px solid var(--primary-text);
     border-radius: 3px;
     color: var(--white-text);
     display: flex;
@@ -11,7 +11,7 @@ export const ButtonPrimary = styled.button`
     font-weight: 100;
     padding: 10px 45px;
     width: auto;
-    cursor: ${({ disabled }) => disabled ? 'not allowed' : 'pointer'}
+    cursor: pointer;
     heigth: auto;
 
     :hover {

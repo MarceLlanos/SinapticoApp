@@ -9,19 +9,20 @@ interface IDashboardFrameContainerProps {
 }
 
 const DashboardFrameContainer: React.FC<IDashboardFrameContainerProps> = ({ children }) => {
-    return (
-        <div className='dashboardContainer'>
-            <SideMenu />
-            <div className="rightContainerFrame">
-                <AppBar />
-                <div className="frameContentContainer">
-                    {
-                        children
-                    }
-                </div>
-            </div>
+
+  return (
+    <div className='dashboardContainer'>
+      <SideMenu />
+      <div className="rightContainerFrame">
+        <AppBar/>
+        <div className="frameContentContainer">
+          {
+              children
+          }
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default DashboardFrameContainer;

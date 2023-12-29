@@ -1,14 +1,17 @@
-import React, { MouseEvent, useState } from "react";
-import { Avatar, Box, Menu, MenuItem, Typography, styled } from "@mui/material";
+import React, { MouseEvent, useEffect, useState } from "react";
+import { Avatar, Menu, MenuItem, Typography, styled } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux";
+import { getMemberTeam } from "@/redux/asyncState/team.async";
 
 import "./style/index.css";
 
 interface IUserAccountMenuProps {
-  urlImage: string;
-  userName: string;
+  userName: string
+  photoUrl: string
 }
 
-function stringToColor(string: string) {
+export function stringToColor(string: string) {
   let hash = 0;
   let i;
 
@@ -28,6 +31,11 @@ function stringToColor(string: string) {
 }
 
 function stringAvatar(name: string) {
+
+  if (name.length < 1) {
+    name = 'User Default';
+  }
+
   return {
     sx: {
       bgcolor: stringToColor(name),
@@ -43,10 +51,7 @@ const CustomAvatar = styled(Avatar)({
   height: 34
 });
 
-const UserAccountMenu: React.FC<IUserAccountMenuProps> = ({
-  urlImage,
-  userName
-}) => {
+const UserAccountMenu: React.FC<IUserAccountMenuProps> = ({userName, photoUrl}) => {
   const [userMenu, setUserMenu] = useState<null | HTMLElement>(null);
   const settings = ["Perfil", "Salir"];
 
@@ -84,18 +89,18 @@ const UserAccountMenu: React.FC<IUserAccountMenuProps> = ({
 
   return (
     <>
-        <div
-          onClick={handleUserOpenMenu}
-          className="user-container ml-1"
-        >
-            <p className="textLight greyText mr-1 mt-1">{userName}</p>
-            {urlImage.length === 0 ? (
-                <CustomAvatar {...stringAvatar(userName)} />
-            ) : (
-                <CustomAvatar alt="Remy Sharp" src={urlImage} />
-            )}
-        </div>
-        { renderUserMenu }
+      <div
+        onClick={handleUserOpenMenu}
+        className="user-container ml-1"
+      >
+        <p className="textLight greyText mr-1 mt-1">{userName}</p>
+        {
+          photoUrl.length > 0
+          ? (<CustomAvatar alt={userName} src={photoUrl} />)
+          : (<CustomAvatar {...stringAvatar(userName)} />)
+        }
+      </div>
+      { renderUserMenu }
     </>
   );
 };

@@ -13,7 +13,6 @@ interface IItemMenuProps {
 
 const ItemMenu: React.FC<IItemMenuProps> = ({ icon, label, navigateUrl }) => {
     const [clicked, setClicked] = useState(false);
-
     const navigate = useNavigate();
 
     const handleClick = () => {

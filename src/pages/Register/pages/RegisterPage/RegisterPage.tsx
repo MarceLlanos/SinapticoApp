@@ -1,27 +1,40 @@
 import {
 	AuthUserCredential,
-	FirebaseUser,
 	PrivateRegisterRoutes,
 } from '@/models';
 import { ButtonPrimary, LabelTitle } from '@/styled-components';
-import { TextField } from '@mui/material';
+import { 
+	Alert,
+	FormControl,
+	IconButton,
+	InputAdornment,
+	InputLabel,
+	OutlinedInput,
+	TextField
+} from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
 
 import './styles/RegisterPage.css';
-import {
-	addDocument,
-	loginWithGoogle,
-	registerEmailPassword,
-} from '@/services';
-import { User, UserCredential } from 'firebase/auth';
-import { createUserAdapted, createUserCredentialAdapted } from '@/adapters';
+import { useState } from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+import { AppDispatch, createUser, loginWithGoogle } from '@/redux';
+import { UserInput } from '@/models/redux';
+
 
 export interface RegisterPageProps {}
 
 const RegisterPage: React.FC<RegisterPageProps> = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const dispatch = useDispatch<AppDispatch>();
+	
+	const [showPassword, setShowPassword] = useState(false);
+	const urlBefore = location.state;
+	
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
 
 	const {
 		register,
@@ -29,36 +42,50 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 		formState: { errors },
 	} = useForm<AuthUserCredential>();
 
-	const onHandleRegister: SubmitHandler<
-		AuthUserCredential
-	> = async dataUser => {
-		try {
-			const data: User = await registerEmailPassword(dataUser);
-			const user: FirebaseUser = (await createUserAdapted(
-				data
-			)) as FirebaseUser;
+	const goToPage = (isSuccess: boolean, message: string) => {
+		if (isSuccess) {
+			switch (urlBefore) {
+				case PrivateRegisterRoutes.CREATEPROJECT:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
+					);
+					break;
+				case PrivateRegisterRoutes.JOINTEAM:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`
+					);
+					break;
+				default:
+					navigate(
+						`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.JOINTEAM}`
+					);
+					break;
+			}
+			
+		} else {
+			(<Alert severity="error">{ message }</Alert>)
+		}
+	}
 
-			await addDocument('user', user);
-			navigate(
-				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`,
-				{ replace: true }
-			);
-		} catch {}
+	const onHandleRegister: SubmitHandler<UserInput> = async dataUser => {
+		try {
+			const result = await dispatch(createUser(dataUser)).unwrap();
+			const { isSuccess, message, user } = result;
+
+			goToPage(isSuccess, message);
+		} catch (error) {
+			throw error;
+		}
 	};
 
 	const registerGoogleHandle = async () => {
 		try {
-			const data: UserCredential = (await loginWithGoogle()) as UserCredential;
-			const user: FirebaseUser = (await createUserCredentialAdapted(
-				data
-			)) as FirebaseUser;
+			const result = await dispatch(loginWithGoogle()).unwrap();
+			const { isSuccess, message, user } = result;
+			goToPage(isSuccess, message);
 
-			await addDocument('user', user);
-			navigate(
-				`/${PrivateRegisterRoutes.PRIVATE}/${PrivateRegisterRoutes.CREATEPROJECT}`
-			);
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
 	};
 
@@ -78,8 +105,27 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 				className='columnContainerCentered mt-3'
 			>
 				<TextField
+					id='userName'
+					label='Nombre Completo*'
+					type='text'
+					margin='normal'
+					{...register('userName', {
+						required: 'El nombre completo de usuario es requerido',
+					})}
+					error={errors.userName ? true : false}
+				/>
+				{errors.userName ? (
+					<span className='smallTextItalic redText'>
+						<strong>Error:</strong> Debes ingresar tu nombre completo.
+					</span>
+				) : (
+					<span className='smallTextItalic'>
+						<strong>Importante:</strong> Debes tu nombre completo.
+					</span>
+				)}
+				<TextField
 					id='email'
-					label='Correo electrónico'
+					label='Correo electrónico*'
 					type='email'
 					margin='normal'
 					{...register('email', {
@@ -98,21 +144,34 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 						gmail.
 					</span>
 				)}
-				<TextField
-					id='password-input'
-					label='Contraseña'
-					type='password'
-					margin='normal'
-					required
-					{...register('password', {
-						required: 'La contraseña debe tener mas de 6 caracteres',
-						minLength: 5,
-					})}
-					error={errors.password ? true : false}
-				/>
+				<FormControl sx={{ width: '100%' }} variant="outlined">
+					<InputLabel htmlFor="password-input">Contraseña * </InputLabel>
+					<OutlinedInput
+						id="password-input"
+						type={showPassword ? 'text' : 'password'}
+						required
+						endAdornment={
+							<InputAdornment position="end">
+								<IconButton
+									aria-label="toggle password visibility"
+									onClick={handleClickShowPassword}
+									edge="end"
+								>
+									{showPassword ? <VisibilityOff /> : <Visibility />}
+								</IconButton>
+							</InputAdornment>
+						}
+						{...register('password', {
+							required: 'La contraseña debe tener mas de 6 caracteres',
+							minLength: 5,
+						})}
+						error={errors.password ? true : false}
+						label="Contraseña"
+					/>
+				</FormControl>
 				{errors.password ? (
 					<span className='smallTextItalic redText'>
-						<strong>Error:</strong> Debes ingresar una constraseña de mas de 5
+						<strong>Error:</strong> Debes ingresar una constraseña de más de 5
 						caracteres.
 					</span>
 				) : (
@@ -127,7 +186,7 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 				</div>
 			</form>
 			<div className='mt-3'>
-				<span className='primaryText'>
+				<span className='primaryText textNormal'>
 					Sinaptico te apoya con la gestión de tus proyectos y tareas.
 				</span>
 			</div>

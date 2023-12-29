@@ -3,6 +3,4 @@ export interface FirebaseUser {
 	email: string;
 	name?: string;
 	photo?: string;
-	accessToken: string;
-	emailVerified?: boolean;
 }
