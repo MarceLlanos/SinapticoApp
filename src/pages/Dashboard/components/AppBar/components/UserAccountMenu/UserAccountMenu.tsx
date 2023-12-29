@@ -31,6 +31,11 @@ export function stringToColor(string: string) {
 }
 
 function stringAvatar(name: string) {
+
+  if (name.length < 1) {
+    name = 'User Default';
+  }
+
   return {
     sx: {
       bgcolor: stringToColor(name),

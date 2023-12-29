@@ -59,9 +59,17 @@ export const getMembersTeam = createAsyncThunk('getTeamMembers/getMembersTeam', 
 
 export const getMemberTeam = createAsyncThunk('getAMemberteam/getMemberTeam', async (userInput: MemberInput) => {
     try {
-        const member: UserTeam = await getATeamMember(userInput);
+        const member = await getATeamMember(userInput);
+        const user: UserTeam = {
+            uid: member.uid,
+            id_project: member.id_project,
+            email: member.email,
+            userName: member.userName,
+            photoUrl: member.photoUrl,
+            role: member.role,
+        }
 
-        return member
+        return user;
     } catch (error) {
         throw error;
     }

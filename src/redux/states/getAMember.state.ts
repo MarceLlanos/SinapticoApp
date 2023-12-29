@@ -3,13 +3,12 @@ import { getMemberTeam } from "../asyncState/team.async";
 import { UserTeam } from "@/models";
 
 const userInitialState: UserTeam = {
-    user_id: '',
+    uid: '',
     id_project: '',
     role: '',
     email: '',
     photoUrl: '',
-    userName: '',
-    timeJoin: null
+    userName: ''
 }
 
 const getAMember = createSlice({
@@ -21,10 +20,11 @@ const getAMember = createSlice({
     },
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(getMemberTeam.fulfilled, (state, action) => {
-            state.status = 'success';
-            state.members = action.payload;
-        })
+        builder
+            .addCase(getMemberTeam.fulfilled, (state, action) => {
+                state.status = 'success';
+                state.members = action.payload;
+            })
     }
 });
 

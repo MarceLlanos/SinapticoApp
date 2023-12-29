@@ -47,7 +47,7 @@ export const getCodeProjectData = async (code: string): Promise<CodesProject> =>
 }
 export const addMemberToProject = async (data: AddUserInput): Promise<Result> => {
     try {
-        const currentUser = await getUser(data.user_id);
+        const currentUser = await getUser(data.uid);
         const user = {
             uid: currentUser.uid,
             userName: currentUser.userName,
@@ -75,7 +75,7 @@ export const addMemberToProject = async (data: AddUserInput): Promise<Result> =>
 export const addMemberWithCodeProject = async (data: UserTeamInput): Promise<JoinUserTeamResult> => {
     try {
         const { id_project } = await getCodeProjectData(data.code_project);
-        const currentUser = await getUser(data.user_id);
+        const currentUser = await getUser(data.uid);
         const user = {
             uid: currentUser.uid,
             userName: currentUser.userName,
@@ -120,7 +120,7 @@ export const updateTeamMember = async (data: UserTeam): Promise<Result> => {
 }
 export const DeleteTeamMember = async (data: MemberInput): Promise<Result> => {
     try {
-        const queryUser = query(usersCollectionRef, where('id_project', '==', data.id_project), where('user_id', '==', data.user_id));
+        const queryUser = query(usersCollectionRef, where('id_project', '==', data.id_project), where('uid', '==', data.uid));
 
         const querySnapshot = await getDocs(queryUser);
 
@@ -139,7 +139,6 @@ export const DeleteTeamMember = async (data: MemberInput): Promise<Result> => {
 }
 export const getTeamMembers = async (id_project: string): Promise<UserTeam[]> => {
     try {
-
         const queryToGetTeam = query(usersCollectionRef, where('id_project', '==', id_project));
 
         const querySnapshot = await getDocs(queryToGetTeam);
@@ -148,13 +147,12 @@ export const getTeamMembers = async (id_project: string): Promise<UserTeam[]> =>
         querySnapshot.docs.forEach((doc) => {
             const data = doc.data();
             const teamMember = {
-                user_id: data.user_id,
+                uid: data.uid,
                 id_project: data.id_project,
                 email: data.email,
                 userName: data.userName,
                 photoUrl: data.photoUrl,
-                role: data.role,
-                timeJoin: data.timeJoin,
+                role: data.role
             }
             team.push(teamMember);
         });
@@ -166,30 +164,32 @@ export const getTeamMembers = async (id_project: string): Promise<UserTeam[]> =>
 }
 export const getATeamMember = async (data: MemberInput): Promise<UserTeam> => {
     try {
-        console.log(data);
-        const queryGetMember = query(usersCollectionRef, where('id_project', '==', data.id_project), where('user_id', '==', data.user_id));
-
+        const queryGetMember = query(usersCollectionRef, where('id_project', '==', data.id_project), where('uid', '==', data.uid));
         const querySnapshot = await getDocs(queryGetMember);
+
+
+        if (querySnapshot.docs.length < 1) {
+            throw new Error('No se encontro algun documente referente al id proyecto.');
+        }
+
         const member = querySnapshot.docs[0].data();
 
-        const teamMember = {
-            user_id: member.user_id,
+        const teamMember: UserTeam = {
+            uid: member.uid,
             id_project: member.id_project,
             email: member.email,
             userName: member.userName,
             photoUrl: member.photoUrl,
-            role: member.role,
-            timeJoin: member.timeJoin,
+            role: member.role
         }
-
         return teamMember;
     } catch (error) {
         throw error;
     }
 }
-export const getUserProjects = async (user_id: string): Promise<DocumentData[]> => {
+export const getUserProjects = async (uid: string): Promise<DocumentData[]> => {
     try {
-        const queryGetMember = query(usersCollectionRef, where('user_id', '==', user_id));
+        const queryGetMember = query(usersCollectionRef, where('uid', '==', uid));
         const querySnapshot = await getDocs(queryGetMember);
 
         const projectsIds = querySnapshot.docs.map((doc) => doc.data());

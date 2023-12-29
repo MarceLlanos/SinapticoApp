@@ -6,6 +6,7 @@ export * from './DailyReportPage/components/ModalCreateDailyReport';
 export * from './DailyReportPage/components/RightComment';
 export * from './DailyReportPage/components';
 export * from './DailyReportPage';
+export * from './DashboardMainContainerPage';
 export * from './DashboardPage';
 export * from './DriveConfigurationPage';
 export * from './HelpPage';
