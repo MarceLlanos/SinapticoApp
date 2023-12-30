@@ -33,11 +33,11 @@ const dashboardRoutes: DashboardRoute[] = [
     { path: PrivateDashboardRoutes.TEAM, element: <TeamPage /> }
 ]
 
-export const dashboardRenderRoutes = ({id_project, uid}:MemberInput):JSX.Element[] => {
+export const dashboardRenderRoutes = ({id_project, uid}: MemberInput): React.ReactElement[] => {
     return dashboardRoutes.map((route) =>
         <Route
             key={ route.path }
-            path={`/${route.path}/:project/:uid/*`}
+            path={`/${route.path}/:project/:uid`}
             element={React.cloneElement(route.element, { id_project, uid })}
         />
     )

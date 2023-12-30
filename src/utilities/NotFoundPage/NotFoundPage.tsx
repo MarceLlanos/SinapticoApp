@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Outlet, Route, Routes } from 'react-router-dom';
 import { NotFoundComponent } from './page';
 
 export interface NotFoundPageProps {

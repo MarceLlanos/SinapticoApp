@@ -28,7 +28,7 @@ const DriveConfigurationPage: React.FC<IDriveConfigurationPageProps> = (props) =
     }, [])
     
     return (
-        <DashboardFrameContainer>
+        <>
             <BarTitle title='Archivos del proyecto en el repositorio Google Drive' />
             <div className="driveContainer">
                 <iframe
@@ -41,7 +41,7 @@ const DriveConfigurationPage: React.FC<IDriveConfigurationPageProps> = (props) =
                 >
                 </iframe>
             </div>
-        </DashboardFrameContainer>
+        </>
     );
 }
 

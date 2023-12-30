@@ -1,3 +1,1 @@
-
-import DashboardMainContainerPage from './DashboardMainContainerPage';
-export default DashboardMainContainerPage;    
+export * from './DashboardMainContainerPage';

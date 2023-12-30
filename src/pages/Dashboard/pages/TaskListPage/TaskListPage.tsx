@@ -12,7 +12,7 @@ interface ITaskListPageProps {
 
 const TaskListPage: React.FC<ITaskListPageProps> = (props) => {
     return (
-        <DashboardFrameContainer>
+        <>
             <BarTitle title='Lista de tareas de todo el proyecto (Product Backlog)' />
             <div className='TaskListContainer'>
                 <div className="tableContainer">
@@ -23,7 +23,7 @@ const TaskListPage: React.FC<ITaskListPageProps> = (props) => {
                     <TableCostum />
                 </div>
             </div>
-        </DashboardFrameContainer>
+        </>
     );
 }
 

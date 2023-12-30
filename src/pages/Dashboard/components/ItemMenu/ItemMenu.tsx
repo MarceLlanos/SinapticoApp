@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './style/index.css';
 import { useNavigate } from 'react-router-dom';
 import { IconSVG } from './components';
+import { Link } from 'react-router-dom';
 
 
 interface IItemMenuProps {
@@ -17,13 +18,13 @@ const ItemMenu: React.FC<IItemMenuProps> = ({ icon, label, navigateUrl }) => {
 
     const handleClick = () => {
         setClicked(true);
-        navigate(navigateUrl, {replace: true });
+        navigate(navigateUrl);
     }
 
     return (
-        <div
+        <Link
             className={`item-container textNormal rowContainer ${clicked ? 'clicked' : ''}`}
-            onClick={ handleClick }
+            to={ navigateUrl }
         >
             <div className="icon-item-container">
                 <IconSVG className='icon' icon={ icon } />
@@ -31,7 +32,7 @@ const ItemMenu: React.FC<IItemMenuProps> = ({ icon, label, navigateUrl }) => {
             <div className="label-item-container">
                 <p>{ label }</p>
             </div>
-        </div>
+        </Link>
     );
 }
 

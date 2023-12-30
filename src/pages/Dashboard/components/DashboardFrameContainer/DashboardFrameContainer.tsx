@@ -5,7 +5,7 @@ import { SideMenu } from '../SideMenu';
 import { AppBar } from '../AppBar';
 
 interface IDashboardFrameContainerProps {
-    children: JSX.Element[] | JSX.Element;
+    children: React.ReactElement[] | React.ReactElement;
 }
 
 const DashboardFrameContainer: React.FC<IDashboardFrameContainerProps> = ({ children }) => {

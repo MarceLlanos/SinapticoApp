@@ -1,15 +1,18 @@
 import React from "react";
-import { NotFoundPage, dashboardRenderRoutes } from "@/utilities";
-import DashboardMainContainerPage from "./pages/DashboardMainContainerPage";
+import { Route, Routes } from "react-router-dom";
+import { DashboardMainContainerPage } from "./pages";
 
 interface IDashboardProps { }
 
 const Dashboard: React.FC<IDashboardProps> = () => {
 
   return (
-    <NotFoundPage>
-      <DashboardMainContainerPage/>
-    </NotFoundPage>
+    <Routes>
+      <Route
+        path="/*"
+        element={<DashboardMainContainerPage />}
+      />
+    </Routes>
   );
 };
 

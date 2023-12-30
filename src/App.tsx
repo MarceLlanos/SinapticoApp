@@ -6,7 +6,7 @@ import {
 	PrivateRegisterRoutes,
 	PublicRegisterRoutes
 } from "./models";
-import { CoverPage } from "./pages";
+import { CoverPage, DashboardMainContainerPage } from "./pages";
 import { NotFoundPage } from "./utilities";
 
 const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard'));
