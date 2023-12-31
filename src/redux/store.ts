@@ -5,14 +5,13 @@ import {
 import ThunkMiddleware from 'redux-thunk';
 import {
     getAMemberSlice,
+    getProjectSlice,
     getTeamMembersSlice,
     projectSlice,
     teamSlice,
     userLogoutSlice,
     userSlice
 } from "./states";
-
-
 
 const rootReducer = combineReducers({
     user: userSlice,
@@ -21,6 +20,7 @@ const rootReducer = combineReducers({
     team: teamSlice,
     teamMemebers: getTeamMembersSlice,
     member: getAMemberSlice,
+    projectUser: getProjectSlice,
 });
 
 export const storeReduxApp = configureStore({

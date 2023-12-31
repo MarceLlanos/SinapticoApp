@@ -1,6 +1,7 @@
 import { MemberInput, PrivateDashboardRoutes } from "@/models";
+import { DashboardFrameContainer } from "@/pages/Dashboard/components";
 import React, { lazy } from "react";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 const ChatPage = lazy(() => import('../../pages/Dashboard/pages/ChatPage/ChatPage'));
 const DashboardPage = lazy(() => import('../../pages/Dashboard/pages/DashboardPage/DashboardPage'));

@@ -12,7 +12,7 @@ interface IStaticsPageProps {
 
 const StatsPage: React.FC<IStaticsPageProps> = (props) => {
     return (
-        <>
+        <DashboardFrameContainer>
             <BarTitle title='Estadísticas' />
             <Box
                 className="greyDarkText"
@@ -83,7 +83,7 @@ const StatsPage: React.FC<IStaticsPageProps> = (props) => {
                     </Box>
                 </Box>
             </Box>
-        </>
+        </DashboardFrameContainer>
     );
 }
 

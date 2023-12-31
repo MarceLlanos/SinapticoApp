@@ -1,8 +1,9 @@
 
 import React from 'react';
-import './style/index.css';
 import { SideMenu } from '../SideMenu';
 import { AppBar } from '../AppBar';
+
+import './style/index.css';
 
 interface IDashboardFrameContainerProps {
     children: React.ReactElement[] | React.ReactElement;
@@ -17,7 +18,7 @@ const DashboardFrameContainer: React.FC<IDashboardFrameContainerProps> = ({ chil
         <AppBar/>
         <div className="frameContentContainer">
           {
-              children
+            children
           }
         </div>
       </div>

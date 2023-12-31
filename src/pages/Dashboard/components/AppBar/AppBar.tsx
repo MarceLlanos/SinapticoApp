@@ -14,13 +14,13 @@ interface IAppBarProps {}
 const AppBar: React.FC<IAppBarProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { project, uid } = useParams();
+  console.log(project, uid);
   const [photoUrl, setPhotoImage] = useState<string>('');
   const [user, setUser] = useState<string>('');
 
   const userData = async (dataInput: MemberInput) => {
     try {
       const user: UserTeam= await dispatch( getMemberTeam(dataInput) ).unwrap();
-      console.log(user);
       setPhotoImage(user.photoUrl || '');
       setUser(user.userName);
     } catch (error) {

@@ -18,10 +18,8 @@ export const DashboardMainContainerPage: React.FC<IDashboardMainContainerPagePro
     } 
 
     return (
-        <DashboardFrameContainer>
-            <Routes>
-                {...dashboardRenderRoutes(input)}
-            </Routes>
-        </DashboardFrameContainer>
+        <Routes>
+            {...dashboardRenderRoutes(input)}
+        </Routes>
     )
 }

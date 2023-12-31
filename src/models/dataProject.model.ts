@@ -19,10 +19,10 @@ export interface Project {
 	description: string
 	assigment: string
 	professor: string
-	date_release: Date
+	date_release: Date | null
 	code_project: string
 	drive_link: string
-	createAt: Date
+	createAt?: Date | null
 }
 
 export interface ProjectResult {

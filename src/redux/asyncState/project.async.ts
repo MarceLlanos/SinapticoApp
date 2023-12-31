@@ -1,4 +1,4 @@
-import { DriveInput, ProjectInput } from "@/models";
+import { DriveInput, Project, ProjectInput } from "@/models";
 import { Result } from "@/models/redux";
 import {
     addDrive,
@@ -60,7 +60,7 @@ export const deleteProject = createAsyncThunk('project/deleteProject', async (id
     }
 })
 
-export const getProjectsByUser = createAsyncThunk('getProjects/getProjectsByUser', async (uid: string) => {
+export const getProjectsByUser = createAsyncThunk('getProjects/getProjectsByUser', async (uid: string): Promise<Project[]> => {
     try {
         const projects = await getProjectsByUserId(uid);
         return projects;
@@ -69,10 +69,10 @@ export const getProjectsByUser = createAsyncThunk('getProjects/getProjectsByUser
     }
 });
 
-export const getAProject = createAsyncThunk('getProject/getAProject', async (id_project: string) => {
+export const getAProject = createAsyncThunk('getProject/getAProject', async (id_project: string): Promise<Project> => {
     try {
         const project = await getProject(id_project);
-        return project
+        return project;
     } catch (error) {
         throw error
     }
