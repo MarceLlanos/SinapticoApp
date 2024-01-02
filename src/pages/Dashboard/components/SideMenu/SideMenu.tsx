@@ -12,7 +12,7 @@ interface ISideMenuProps {
 
 const SideMenu: React.FC<ISideMenuProps> = () => {
     const { project, uid } = useParams();
-    console.log(project, uid);
+
     return (
         <div className="menu-container">
             <div className="container-imagotipo">

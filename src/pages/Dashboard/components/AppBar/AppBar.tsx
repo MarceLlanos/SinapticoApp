@@ -14,7 +14,6 @@ interface IAppBarProps {}
 const AppBar: React.FC<IAppBarProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { project, uid } = useParams();
-  console.log(project, uid);
   const [photoUrl, setPhotoImage] = useState<string>('');
   const [user, setUser] = useState<string>('');
 
