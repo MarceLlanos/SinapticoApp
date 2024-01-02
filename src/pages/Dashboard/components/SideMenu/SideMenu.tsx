@@ -10,7 +10,7 @@ interface ISideMenuProps {
 
 }
 
-const SideMenu: React.FC<ISideMenuProps> = (props) => {
+const SideMenu: React.FC<ISideMenuProps> = () => {
     const { project, uid } = useParams();
 
     return (

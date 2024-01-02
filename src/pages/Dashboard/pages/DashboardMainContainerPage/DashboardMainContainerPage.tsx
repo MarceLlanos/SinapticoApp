@@ -1,7 +1,6 @@
 
-import React, { Fragment } from 'react';
-import './styles/index';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { Outlet, Routes, useParams } from 'react-router-dom';
 import { DashboardFrameContainer } from '../../components';
 import { dashboardRenderRoutes } from '@/utilities';
 import { MemberInput } from '@/models';
@@ -19,10 +18,8 @@ export const DashboardMainContainerPage: React.FC<IDashboardMainContainerPagePro
     } 
 
     return (
-        <DashboardFrameContainer>
-            {
-                dashboardRenderRoutes(input)
-            }
-        </DashboardFrameContainer>
+        <Routes>
+            {...dashboardRenderRoutes(input)}
+        </Routes>
     )
 }

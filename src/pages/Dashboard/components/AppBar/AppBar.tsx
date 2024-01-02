@@ -20,7 +20,6 @@ const AppBar: React.FC<IAppBarProps> = () => {
   const userData = async (dataInput: MemberInput) => {
     try {
       const user: UserTeam= await dispatch( getMemberTeam(dataInput) ).unwrap();
-      console.log(user);
       setPhotoImage(user.photoUrl || '');
       setUser(user.userName);
     } catch (error) {

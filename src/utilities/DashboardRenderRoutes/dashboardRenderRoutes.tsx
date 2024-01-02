@@ -1,6 +1,7 @@
 import { MemberInput, PrivateDashboardRoutes } from "@/models";
+import { DashboardFrameContainer } from "@/pages/Dashboard/components";
 import React, { lazy } from "react";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 const ChatPage = lazy(() => import('../../pages/Dashboard/pages/ChatPage/ChatPage'));
 const DashboardPage = lazy(() => import('../../pages/Dashboard/pages/DashboardPage/DashboardPage'));
@@ -33,11 +34,11 @@ const dashboardRoutes: DashboardRoute[] = [
     { path: PrivateDashboardRoutes.TEAM, element: <TeamPage /> }
 ]
 
-export const dashboardRenderRoutes = ({id_project, uid}:MemberInput):JSX.Element[] => {
+export const dashboardRenderRoutes = ({id_project, uid}: MemberInput): React.ReactElement[] => {
     return dashboardRoutes.map((route) =>
         <Route
             key={ route.path }
-            path={`/${route.path}/:project/:uid/*`}
+            path={`/${route.path}/:project/:uid`}
             element={React.cloneElement(route.element, { id_project, uid })}
         />
     )

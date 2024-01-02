@@ -5,7 +5,6 @@ import { TableCostum, TableHead } from './components';
 
 import './style/index.css';
 
-
 interface ITaskListPageProps {
 
 }

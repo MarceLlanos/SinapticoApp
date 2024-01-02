@@ -22,7 +22,7 @@ const DailyReportPage: React.FC<IDailyReportPageProps> = (props) => {
         setOpenModal(false);
     }
     return (
-        <DashboardFrameContainer >
+        <DashboardFrameContainer>
             <BarTitle title='Reporte diario de tareas de los integrantes del equipo. (Daily report)' />
             <div className="dailyReportContainer">
                 <div className="reportContainer">

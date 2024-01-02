@@ -2,6 +2,7 @@
 import React from 'react';
 
 import './style/index.css';
+import { DashboardFrameContainer } from '../../components';
 
 interface IChatPageProps {
 
@@ -9,9 +10,9 @@ interface IChatPageProps {
 
 const ChatPage: React.FC<IChatPageProps> = (props) => {
     return (
-        <>
-            hola desde Chat Page
-        </>
+        <DashboardFrameContainer>
+            <p>hola desde Chat Page</p>
+        </DashboardFrameContainer>
     );
 }
 

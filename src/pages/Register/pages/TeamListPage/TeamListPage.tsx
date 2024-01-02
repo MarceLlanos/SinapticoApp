@@ -24,7 +24,6 @@ const TeamListPage: React.FC<ITeamListPageProps> = (props) => {
             try {
                 const data = await getProjectsByUserId(user?.uid!);
                 setProjects(data)
-
             } catch (error) {
                 throw error;
             }
@@ -41,7 +40,7 @@ const TeamListPage: React.FC<ITeamListPageProps> = (props) => {
                     projects.map((project, index) => (
                         <CardButtonProject
                             key={index}
-                            projectRelease={project.date_release}
+                            projectRelease={project.date_release!}
                             materia= {project.assigment}
                             proyecto= {project.name_proj}
                             project_id={project.id_project}
