@@ -6,6 +6,7 @@ import { LinkPrimary } from '@/styled-components';
 
 import './style/taskCard.css';
 import { EditModal } from '../EditModal';
+import { useDrag } from 'react-dnd';
 
 interface ITaskCardProps {
     colorTask: string;
@@ -13,6 +14,13 @@ interface ITaskCardProps {
 
 const TaskCard: React.FC<ITaskCardProps> = ({ colorTask }) => {
     const [openModal, setOpenModal] = useState<boolean>(false);
+    const [{ isDragging },drag] = useDrag(() => ({
+        type: 'Task',
+        item: {},
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging()
+        }),
+    }))
 
     const onOpenModal = () => {
         setOpenModal(true);
@@ -23,7 +31,10 @@ const TaskCard: React.FC<ITaskCardProps> = ({ colorTask }) => {
     }
 
     return (
-        <div className={`taskContainer ${colorTask}-border textLight greyDarkText ` }>
+        <div
+            ref={drag}
+            className={`taskContainer ${colorTask}-border textLight greyDarkText `}
+        >
             <div className="taskBody">
                 <div className="mb-1">
                     <h2 className='textLight titleTask'>Tarea 01</h2>
