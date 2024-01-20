@@ -22,6 +22,7 @@ const TableHead: React.FC<ITableHeadProps> = ({ title, showButton }) => {
     const onCloseModal = () => {
         setOpenModal(false);
     }
+    
     return (
         <div className="tableHeadContainer ">
             <h3 className='textNormal greyDarkText'>{title}</h3>

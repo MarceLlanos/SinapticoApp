@@ -6,11 +6,12 @@ import { useFormContext } from 'react-hook-form';
 import { formValidation } from '../InputCustom/InputCustom';
 
 interface IInputPasswordCustomProps {
+	id: string;
     name: string;
     label: string;
 }
 
-const InputPasswordCustom: React.FC<IInputPasswordCustomProps> = ({ name, label}) => {
+const InputPasswordCustom: React.FC<IInputPasswordCustomProps> = ({ id, name, label}) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const { register, formState } = useFormContext();
 	const { errors } = formState;
@@ -21,7 +22,7 @@ const InputPasswordCustom: React.FC<IInputPasswordCustomProps> = ({ name, label}
 		<FormControl sx={{ width: '100%' }} variant="outlined" className='mt-1'>
 			<InputLabel htmlFor="password-input">Contraseña * </InputLabel>
 			<OutlinedInput
-				id="password-input"
+				id={id}
 				type={showPassword ? 'text' : 'password'}
 				required
 				endAdornment={

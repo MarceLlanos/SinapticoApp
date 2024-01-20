@@ -148,6 +148,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 					/>
 
 					<InputPasswordCustom
+						id='password-input-login'
 						name='password'
 						label='Contraseña'
 					/>

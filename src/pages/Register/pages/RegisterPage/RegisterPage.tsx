@@ -2,19 +2,26 @@ import {
 	AuthUserCredential,
 	PrivateRegisterRoutes,
 } from '@/models';
-import { ButtonPrimary, LabelTitle } from '@/styled-components';
-import { 
-	Alert
-} from '@mui/material';
+import { Alert } from '@mui/material';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ButtonGoogleIcon, InputCustom, InputPasswordCustom, OrDivider, RegisterFrame } from '../../components';
-
-
-import { useDispatch } from 'react-redux';
-import { AppDispatch, createUser, loginWithGoogle } from '@/redux';
-import { UserInput } from '@/models/redux';
+import { ButtonPrimary, LabelTitle } from '@/styled-components';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useDispatch } from 'react-redux';
+
+import {
+	ButtonGoogleIcon,
+	InputCustom,
+	InputPasswordCustom,
+	OrDivider,
+	RegisterFrame
+} from '../../components';
+import {
+	AppDispatch,
+	createUser,
+	loginWithGoogle
+} from '@/redux';
+import { UserInput } from '@/models/redux';
 import { registerFormSchema } from './schemas/register-form.schemas';
 
 
@@ -25,7 +32,6 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 	const location = useLocation();
 	const dispatch = useDispatch<AppDispatch>();
 	const urlBefore = location.state;
-
 
 	const {
 		register,
@@ -130,6 +136,7 @@ const RegisterPage: React.FC<RegisterPageProps> = () => {
 						gmail.
 					</span>
 					<InputPasswordCustom
+						id='password-input-register'
 						name='password'
 						label='Contraseña'
 					/>
