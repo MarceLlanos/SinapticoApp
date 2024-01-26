@@ -10,6 +10,9 @@ import './style/teamList.css';
 import { getCurrentUser, getProjectsByUserId } from '@/services';
 
 import { Project } from '@/models';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux';
+import { getProjectsByUser } from '@/redux/asyncState/project.async';
 
 interface ITeamListPageProps {
 
@@ -18,12 +21,13 @@ interface ITeamListPageProps {
 const TeamListPage: React.FC<ITeamListPageProps> = (props) => {
     const user = getCurrentUser();
     const [projects, setProjects] = useState<Project[]>([]);
+    const dispatch = useDispatch<AppDispatch>();
     
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await getProjectsByUserId(user?.uid!);
-                setProjects(data)
+                const data = await dispatch(getProjectsByUser(user?.uid!)).unwrap();
+                setProjects(data);
             } catch (error) {
                 throw error;
             }

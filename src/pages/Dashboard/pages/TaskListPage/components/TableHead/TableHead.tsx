@@ -4,8 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { ButtonSmallPrimary } from '@/styled-components';
 
 import './style/index.css';
-import { CreateModal } from '../CreateModal';
-
+import { TaskModal } from '../TaskModal';
 
 interface ITableHeadProps {
     title: string;
@@ -18,10 +17,6 @@ const TableHead: React.FC<ITableHeadProps> = ({ title, showButton }) => {
     const onOpenModal = () => {
         setOpenModal(true);
     }
-
-    const onCloseModal = () => {
-        setOpenModal(false);
-    }
     
     return (
         <div className="tableHeadContainer ">
@@ -31,7 +26,7 @@ const TableHead: React.FC<ITableHeadProps> = ({ title, showButton }) => {
                     ? <ButtonSmallPrimary onClick={onOpenModal}><AddIcon /> Agregar tarea</ButtonSmallPrimary>
                     : <></>
             }
-            <CreateModal isOpenModal={openModal} closeModal={onCloseModal}  />
+            <TaskModal openModal={openModal} setOpenModal={setOpenModal}  />
         </div>
     );
 }

@@ -142,20 +142,15 @@ export const getTeamMembers = async (id_project: string): Promise<UserTeam[]> =>
         const queryToGetTeam = query(usersCollectionRef, where('id_project', '==', id_project));
 
         const querySnapshot = await getDocs(queryToGetTeam);
-
-        const team: UserTeam[] = [];
-        querySnapshot.docs.forEach((doc) => {
-            const data = doc.data();
-            const teamMember = {
-                uid: data.uid,
-                id_project: data.id_project,
-                email: data.email,
-                userName: data.userName,
-                photoUrl: data.photoUrl,
-                role: data.role
-            }
-            team.push(teamMember);
-        });
+        const dataTeam = querySnapshot.docs.map(data => (data.data()));
+        const team: UserTeam[] = dataTeam.map(data => ({
+            uid: data.uid,
+            id_project: data.id_project,
+            email: data.email,
+            userName: data.userName,
+            photoUrl: data.photoUrl,
+            role: data.role,
+        }));
 
         return team;
     } catch (error) {
@@ -193,8 +188,6 @@ export const getUserProjects = async (uid: string): Promise<DocumentData[]> => {
         const querySnapshot = await getDocs(queryGetMember);
 
         const projectsIds = querySnapshot.docs.map((doc) => doc.data());
-
-        console.log(projectsIds);
 
         return projectsIds;
     } catch (error) {

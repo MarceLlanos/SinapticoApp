@@ -11,6 +11,7 @@ interface IInputCustomProps<T> {
     inputLabelProps?: {};
     required: boolean;
     disabled: boolean;
+    sx?: {}
 }
 
 export const formValidation = <T extends FieldValues>(errors: FieldErrors<T>, errorKey: string) => {
@@ -23,7 +24,7 @@ export const formValidation = <T extends FieldValues>(errors: FieldErrors<T>, er
     );
 };
 
-const InputCustom = <T extends FieldValues>({ id, name, label, type, required = false, disabled = false, maxRows = 1, inputLabelProps= {} }: IInputCustomProps<T>) => {
+const InputCustom = <T extends FieldValues>({ id, name, label, type, required = false, disabled = false, maxRows = 1, inputLabelProps= {}, sx }: IInputCustomProps<T>) => {
     const { register, formState } = useFormContext<T>();
     const { errors } = formState;
 
@@ -40,6 +41,7 @@ const InputCustom = <T extends FieldValues>({ id, name, label, type, required = 
                 maxRows={maxRows}
                 InputLabelProps={inputLabelProps}
                 {...register(name)}
+                sx={sx}
                 fullWidth
             />
             { errors && formValidation(errors, name) }

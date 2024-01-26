@@ -36,11 +36,8 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	const location = useLocation();
 	const currentUser = getCurrentUser();
 	const dispatch = useDispatch<AppDispatch>();
-	const [showPassword, setShowPassword] = useState(false);
 	const uid = currentUser?.uid!;
 	const beforeUrl = location.state;
-	
-	const handleClickShowPassword = () => setShowPassword((show) => !show);
 
 	const {
 		register,
@@ -54,8 +51,6 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 		resolver: yupResolver(loginFormSchema)
 	});
 
-	const emailWatch = watch('email');
-	const passwordWatch = watch('password');
 	const formContextValues = { register, formState };
 	
 	const goToPage = (isSuccess: boolean, message: string, projects: Array<Project>) => {

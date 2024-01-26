@@ -1,4 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import React from 'react';
 import { Path, FieldErrors, useFormContext } from 'react-hook-form';
 
 
@@ -9,6 +10,7 @@ interface ISelectInputCustomProps<T> {
     labelSelect: string,
     options: [],
     required: boolean,
+    children: React.ReactNode,
 }
 
 export const selectFormValidation = (errors: FieldErrors, errorKey: string) => {
@@ -21,7 +23,7 @@ export const selectFormValidation = (errors: FieldErrors, errorKey: string) => {
   );
 };
 
-const SelectInputCustom= <T extends {}>({ id, name, label, labelSelect, options, required = false }: ISelectInputCustomProps<T>) => {
+const SelectInputCustom= <T extends {}>({ id, name, label, labelSelect, options, required = false, children }: ISelectInputCustomProps<T>) => {
     const { register, formState } = useFormContext<T>();
     const { errors } = formState;
 
@@ -42,7 +44,7 @@ const SelectInputCustom= <T extends {}>({ id, name, label, labelSelect, options,
                     {
                         options.map(option => (
                             <MenuItem key={option} value={option}>
-                                {option}
+                                {children}
                             </MenuItem>
                         ))
                     }

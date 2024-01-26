@@ -5,3 +5,4 @@ export { default as teamSlice } from './team.state';
 export { default as userSlice } from './user.state';
 export { default as userLogoutSlice } from './userLogout.state';
 export { default as getProjectSlice } from './getProject.state';
+export { default as taskSlice } from './task.state';

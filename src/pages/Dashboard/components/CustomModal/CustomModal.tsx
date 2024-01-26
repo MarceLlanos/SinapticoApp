@@ -15,15 +15,18 @@ import { SubjectManager } from '@/models';
 import { Subscription } from 'rxjs';
 
 import './style/index.css';
+import { FieldValues, FormProvider, SubmitHandler } from 'react-hook-form';
 
 interface ICustomModalProps {
     children: React.ReactNode;
     dialogTitle: string;
     showExtraModalData: boolean;
-    extraDataModal: {
+    extraDataModal?: {
         date: string,
         clock: string
-    }
+    };
+    open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -38,8 +41,14 @@ const Transition = React.forwardRef(function Transition(
 export const dialogOpenSubject$ = new SubjectManager<boolean>();
 export const dialogCloseSubject$ = new SubjectManager<boolean>();
 
-const CustomModal: React.FC<ICustomModalProps> = ({ children, dialogTitle, showExtraModalData = false, extraDataModal = { date: '', clock: '' } }) => {
-    const [open, setOpen] = useState(false);
+const CustomModal: React.FC<ICustomModalProps> = ({ 
+    children, 
+    dialogTitle, 
+    showExtraModalData = false, 
+    extraDataModal = { date: '', clock: '' },
+    open = false,
+    setOpen
+}) => {
     let openSubject$ = new Subscription();
     let closeSubject$ = new Subscription();
 
@@ -70,7 +79,8 @@ const CustomModal: React.FC<ICustomModalProps> = ({ children, dialogTitle, showE
             onClose={() => exitDialog()}
             TransitionComponent={Transition}
             keepMounted
-            sx={{ padding: "12px" }}
+            sx={{ padding: '12px' }}
+            fullWidth
         >
             <Box component="section" display="flex" alignItems="center" justifyContent="space-between" width="calc(100% - 10%)">
                 <DialogTitle className="textBold greyDarkText">{ dialogTitle }</DialogTitle>
@@ -96,10 +106,10 @@ const CustomModal: React.FC<ICustomModalProps> = ({ children, dialogTitle, showE
             <GridCloseIcon />
         </IconButton>
         <Divider />
-        <DialogContent>
-            { children }
-        </DialogContent>
-    </Dialog>
+            <DialogContent>
+                { children }
+            </DialogContent>
+        </Dialog>
     );
 }
 

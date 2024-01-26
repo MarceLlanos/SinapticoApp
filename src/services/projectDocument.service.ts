@@ -6,7 +6,8 @@ import {
     ProjectResult,
     DriveInput,
     CodesProject,
-    UserTeamRoles
+    UserTeamRoles,
+    UserTeam
 } from "@/models";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { addDocument, deleteDocument, getDocumentById, updateDocument } from "./collection.service";
@@ -72,7 +73,7 @@ export const createNewProject = async (dataProject: ProjectInput): Promise<Proje
             await addMemberToProject({
                 id_project: docRef.id,
                 role: UserTeamRoles.PO,
-                user_id: user_id,
+                uid: user_id,
             });
 
             return {
@@ -179,4 +180,3 @@ export const getProjectsByUserId = async (uid: string): Promise<Project[]> => {
         throw error;
     }
 }
-
