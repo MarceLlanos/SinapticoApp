@@ -1,4 +1,4 @@
-export function dateVerification(dateToVerify: string): boolean {
+export function dateReleaseVerification(dateToVerify: string): boolean {
     const currentDate = new Date();
     const dateOnVerify = new Date(dateToVerify);
 

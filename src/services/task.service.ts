@@ -3,7 +3,8 @@ import { titleTask } from "@/helpers";
 import {
     TaskInput,
     IsSuccess,
-    Task
+    Task,
+    UpdateInputTask
 } from "@/models";
 import {
     collection,
@@ -40,9 +41,9 @@ export const createTask = async (dataTask: TaskInput): Promise<IsSuccess> => {
             timeAssigned,
             levelDifficulty,
             stateTask,
-            dateCreated: new Date(),
+            createAt: new Date(),
         }
-        await addDocument('team', taskData);
+        await addDocument('task', taskData);
         return {
             isSuccess: true,
             message: 'Tarea creada satisfactoriamente!',
@@ -55,9 +56,9 @@ export const createTask = async (dataTask: TaskInput): Promise<IsSuccess> => {
     }
 };
 
-export const updateTask = async (id_task: string, taskInput: TaskInput): Promise<IsSuccess> => {
+export const updateTask = async ({ id_task, dataTask }: UpdateInputTask): Promise<IsSuccess> => {
     try {
-        await updateDocument('team', id_task, taskInput);
+        await updateDocument('task', id_task, dataTask);
         return {
             isSuccess: true,
             message: 'Se actualizó satisfactoriamente los datos del proyecto!'

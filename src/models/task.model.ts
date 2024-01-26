@@ -5,6 +5,13 @@ export const difficultyTask = {
     IMPOSIBLE: 'imposible'
 }
 
+export const stateTask = {
+    PENDIENTE: 'Pendiente',
+    ENCURSO: 'En curso',
+    TERMINADAS: 'Terminadas',
+    BLOQUEADAS: 'Bloqueadas'
+}
+
 export interface Task {
     id_project: string
     uidAssignedTo: string
@@ -23,6 +30,12 @@ export interface TaskInput {
     timeAssigned: number
     levelDifficulty: string
     stateTask: string
+    createAt?: Date
+}
+
+export type UpdateInputTask = {
+    id_task: string
+    dataTask: TaskInput
 }
 
 export interface TaskUpdate {
@@ -33,12 +46,19 @@ export interface TaskUpdate {
 }
 
 export interface IsSuccess {
-    isSuccess: Boolean
-    message: String
+    isSuccess: boolean
+    message: string
 }
 
 export interface IsSuccessTask {
-    isSuccess: Boolean
-    message: String
+    isSuccess: boolean
+    message: string
     task: Task
 }
+
+export const TaskLevel = {
+    red: 'Alta',
+    yellow: 'Media',
+    green: 'Baja',
+    black: 'Imposible'
+} as any

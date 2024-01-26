@@ -8,6 +8,7 @@ import {
     getProjectSlice,
     getTeamMembersSlice,
     projectSlice,
+    taskSlice,
     teamSlice,
     userLogoutSlice,
     userSlice
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     teamMemebers: getTeamMembersSlice,
     member: getAMemberSlice,
     projectUser: getProjectSlice,
+    task: taskSlice
 });
 
 export const storeReduxApp = configureStore({

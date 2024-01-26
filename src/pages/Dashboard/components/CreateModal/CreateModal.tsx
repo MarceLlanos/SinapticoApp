@@ -131,7 +131,7 @@ const CreateModal: React.FC<ICreateModalProps> = ({
                         onChange={handleChangeName}
                     >
                         <MenuItem value="Alejandro Baute">Alejandro Baute</MenuItem>
-                        <MenuItem value="Marcelo Urey">Marcelo Urey</MenuItem>
+                        <MenuItem value="Marcelo Urey">Marcelo Urey Cruz</MenuItem>
                         <MenuItem value="Isabel Lopez Trigo">Isabel Lopez Trigo</MenuItem>
                         <MenuItem value="Mariana Lopez Trigo"> Mariana Lopez Trigo </MenuItem>
                     </Select>

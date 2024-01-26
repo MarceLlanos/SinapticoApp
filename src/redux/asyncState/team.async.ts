@@ -1,4 +1,4 @@
-import { MemberInput, UserTeam, UserTeamInput } from "@/models";
+import { MemberInput, ProjectResult, UserTeam, UserTeamInput } from "@/models";
 import {
     DeleteTeamMember,
     addMemberWithCodeProject,
@@ -8,12 +8,13 @@ import {
 } from "@/services";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const joinTeam = createAsyncThunk('team/joinTeam', async (userInput: UserTeamInput) => {
+export const joinTeam = createAsyncThunk('team/joinTeam', async (userInput: UserTeamInput): Promise<ProjectResult> => {
     try {
-        const { isSuccess, id_project } = await addMemberWithCodeProject(userInput);
+        const { isSuccess, message, id_project } = await addMemberWithCodeProject(userInput);
 
         return {
             isSuccess,
+            message,
             id_project
         }
     } catch (error) {
@@ -50,7 +51,6 @@ export const deleteMemberTeam = createAsyncThunk('team/deleteMemberTeam', async 
 export const getMembersTeam = createAsyncThunk('getTeamMembers/getMembersTeam', async (id_project: string) => {
     try {
         const teamMembers = await getTeamMembers(id_project);
-
         return teamMembers;
     } catch (error) {
         throw error;

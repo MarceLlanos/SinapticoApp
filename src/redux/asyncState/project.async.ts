@@ -76,4 +76,4 @@ export const getAProject = createAsyncThunk('getProject/getAProject', async (id_
     } catch (error) {
         throw error
     }
-})
+});

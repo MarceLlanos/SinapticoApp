@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
-
 import {
-	AuthUserCredential,
+	LoginAuthCredential,
 	PrivateRegisterRoutes,
 	Project,
 	PublicRegisterRoutes,
 } from '@/models';
-
 import {
 	ButtonGrey,
 	ButtonPrimary,
@@ -21,16 +19,15 @@ import {
 	IconButton,
 	InputAdornment,
 	InputLabel,
-	OutlinedInput,
-	TextField
+	OutlinedInput
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-
-import { ButtonGoogleIcon, OrDivider, RegisterFrame } from '../../components';
+import { ButtonGoogleIcon, InputCustom, InputPasswordCustom, OrDivider, RegisterFrame } from '../../components';
 import { AppDispatch, login, loginWithGoogle } from '@/redux';
 import { useDispatch } from 'react-redux';
-import { getProjectsByUser } from '@/redux/asyncState/project.async';
 import { getCurrentUser, getProjectsByUserId } from '@/services';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { loginFormSchema } from './schemas/login-form-schema';
 
 export interface LoginPageProps {}
 
@@ -39,17 +36,22 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	const location = useLocation();
 	const currentUser = getCurrentUser();
 	const dispatch = useDispatch<AppDispatch>();
-	const [showPassword, setShowPassword] = useState(false);
 	const uid = currentUser?.uid!;
 	const beforeUrl = location.state;
-	
-	const handleClickShowPassword = () => setShowPassword((show) => !show);
 
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
-	} = useForm<AuthUserCredential>();
+		watch,
+		formState,
+		reset,
+	} = useForm<LoginAuthCredential>({
+		defaultValues: { email: '', password: '' },
+		mode: 'onChange',
+		resolver: yupResolver(loginFormSchema)
+	});
+
+	const formContextValues = { register, formState };
 	
 	const goToPage = (isSuccess: boolean, message: string, projects: Array<Project>) => {
 		if (isSuccess) {
@@ -89,12 +91,14 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 		}
 	}
 
-	const handleSubmitLogin: SubmitHandler< AuthUserCredential > = async dataUser => {
+	const handleSubmitLogin: SubmitHandler< LoginAuthCredential > = async dataUser => {
 		try {
+
 			const { isSuccess, message } = await dispatch(login(dataUser)).unwrap();
 			const projects = await getProjectsByUserId(uid);
 			
 			goToPage(isSuccess, message, projects);
+			reset();
 		} catch (error) {
 			throw error;
 		}
@@ -124,72 +128,33 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 			</div>
 
 			<OrDivider />
-
-			<form
-				onSubmit={handleSubmit(handleSubmitLogin)}
-				className='columnContainerCentered mt-3'
-			>
-				<TextField
-					id='outlined-email-input'
-					label='Correo electrónico'
-					type='email'
-					autoComplete='current-password'
-					margin='normal'
-					{...register('email', {
-						required: 'Email es requerido',
-						pattern: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.]{1}[a-zA-Z]{2,}$/,
-					})}
-					error={errors.email ? true : false}
-				/>
-				{errors.email && (
-					<span className='small-text-italic redText'>
-						<strong>Error:</strong> Debes ingresar un email valido.
-					</span>
-				)}
-
-				<FormControl sx={{ width: '100%' }} variant="outlined" className='mt-1'>
-					<InputLabel htmlFor="password-input">Contraseña * </InputLabel>
-					<OutlinedInput
-						id="password-input"
-						type={showPassword ? 'text' : 'password'}
-						required
-						endAdornment={
-							<InputAdornment position="end">
-								<IconButton
-									aria-label="toggle password visibility"
-									onClick={handleClickShowPassword}
-									edge="end"
-								>
-									{showPassword ? <VisibilityOff /> : <Visibility />}
-								</IconButton>
-							</InputAdornment>
-						}
-						{...register('password', {
-							required: 'La contraseña debe tener mas de 6 caracteres',
-							minLength: 5,
-						})}
-						error={errors.password ? true : false}
-						label="Contraseña"
+			<FormProvider {...formContextValues as any}>
+				<form
+					onSubmit={handleSubmit(handleSubmitLogin)}
+					className='columnContainerCentered mt-3'
+				>
+					<InputCustom
+						id = 'email'
+						name = 'email'
+						label = 'Correo electrónico'
+						type = 'email'
+						required = { true }
+						disabled = { false }
 					/>
-				</FormControl>
-				{errors.password ? (
-					<span className='smallTextItalic redText'>
-						<strong>Error:</strong> Debes ingresar una constraseña de más de 5
-						caracteres.
-					</span>
-				) : (
-					<span className='smallTextItalic'>
-						<strong>Importante:</strong> La contraseña debe tener por lo menos 6
-						caracteres.
-					</span>
-				)}
 
-				<div className='rowContainer mb-3 mt-1'>
-					<ButtonPrimary type='submit'>Ingresar</ButtonPrimary>
+					<InputPasswordCustom
+						id='password-input-login'
+						name='password'
+						label='Contraseña'
+					/>
 
-					<LinkPrimary>¿Olvidaste tu contraseña?</LinkPrimary>
-				</div>
-			</form>
+					<div className='rowContainer mb-3 mt-1'>
+						<ButtonPrimary type='submit'>Ingresar</ButtonPrimary>
+
+						<LinkPrimary>¿Olvidaste tu contraseña?</LinkPrimary>
+					</div>
+				</form>
+			</FormProvider>
 			<div className='columnContainer mt-3'>
 				<span className='greyTextCustom mb-1 '>¿No tienes una cuenta?</span>
 				<ButtonGrey

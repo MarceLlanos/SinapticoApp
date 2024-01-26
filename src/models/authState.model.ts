@@ -6,6 +6,11 @@ export interface AuthUserCredential {
 	password: string;
 }
 
+export interface LoginAuthCredential {
+	email: string;
+	password: string;
+}
+
 export type AuthState = {
 	user: FirebaseUser;
 	isLoading: Boolean;

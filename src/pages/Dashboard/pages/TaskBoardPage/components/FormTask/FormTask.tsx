@@ -55,7 +55,7 @@ const FormTask: React.FC<IFormTaskProps> = () => {
                     >
                         <MenuItem value='red'>Alta <div className="color red ml-1"></div></MenuItem>
                         <MenuItem value='yellow'>Media <div className="color yellow ml-1"></div></MenuItem>
-                        <MenuItem value='green'>Baja <div className="color gree ml-1n"></div></MenuItem>
+                        <MenuItem value='green'>Baja <div className="color green ml-1"></div></MenuItem>
                         <MenuItem value='black'>Imposible <div className="color black ml-1"></div></MenuItem>
                     </Select>
                 </FormControl>
