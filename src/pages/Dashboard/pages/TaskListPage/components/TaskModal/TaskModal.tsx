@@ -1,20 +1,20 @@
 
 import React, { useEffect, useState } from 'react';
-import './style/index.css';
-import { CustomModal } from '@/pages/Dashboard/components';
-import { Controller, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { TaskInput, TaskLevel, UserTeam, stateTask } from '@/models';
-import { InputCustom } from '@/pages/Register';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { taskFormSchema } from './schemas/taskForm.schema';
-import { Resolver } from 'react-hook-form';
-import { DialogActions, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { ButtonPrimary } from '@/styled-components';
 import { AppDispatch, createATask } from '@/redux';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { Controller, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Resolver } from 'react-hook-form';
+import { CustomModal } from '@/pages/Dashboard/components';
+import { TaskInput, TaskLevel, UserTeam, stateTask } from '@/models';
+import { InputCustom } from '@/pages/Register';
+import { taskFormSchema } from './schemas/taskForm.schema';
+import { DialogActions, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { ButtonPrimary } from '@/styled-components';
 import { getMembersTeam } from '@/redux/asyncState/team.async';
 
+import './style/index.css';
 
 interface ITaskModalProps {
     openModal: boolean;
@@ -37,7 +37,7 @@ const TaskModal: React.FC<ITaskModalProps> = ({ openModal, setOpenModal }) => {
     } = useForm<TaskInput>({
         defaultValues: {
             id_project: '',
-            uidAssignedTo: team.length>0 ? team[0].uid: '',
+            uidAssignedTo: '',
             description: '',
             timeAssigned: timeEstimations[0],
             levelDifficulty: 'red',

@@ -4,7 +4,9 @@ import {
     TaskInput,
     IsSuccess,
     Task,
-    UpdateInputTask
+    UpdateInputTask,
+    TaskByUserInput,
+    TasksByState
 } from "@/models";
 import {
     collection,
@@ -101,7 +103,7 @@ export const getTasks = async (id_project: string): Promise<Task[]> => {
             timeAssigned: task.timeAssigned,
             levelDifficulty: task.levelDifficulty,
             stateTask: task.stateTask,
-            dateCreated: task.dateCreated,
+            createAt: task.createAt,
         }));
         return tasks;
     } catch (error) {
@@ -121,7 +123,7 @@ export const getTask = async (id_task: string): Promise<Task> => {
             timeAssigned: task!.timeAssigned,
             levelDifficulty: task!.levelDifficulty,
             stateTask: task!.stateTask,
-            dateCreated: task!.dateCreated,
+            createAt: task!.createAt,
         }
 
         return taskData;
@@ -130,7 +132,7 @@ export const getTask = async (id_task: string): Promise<Task> => {
     }
 }
 
-export const getTaskByUserId = async (uid: string, id_project: string): Promise<Task[]> => {
+export const getTasksByUserId = async ({ uid, id_project }: TaskByUserInput): Promise<Task[]> => {
     try {
         const queryTask = query(taskRef, where('id_project', '==', id_project), where('uidAssignedTo', '==', uid));
         const querySnapshot = await getDocs(queryTask);
@@ -144,7 +146,7 @@ export const getTaskByUserId = async (uid: string, id_project: string): Promise<
             timeAssigned: task.timeAssigned,
             levelDifficulty: task.levelDifficulty,
             stateTask: task.stateTask,
-            dateCreated: task.dateCreated,
+            createAt: task.createAt,
         }));
         return tasks;
     } catch (error) {
@@ -152,7 +154,7 @@ export const getTaskByUserId = async (uid: string, id_project: string): Promise<
     }
 }
 
-export const getTasksByState = async (id_project: string, stateTask: string): Promise<Task[]> => {
+export const getTasksByState = async ({ id_project, stateTask }: TasksByState): Promise<Task[]> => {
     try {
         const queryTask = query(taskRef, where('id_project', '==', id_project), where('stateTask', '==', stateTask));
         const querySnapshot = await getDocs(queryTask);
@@ -166,7 +168,7 @@ export const getTasksByState = async (id_project: string, stateTask: string): Pr
             timeAssigned: task.timeAssigned,
             levelDifficulty: task.levelDifficulty,
             stateTask: task.stateTask,
-            dateCreated: task.dateCreated,
+            createAt: task.createAt,
         }));
         return tasks;
     } catch (error) {
@@ -186,7 +188,7 @@ export const getNumOfTasksCreated = async (id_project: string): Promise<number> 
     }
 }
 
-export const getNumTasksByState = async (id_project: string, stateTask: string): Promise<number> => {
+export const getNumTasksByState = async ({ id_project, stateTask }: TasksByState): Promise<number> => {
     try {
         const queryTask = query(taskRef, where('id_project', '==', id_project), where('stateTask', '==', stateTask));
         const querySnapshot = await getDocs(queryTask);

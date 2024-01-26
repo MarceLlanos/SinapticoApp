@@ -44,7 +44,7 @@ const JoinTeamPage: React.FC<IJoinTeamPageProps> = () => {
 			const { code_project } = data;
 			if (code_project !== '') {
 				const userData: UserTeamInput = {
-					user_id: uid!,
+					uid: uid!,
 					code_project: code_project
 				}
 				const { isSuccess, id_project } = await dispatch(joinTeam(userData)).unwrap();

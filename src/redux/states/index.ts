@@ -6,3 +6,4 @@ export { default as userSlice } from './user.state';
 export { default as userLogoutSlice } from './userLogout.state';
 export { default as getProjectSlice } from './getProject.state';
 export { default as taskSlice } from './task.state';
+export { default as getTasksSlice } from './getTasks.state';
