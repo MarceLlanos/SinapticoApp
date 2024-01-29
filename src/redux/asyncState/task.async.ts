@@ -1,4 +1,4 @@
-import { Task, TaskInput, UpdateInputTask } from "@/models";
+import { Task, TaskInput, TaskType, UpdateInputTask } from "@/models";
 import { createTask, deleteTask, getTask, getTasks, updateTask } from "@/services/task.service";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Result } from "@/models";
@@ -29,20 +29,36 @@ export const deleteATask = createAsyncThunk('task/delete', async (id_task: strin
     }
 });
 
-export const getTasksProject = createAsyncThunk('getTask', async (id_project: string): Promise<Task[]> => {
+const mapTaskData = (tasks: Task[]): Task[] => {
+    return tasks.map(task => ({
+        id_project: task.id_project,
+        uidAssignedTo: task.uidAssignedTo,
+        title: task.title,
+        description: task.description,
+        timeAssigned: task.timeAssigned,
+        levelDifficulty: task.levelDifficulty,
+        stateTask: task.stateTask
+    }));
+};
+
+export const getTasksProject = createAsyncThunk('getTasks/tasks', async (id_project: string): Promise<Task[]> => {
     try {
         const tasks: Task[] = await getTasks(id_project);
-        return tasks;
+        const dataTasks = mapTaskData(tasks);
+        return dataTasks;
     } catch (error) {
         throw error;
     }
 });
 
-export const getTaskByUser = createAsyncThunk('getTask/taskByUser', async (id_project: string): Promise<Task[]> => {
+
+export const getTasksByUser = createAsyncThunk('getTasks/taskByUser', async (id_project: string): Promise<Task[]> => {
     try {
         const tasks: Task[] = await getTasks(id_project);
-        return tasks;
+        const dataTasks = mapTaskData(tasks);
+        return dataTasks;
     } catch (error) {
         throw error;
     }
 });
+

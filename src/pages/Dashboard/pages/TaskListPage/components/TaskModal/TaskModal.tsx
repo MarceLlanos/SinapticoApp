@@ -150,7 +150,6 @@ const TaskModal: React.FC<ITaskModalProps> = ({ openModal, setOpenModal }) => {
 
                     <h3 className="textNormal mt-1">Asignar a:</h3>
                     <FormControl
-                        required
                         sx={{ width: "calc(48%)", marginBlockStart: "12px" }}
                     >
                         <InputLabel id="user-select-modal">Asignar a:</InputLabel>

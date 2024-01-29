@@ -139,7 +139,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 						label = 'Correo electrónico'
 						type = 'email'
 						required = { true }
-						disabled = { false }
+						disabled={false}
 					/>
 
 					<InputPasswordCustom

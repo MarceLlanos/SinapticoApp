@@ -20,7 +20,7 @@ export interface Task {
     timeAssigned: number
     levelDifficulty: string
     stateTask: string
-    createAt: Date
+    createAt?: Date
 }
 
 export interface TaskInput {
@@ -31,6 +31,17 @@ export interface TaskInput {
     levelDifficulty: string
     stateTask: string
     createAt?: Date
+}
+
+export type TaskType = {
+    id_project: string;
+    uidAssignedTo: string;
+    title: string;
+    description: string;
+    timeAssigned: number;
+    levelDifficulty: string;
+    stateTask: string;
+    createAt: string;
 }
 
 export type UpdateInputTask = {

@@ -26,7 +26,7 @@ const TableCostum = < T,  >({ columns, rows, pageSize }: ITableProps<T> ) => {
             }
           }}
           pageSizeOptions={[pageSize]}
-          getRowId={(row: any) => row.id  }
+          getRowId={(row: any) => row.id}
         />
       </Paper>
     );

@@ -8,7 +8,7 @@ import { formValidation } from '../InputCustom/InputCustom';
 interface IInputPasswordCustomProps {
 	id: string;
     name: string;
-    label: string;
+	label: string;
 }
 
 const InputPasswordCustom: React.FC<IInputPasswordCustomProps> = ({ id, name, label}) => {
@@ -20,7 +20,7 @@ const InputPasswordCustom: React.FC<IInputPasswordCustomProps> = ({ id, name, la
 
 	return (
 		<FormControl sx={{ width: '100%' }} variant="outlined" className='mt-1'>
-			<InputLabel htmlFor="password-input">Contraseña * </InputLabel>
+			<InputLabel htmlFor={id}>Contraseña * </InputLabel>
 			<OutlinedInput
 				id={id}
 				type={showPassword ? 'text' : 'password'}
@@ -40,6 +40,7 @@ const InputPasswordCustom: React.FC<IInputPasswordCustomProps> = ({ id, name, la
 				error={errors && !!errors[name]}
 				label={label}
 				fullWidth
+				autoComplete="current-password"
 			/>
 			{ errors && formValidation(errors, name)}
 		</FormControl>

@@ -9,8 +9,10 @@ import {
     TasksByState
 } from "@/models";
 import {
+    DocumentData,
     collection,
     getDocs,
+    orderBy,
     query,
     where
 } from "firebase/firestore";
@@ -22,6 +24,19 @@ import {
 } from "./collection.service";
 
 const taskRef = collection(firestore, 'task');
+
+const mapTaskData = (tasks: DocumentData[]): Task[] => {
+    return tasks.map(task => ({
+        id_project: task.id_project,
+        uidAssignedTo: task.uidAssignedTo,
+        title: task.title,
+        description: task.description,
+        timeAssigned: task.timeAssigned,
+        levelDifficulty: task.levelDifficulty,
+        stateTask: task.stateTask,
+        createAt: task.createAt
+    }));
+};
 
 export const createTask = async (dataTask: TaskInput): Promise<IsSuccess> => {
     try {
@@ -93,18 +108,13 @@ export const getTasks = async (id_project: string): Promise<Task[]> => {
         const queryTask = query(taskRef, where('id_project', '==', id_project));
         const querySnapshot = await getDocs(queryTask);
 
-        const taskDocument = querySnapshot.docs.map((doc) => doc.data());
-        const tasks: Task[] = taskDocument.map(task => ({
-            id_task: task.id,
-            id_project: task.id_project,
-            uidAssignedTo: task.uidAssignedTo,
-            title: task.title,
-            description: task.description,
-            timeAssigned: task.timeAssigned,
-            levelDifficulty: task.levelDifficulty,
-            stateTask: task.stateTask,
-            createAt: task.createAt,
-        }));
+        if (querySnapshot.empty) {
+            return [];
+        }
+
+        const taskDocument: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
+        const tasks: Task[] = mapTaskData(taskDocument);
+
         return tasks;
     } catch (error) {
         throw error;
@@ -125,7 +135,6 @@ export const getTask = async (id_task: string): Promise<Task> => {
             stateTask: task!.stateTask,
             createAt: task!.createAt,
         }
-
         return taskData;
     } catch (error) {
         throw error;
@@ -134,20 +143,15 @@ export const getTask = async (id_task: string): Promise<Task> => {
 
 export const getTasksByUserId = async ({ uid, id_project }: TaskByUserInput): Promise<Task[]> => {
     try {
-        const queryTask = query(taskRef, where('id_project', '==', id_project), where('uidAssignedTo', '==', uid));
+        const queryTask = query(taskRef, orderBy('createAt', 'desc'), where('id_project', '==', id_project), where('uidAssignedTo', '==', uid));
         const querySnapshot = await getDocs(queryTask);
 
+        if (querySnapshot.empty) {
+            return [];
+        }
+
         const taskDocument = querySnapshot.docs.map((doc) => doc.data());
-        const tasks: Task[] = taskDocument.map(task => ({
-            id_project: task.id_project,
-            uidAssignedTo: task.uidAssignedTo,
-            title: task.title,
-            description: task.description,
-            timeAssigned: task.timeAssigned,
-            levelDifficulty: task.levelDifficulty,
-            stateTask: task.stateTask,
-            createAt: task.createAt,
-        }));
+        const tasks: Task[] = mapTaskData(taskDocument);
         return tasks;
     } catch (error) {
         throw error;
@@ -156,20 +160,15 @@ export const getTasksByUserId = async ({ uid, id_project }: TaskByUserInput): Pr
 
 export const getTasksByState = async ({ id_project, stateTask }: TasksByState): Promise<Task[]> => {
     try {
-        const queryTask = query(taskRef, where('id_project', '==', id_project), where('stateTask', '==', stateTask));
+        const queryTask = query(taskRef, orderBy('createAt', 'desc'), where('id_project', '==', id_project), where('stateTask', '==', stateTask));
         const querySnapshot = await getDocs(queryTask);
 
+        if (querySnapshot.empty) {
+            return [];
+        }
+
         const taskDocument = querySnapshot.docs.map((doc) => doc.data());
-        const tasks: Task[] = taskDocument.map(task => ({
-            id_project: task.id_project,
-            uidAssignedTo: task.uidAssignedTo,
-            title: task.title,
-            description: task.description,
-            timeAssigned: task.timeAssigned,
-            levelDifficulty: task.levelDifficulty,
-            stateTask: task.stateTask,
-            createAt: task.createAt,
-        }));
+        const tasks: Task[] = mapTaskData(taskDocument);
         return tasks;
     } catch (error) {
         throw error;

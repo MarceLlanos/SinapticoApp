@@ -43,6 +43,7 @@ const InputCustom = <T extends FieldValues>({ id, name, label, type, required = 
                 {...register(name)}
                 sx={sx}
                 fullWidth
+                autoComplete={type === 'email' ? 'email' : 'off'} 
             />
             { errors && formValidation(errors, name) }
         </>

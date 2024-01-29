@@ -7,9 +7,9 @@ import {
 } from '../../components';
 
 import './style/teamList.css';
-import { getCurrentUser, getProjectsByUserId } from '@/services';
+import { getCurrentUser } from '@/services';
 
-import { Project } from '@/models';
+import { Project, ProjectTypeResult } from '@/models';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux';
 import { getProjectsByUser } from '@/redux/asyncState/project.async';
@@ -18,9 +18,9 @@ interface ITeamListPageProps {
 
 }
 
-const TeamListPage: React.FC<ITeamListPageProps> = (props) => {
+const TeamListPage: React.FC<ITeamListPageProps> = () => {
     const user = getCurrentUser();
-    const [projects, setProjects] = useState<Project[]>([]);
+    const [projects, setProjects] = useState<ProjectTypeResult[]>([]);
     const dispatch = useDispatch<AppDispatch>();
     
     useEffect(() => {

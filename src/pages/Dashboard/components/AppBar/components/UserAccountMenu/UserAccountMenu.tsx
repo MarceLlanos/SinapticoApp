@@ -61,12 +61,19 @@ const UserAccountMenu: React.FC<IUserAccountMenuProps> = ({userName, photoUrl}) 
 		setUserMenu(event.currentTarget);
 	};
 	const handleUserCloseMenu = () => {
+		setUserMenu(null);
+	};
+
+	const onLogout = () => {
 		logout();
 		navigate(
 			`/`, { replace: true }
 		);
-		setUserMenu(null);
-	};
+	}
+
+	const onClickProfile = () => {
+		
+	}
 
 	const renderUserMenu = (
 		<Menu
@@ -85,10 +92,10 @@ const UserAccountMenu: React.FC<IUserAccountMenuProps> = ({userName, photoUrl}) 
 				open={Boolean(userMenu)}
 				onClose={handleUserCloseMenu}
 		>
-			<MenuItem key='perfil' onClick={handleUserCloseMenu}>
+			<MenuItem key='perfil' onClick={onClickProfile}>
 				<Typography textAlign="center">Perfil</Typography>
 			</MenuItem>
-			<MenuItem key='salir' onClick={handleUserCloseMenu}>
+			<MenuItem key='salir' onClick={onLogout}>
 				<Typography textAlign="center">Salir</Typography>
 			</MenuItem>
 		</Menu>

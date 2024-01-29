@@ -7,13 +7,11 @@ import {
     DriveInput,
     CodesProject,
     UserTeamRoles,
-    UserTeam
 } from "@/models";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { addDocument, deleteDocument, getDocumentById, updateDocument } from "./collection.service";
 import { addMemberToProject } from "./team.service";
 
-const projectRef = collection(firestore, 'project');
 const codeRef = collection(firestore, 'codesProject');
 const usersCollectionRef = collection(firestore, 'team');
 
@@ -168,6 +166,9 @@ export const getProject = async (id_project: string): Promise<Project> => {
 
 export const getProjectsByUserId = async (uid: string): Promise<Project[]> => {
     try {
+        if (uid === undefined) {
+            return [];
+        }
         const queryGetMember = query(usersCollectionRef, where('uid', '==', uid));
         const querySnapshot = await getDocs(queryGetMember);
 
