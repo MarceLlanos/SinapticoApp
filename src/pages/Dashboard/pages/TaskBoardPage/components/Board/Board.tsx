@@ -1,41 +1,41 @@
 
 import React from 'react';
-import { useDrag, useDrop } from 'react-dnd';
 import { TaskCard } from '../TaskCard';
 import './style/index.css';
 
+import { useDroppable } from '@dnd-kit/core';
+import {
+  SortableContext,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable';
+import { Task } from '@/models';
+import { TitleBoard } from './components';
+
 interface IBoardProps {
+    id: string;
     title: string;
+    tasks: Task[];
 }
 
-const Board: React.FC<IBoardProps> = ({ title }) => {
-    
-    const [{ isDragging }, drag] = useDrag({
-        type: 'TASK',
-        item: { title },
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-    });
-
-    const [, drop] = useDrop({
-    accept: 'TASK',
-    drop: async (item: { type: string; ref: any }) => {
-    //   dispatch({ type: 'MOVE_TASK', taskId: item.ref.id, newStatus: type });
-
-      await item.ref.update({ status: title });
-    },
-  });
-    
+const Board: React.FC<IBoardProps> = ({ id, title, tasks = [] }) => {
+    const { setNodeRef } = useDroppable({ id });
     return (
-        <div className="boardContainer">
-            <div className="textNormal greyText mb-1">
-                <h4>{ title }</h4>
+        <SortableContext
+            id={id}
+            items={tasks}
+            strategy={rectSortingStrategy}
+        >
+            <div  className="boardContainer">
+                <TitleBoard title={ title} />
+                <div ref={setNodeRef} className="boardBodyContainer">
+                {
+                    tasks.map((task) => (
+                        <TaskCard key={ task.id } task={task} />
+                    ))
+                }
+                </div>
             </div>
-            <div className="boardBody">
-                <TaskCard colorTask='red'/>
-            </div>
-        </div>
+        </SortableContext>
     );
 }
 

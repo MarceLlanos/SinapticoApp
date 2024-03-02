@@ -14,6 +14,7 @@ import {
     userLogoutSlice,
     userSlice
 } from "./states";
+import { getTasksByState } from "@/services/task.service";
 
 const rootReducer = combineReducers({
     user: userSlice,

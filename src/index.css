@@ -12,7 +12,6 @@
 	--black-border: #000000;
 }
 
-/* //askjdhkjashdjk */
 body {
 	margin: 0;
 	background-color: #ffffff;
@@ -22,8 +21,6 @@ body {
 	font-weight: bold;
 	height: calc(100dvh);
 }
-
-/* Font weight */
 
 .textLight {
 	font-weight: 100;

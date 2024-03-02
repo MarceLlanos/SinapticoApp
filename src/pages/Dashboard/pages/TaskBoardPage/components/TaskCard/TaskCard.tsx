@@ -6,21 +6,30 @@ import { LinkPrimary } from '@/styled-components';
 
 import './style/taskCard.css';
 import { EditModal } from '../EditModal';
-import { useDrag } from 'react-dnd';
+import { Task } from '@/models';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
 
 interface ITaskCardProps {
-    colorTask: string;
+    task: Task;
 }
 
-const TaskCard: React.FC<ITaskCardProps> = ({ colorTask }) => {
+const TaskCard: React.FC<ITaskCardProps> = ({ task }) => {
     const [openModal, setOpenModal] = useState<boolean>(false);
-    const [{ isDragging },drag] = useDrag(() => ({
-        type: 'Task',
-        item: {},
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging()
-        }),
-    }))
+    const {
+        attributes, 
+        listeners, 
+        transform, 
+        transition, 
+        setNodeRef 
+    } = useSortable({
+        id: task.id,
+        transition: {
+            duration: 300,
+            easing: 'ease-in-out'
+        }
+    });
 
     const onOpenModal = () => {
         setOpenModal(true);
@@ -30,31 +39,37 @@ const TaskCard: React.FC<ITaskCardProps> = ({ colorTask }) => {
         setOpenModal(false);
     }
 
+    const style = {
+        transition,
+        transform: CSS.Transform.toString(transform)
+    }
+
     return (
         <div
-            ref={drag}
-            className={`taskContainer ${colorTask}-border textLight greyDarkText `}
+            ref={setNodeRef}
+            {...attributes}
+            {...listeners}
+            style={style}
+            className={`taskContainer ${task.levelDifficulty}-border textLight greyDarkText `}
         >
             <div className="taskBody">
                 <div className="mb-1">
-                    <h2 className='textLight titleTask'>Tarea 01</h2>
+                    <h2 className='textLight titleTask'>{task.title}</h2>
                 </div>
                 <div className="descriptionContent">
                     <p>
-                        Realizar la introduccion del proyecto,
-                        haciendo uso de pasajes bibliograficos. 
-                        En documento 001.
+                        {task.description}
                     </p>
                 </div>
                 <div className="contentFooterTask">
                     <div className="contentLeft">
                         <div className="iconContent">
                             <QueryBuilderOutlinedIcon fontSize="small" />
-                            <p className='ml-1'>03 Horas</p>
+                            <p className='ml-1'>{task.timeAssigned} Horas</p>
                         </div>
                         <div className="iconContent">
                             <AccountCircleOutlinedIcon fontSize="small" />
-                            <p className='ml-1'>Tyler Morris</p>
+                            <p className='ml-1'>{ task.userName }</p>
                         </div>
                     </div>
                     <div className="contentRight">

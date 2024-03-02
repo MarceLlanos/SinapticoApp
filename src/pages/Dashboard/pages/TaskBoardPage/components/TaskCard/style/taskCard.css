@@ -15,10 +15,12 @@
 }
 
 .taskContainer {
+    background-color: var(--white-text);
     border-top: 0.5px solid var(--grey-text);
     border-right: 0.5px solid var(--grey-text);
     border-bottom: 0.5px solid var(--grey-text);
     cursor: pointer;
+    margin: 5px 0;
     padding: 8px;
 }
 

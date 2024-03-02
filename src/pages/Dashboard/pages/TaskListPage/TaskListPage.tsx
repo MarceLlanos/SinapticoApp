@@ -10,7 +10,6 @@ import { AppDispatch, getTasksProject } from '@/redux';
 import { Task } from '@/models';
 
 import './style/index.css';
-import { dataProjectFormSchema } from '@/pages/Register/pages/DataProjectPage/schema/dataProjectForm.schema';
 import { getUser } from '@/services';
 interface ITaskListPageProps {
 

@@ -184,6 +184,7 @@ export const loginUserWithGoogle = async (): Promise<UserResult> => {
 		throw error;
 	}
 };
+
 export const logout = async (): Promise<Result> => {
 	try {
 		const currentUser = getCurrentUser();

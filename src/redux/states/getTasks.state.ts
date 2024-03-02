@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Task } from "@/models";
-import { getTasksByUser, getTasksProject } from "../asyncState";
+import { getTaskProjectByState, getTasksByUser, getTasksProject } from "../asyncState";
 
 const taskInitialState: Task[] = [];
 
@@ -14,13 +14,17 @@ const getTasksSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(getTasksProject.fulfilled, (state, action) => {
-                state.status = 'success';
-                state.taskInitialState = action.payload
-            })
             .addCase(getTasksByUser.fulfilled, (state, action) => {
                 state.status = 'success';
-                state.taskInitialState = action.payload
+                state.taskInitialState = action.payload;
+            }),
+            builder.addCase(getTaskProjectByState.fulfilled, (state, action) => {
+                state.status = 'success';
+                state.taskInitialState = action.payload;
+            }),
+            builder.addCase(getTasksProject.fulfilled, (state, action) => {
+                state.status = 'success';
+                state.taskInitialState = action.payload;
             })
     }
 });

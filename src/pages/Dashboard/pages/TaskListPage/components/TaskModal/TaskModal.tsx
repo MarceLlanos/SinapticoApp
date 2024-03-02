@@ -7,7 +7,7 @@ import { Controller, FormProvider, SubmitHandler, useForm } from 'react-hook-for
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Resolver } from 'react-hook-form';
 import { CustomModal } from '@/pages/Dashboard/components';
-import { TaskInput, TaskLevel, UserTeam, stateTask } from '@/models';
+import { TaskInput, TaskLevel, UserTeam, TaskState } from '@/models';
 import { InputCustom } from '@/pages/Register';
 import { taskFormSchema } from './schemas/taskForm.schema';
 import { DialogActions, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
@@ -41,7 +41,7 @@ const TaskModal: React.FC<ITaskModalProps> = ({ openModal, setOpenModal }) => {
             description: '',
             timeAssigned: timeEstimations[0],
             levelDifficulty: 'red',
-            stateTask: stateTask.PENDIENTE
+            stateTask: TaskState.PENDIENTE
         },
         mode: 'onChange',
         resolver: yupResolver(taskFormSchema) as Resolver<TaskInput, any>
