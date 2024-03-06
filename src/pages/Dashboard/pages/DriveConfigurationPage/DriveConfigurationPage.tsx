@@ -25,7 +25,6 @@ const DriveConfigurationPage: React.FC<IDriveConfigurationPageProps> = (props) =
                 const link = updateDriveLinkToSharing(data.drive_link);
                 setDriveLink(link);
             }
-            console.log(data);
             return data;
         } catch (error) {
             throw error;
@@ -36,7 +35,7 @@ const DriveConfigurationPage: React.FC<IDriveConfigurationPageProps> = (props) =
         const fetchData = async () => (projectData(project!));
         fetchData();
     }, []);
-
+    console.log(driveLink);
     return (
         <DashboardFrameContainer>
             <BarTitle title='Archivos del proyecto en el repositorio Google Drive' />
@@ -44,14 +43,21 @@ const DriveConfigurationPage: React.FC<IDriveConfigurationPageProps> = (props) =
                 {
                     driveLink && (
                         <iframe
-                            title="Archivo de Google Drive"
-                            src={ driveLink }
-                            width='100%'
-                            height={510}
+                            src="https://drive.google.com/embeddedfolderview?id=1jHxHP22F6gk5asv_NWGeaPkI7lfk28Qr#list"
+                            style={{ width: '100%', height: '600px', border: 'none' }}
                             frameBorder={0}
                             allowFullScreen
                         >
                         </iframe>
+                        // <iframe
+                        //     title="Archivo de Google Drive"
+                        //     src= 'https://drive.google.com/drive/folders/1jHxHP22F6gk5asv_NWGeaPkI7lfk28Qr?usp=sharing'
+                        //     width='100%'
+                        //     height={510}
+                        //     frameBorder={0}
+                        //     allowFullScreen
+                        // >
+                        // </iframe>
                     )
                 }
             </div>

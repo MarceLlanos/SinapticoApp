@@ -7,11 +7,12 @@ import { Chip, TextField } from '@mui/material';
 import { ButtonGrey, ButtonPrimary } from '@/styled-components';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { PrivateDashboardRoutes, PrivateRegisterRoutes } from '@/models';
+import { PrivateDashboardRoutes } from '@/models';
 import { AppDispatch } from '@/redux';
 import { useDispatch } from 'react-redux';
 import { addDriveToProject } from '@/redux/asyncState/project.async';
 import { getCurrentUser } from '@/services';
+import { driveLinkCustomized, getIdFromDriveUrl } from '@/utilities';
 
 interface IConfigureDrivePageProps {
 
@@ -40,9 +41,11 @@ const ConfigureDrivePage: React.FC<IConfigureDrivePageProps> = () => {
 
 	const savedDriveLinkToProject: SubmitHandler<FieldValues> = async (data) => {
 		const { drive_link } = data;
+		const driveID = getIdFromDriveUrl(drive_link);
+		const driveLinkCustomize = driveLinkCustomized(driveID);
 		const dataLink = {
 			id_project: urlData,
-			drive_link
+			drive_link: driveLinkCustomize
 		}
 		const result = await dispatch(addDriveToProject(dataLink)).unwrap();
 		const { isSuccess, message } = result;

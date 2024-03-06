@@ -23,6 +23,7 @@ import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useTask } from './hooks';
 import { AppDispatch, updateATask } from '@/redux';
 import { useDispatch } from 'react-redux';
+import { Alert } from '@mui/material';
 
 interface BoardData {
 	id: string;
@@ -37,7 +38,6 @@ const TaskBoardPage: React.FC<ITaskBoardPageProps> = () => {
 	const { project } = useParams();
 	const dispatch = useDispatch<AppDispatch>();
 	const [activeTaskId, setActiveTaskId] = useState<null | string>(null);
-	const [boardSections, setBoardSections] = useState<BoardSectionType>();
 	const { tasks, loading, error } = useTask( project!)
 
 	const sensors = useSensors(
@@ -75,12 +75,10 @@ const TaskBoardPage: React.FC<ITaskBoardPageProps> = () => {
 
 		try {
 			const updateTask = await dispatch(updateATask(dataToUpdate));
-
+			console.log(updateTask);
 		} catch (error) {
 			throw error;
 		}
-		
-
 	}
 
 
@@ -89,20 +87,27 @@ const TaskBoardPage: React.FC<ITaskBoardPageProps> = () => {
 	return (
 		<DashboardFrameContainer>
 			<BarTitle title='Tablero de tareas de todo el proyecto (Task Board)' />
-			<div className="tableroContainer">
-				<DndContext
-					sensors={sensors}
-					collisionDetection={closestCorners}
-					onDragStart={handleDragStart}
-					onDragOver={handleDragOver}
-					onDragEnd={handleDragEnd}
-				>
-					{taskStates.map(state => (
-						<Board key={state} id={state} title={state} tasks={renderTasks(state)} />
-					))}
-					
-				</DndContext>
-			</div>
+			{
+				error.length > 0 ? (
+						<Alert severity="info">{ error }</Alert>
+				):(
+					<div className="tableroContainer">
+						<DndContext
+							autoScroll
+							sensors={sensors}
+							collisionDetection={closestCorners}
+							onDragStart={handleDragStart}
+							onDragOver={handleDragOver}
+							onDragEnd={handleDragEnd}
+						>
+							{taskStates.map(state => (
+								<Board key={state} id={state} title={state} tasks={renderTasks(state)} />
+							))}
+							
+						</DndContext>
+					</div>
+				) 
+			}
 		</DashboardFrameContainer>
 	);
 }

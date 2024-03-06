@@ -6,7 +6,7 @@ import './style/index.css';
 import { useDroppable } from '@dnd-kit/core';
 import {
   SortableContext,
-  rectSortingStrategy,
+  verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { Task } from '@/models';
 import { TitleBoard } from './components';
@@ -23,7 +23,7 @@ const Board: React.FC<IBoardProps> = ({ id, title, tasks = [] }) => {
         <SortableContext
             id={id}
             items={tasks}
-            strategy={rectSortingStrategy}
+            strategy={verticalListSortingStrategy}
         >
             <div  className="boardContainer">
                 <TitleBoard title={ title} />

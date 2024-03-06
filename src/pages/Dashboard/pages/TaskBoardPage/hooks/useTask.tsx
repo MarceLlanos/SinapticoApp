@@ -1,5 +1,5 @@
-import { TasksByState, Task } from "@/models";
-import { AppDispatch, getTaskProjectByState, getTasksProject } from "@/redux";
+import { Task } from "@/models";
+import { AppDispatch, getTasksProject } from "@/redux";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -15,7 +15,9 @@ export const useTask = (project_id: string) => {
             setLoading(true);
             try {
                 const result = await dispatch(getTasksProject(project_id)).unwrap();
-                setTasks(result);
+                result.length > 0 ?
+                    setTasks(result) :
+                    setError('Aun no existen tareas creadas, por favor agrega nuevas tareas en Lista Global de Tareas');
             } catch (error) {
                 setError('No se pudo cargar las tareas');
             }

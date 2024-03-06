@@ -1,5 +1,7 @@
 .titleBoardContainer {
     background-color: var(--white-text);
-    position: sticky;
+    /* position: fixed; */
     padding: 12px;
+    margin: 5px;
+    z-index: 10;
 }
