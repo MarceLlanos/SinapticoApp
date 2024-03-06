@@ -43,7 +43,7 @@ const DriveConfigurationPage: React.FC<IDriveConfigurationPageProps> = (props) =
                 {
                     driveLink && (
                         <iframe
-                            src="https://drive.google.com/embeddedfolderview?id=1jHxHP22F6gk5asv_NWGeaPkI7lfk28Qr#list"
+                            src={ driveLink }
                             style={{ width: '100%', height: '600px', border: 'none' }}
                             frameBorder={0}
                             allowFullScreen
