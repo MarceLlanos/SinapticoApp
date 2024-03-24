@@ -1,7 +1,6 @@
 
 import React from 'react';
-import { Outlet, Routes, useParams } from 'react-router-dom';
-import { DashboardFrameContainer } from '../../components';
+import { Routes, useParams } from 'react-router-dom';
 import { dashboardRenderRoutes } from '@/utilities';
 import { MemberInput } from '@/models';
 

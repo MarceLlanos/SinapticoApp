@@ -8,19 +8,27 @@
 }
 
 .buttonSmallContainer {
-    background-color: aqua;
-    margin: 8px;
-    padding-top: 4px;
-    width: fit-content;
+    background-color: transparent;
+    display: inline-flex;
+    margin-left: auto;
+    padding: 4px;
+    float: right;
+    right: 0;
+    width: 100%;
 }
 
 .buttonRight {
-    display: flex;
-    right: 0;
+    margin-left: auto;
 }
 
 .cardsReportContainer {
+    display: flex;
+    flex-direction: column;
     overflow: auto;
-    height: calc(100dvh - 32dvh);
-    padding: 8px;
+    height: calc(100dvh - 34dvh);
+    padding: 20px;
+}
+
+.cardsContent {
+    display: grid;
 }

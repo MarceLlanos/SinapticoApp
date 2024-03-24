@@ -9,3 +9,4 @@ export * from './publicRegister.route';
 export * from './redux';
 export * from './subjectManager';
 export * from './task.model';
+export * from './dailyReport.model';

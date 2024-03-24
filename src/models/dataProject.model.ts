@@ -19,7 +19,7 @@ export type Project = {
 	description: string
 	assigment: string
 	professor: string
-	date_release: Date
+	date_release: string
 	code_project: string
 	drive_link: string
 	createAt?: Date

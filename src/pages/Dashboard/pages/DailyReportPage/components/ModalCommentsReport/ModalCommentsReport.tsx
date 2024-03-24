@@ -8,7 +8,8 @@ import {
     DialogTitle,
     Divider,
     IconButton,
-    TextField
+    TextField,
+    Typography
 } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -16,13 +17,22 @@ import { Transition } from '../ModalCreateDailyReport/ModalCreateDailyReport';
 
 import './style/index.css';
 import { ButtonGrey } from '@/styled-components';
+import { ReportComments } from '@/models';
+import Comment from '../Comment';
 
 interface IModalCommentsReportProps {
     isOpenModal: boolean;
     closeModal: () => void;
+    userName: string;
+    whatIDid: string;
+    problemsIHave: string;
+    whatWillIDo: string;
+    date: string;
+    likes: number;
+    comments: ReportComments;
 }
 
-const ModalCommentsReport: React.FC<IModalCommentsReportProps> = ({isOpenModal, closeModal}) => {
+const ModalCommentsReport: React.FC<IModalCommentsReportProps> = ({ isOpenModal, closeModal, userName, whatIDid, problemsIHave, whatWillIDo, date, likes, comments }) => {
     return (
         <Dialog
             open={isOpenModal}
@@ -32,7 +42,7 @@ const ModalCommentsReport: React.FC<IModalCommentsReportProps> = ({isOpenModal, 
             sx={{ padding: "12px" }}
         >   
             <Box component="section" display="flex" alignItems="center" justifyContent="space-between" width="calc(100% - 10%)">
-                <DialogTitle className="textBold greyDarkText"> Reporte de Tyler Morris </DialogTitle>
+                <DialogTitle className="textBold greyDarkText"> Reporte de { userName }Tyler Morris </DialogTitle>
 
                 <div className="dateModal textNormal">
                     <p>Jueves 20 de Julio</p>
@@ -63,32 +73,33 @@ const ModalCommentsReport: React.FC<IModalCommentsReportProps> = ({isOpenModal, 
                     <h3 className='textBold mb-1'>Descripción:</h3>
                     <Box component="section" sx={{ p: 1, border: '0.5px solid grey', fontSize: '0.8rem' }}>
                         <h4 className='textBold'>Lo que hice:</h4>
-                        <p>Se realizo la tarea 01, investigando en internet y consultando el libro mensionado por el Docente</p>
+                        <p>{ whatIDid }Se realizo la tarea 01, investigando en internet y consultando el libro mensionado por el Docente</p>
                         <h4 className='textBold'>Problemas para realizar la tarea:</h4>
-                        <p>No se presento ningun problema para realizar mi tarea.</p>
+                        <p>{ problemsIHave }No se presento ningun problema para realizar mi tarea.</p>
                         <h4 className='textBold'>Lo que haré:</h4>
-                        <p>Seleccionar una nueva tarea y empezar a trabajar en ella.</p>    
+                        <p>{ whatWillIDo }Seleccionar una nueva tarea y empezar a trabajar en ella.</p>    
                     </Box>
                     <Box component="section" display="flex" alignItems="center" className='primaryText'>
                         <StarBorderIcon />
-                        <p>Like 0</p>
+                            <p>Likes { likes }0</p>
                     </Box>
                     <h3 className='textBold mb-1'>Comentarios</h3>
                     <Divider />    
                     <Box
                         overflow="scroll"
                         width="calc(100%)"
-                        height="calc( 100% - 20% )"
+                        maxHeight="calc( 100% - 20% )"
                         mt={1}    
                     >
-                        <Box component="section" sx={{ p: 1, border: '0.5px solid grey', fontSize: '0.8rem' }}>
-                            <h4 className='textBold'>Frank Murray</h4>
-                            <p>Se realizo la tarea 01, investigando en internet y consultando el libro mensionado por el Docente</p>
-                        </Box>
-                        <Box component="section" sx={{ p: 1, border: '0.5px solid grey', fontSize: '0.8rem' }}>
-                            <h4 className='textBold'>Frank Murray</h4>
-                            <p>Se realizo la tarea 01, investigando en internet y consultando el libro mensionado por el Docente</p>
-                        </Box>
+                        {
+                            comments.length > 0 ? (    
+                                comments.map(commentData => (
+                                    <Comment comment={ commentData.comment } userName={ commentData.userName } /> 
+                                ))
+                            ) : (
+                                <Typography>No hay commentarios disponibles!</Typography>            
+                            )
+                        }
                     </Box>    
                     
                     <TextField

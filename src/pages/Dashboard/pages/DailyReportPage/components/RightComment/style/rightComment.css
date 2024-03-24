@@ -1,19 +1,17 @@
 .rightCommentContainer {
     display: flex;
-    width: 100%;
-
 }
 
 .leftCommentLollipop {
     display: flex;
     top: 0;
-    width: calc(100dvh / 2 + 8.5%);
+    justify-content: center;
 }
 
 .containerChildren {
     margin: 0;
     padding: 0;
-    width: auto;
+    width: calc(100dvh / 2 + 3%);
 }
 
 .lollipopDateContainer {
@@ -21,7 +19,6 @@
 }
 
 .lollipopContainer {
-    width: fit-content;
     height: 100%;
 }
 

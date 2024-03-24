@@ -18,7 +18,7 @@ export const formValidation = <T extends FieldValues>(errors: FieldErrors<T>, er
     const errorMessage = errors[errorKey]?.message as string;
 
     return errors[errorKey] ? (
-        <Typography color='red'>{errorMessage}</Typography>
+        <Typography color='red' sx={{fontSize: '0.75rem', fontWeight: '100'}}>{errorMessage}</Typography>
     ) : (
         ''
     );

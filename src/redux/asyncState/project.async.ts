@@ -1,5 +1,5 @@
 import { formatDate } from "@/helpers";
-import { DriveInput, Project, ProjectInput, ProjectTypeResult } from "@/models";
+import { DriveInput, ProjectInput, ProjectTypeResult } from "@/models";
 import { Result } from "@/models/redux";
 import {
     addDrive,
@@ -64,29 +64,15 @@ export const deleteProject = createAsyncThunk('project/deleteProject', async (id
 export const getProjectsByUser = createAsyncThunk('getProjects/getProjectsByUser', async (uid: string): Promise<ProjectTypeResult[]> => {
     try {
         const projects = await getProjectsByUserId(uid);
-        const result = projects.map(data => (
-            {
-                id_project: data.id_project,
-                user_id: data.user_id,
-                name_proj: data.name_proj,
-                description: data.description,
-                assigment: data.assigment,
-                professor: data.professor,
-                date_release: formatDate(data.date_release),
-                code_project: data.code_project,
-                drive_link: data.drive_link,
-                createAt: formatDate(data.createAt!)
-            }
-        ));
-        return result;
+        return projects;
     } catch (error) {
         throw error;
     }
 });
 
-export const getAProject = createAsyncThunk('getProject/getAProject', async (id_project: string): Promise<Project> => {
+export const getAProject = createAsyncThunk('getProject/getAProject', async (idProject: string): Promise<ProjectTypeResult> => {
     try {
-        const project = await getProject(id_project);
+        const project = await getProject(idProject);
         return project;
     } catch (error) {
         throw error

@@ -5,3 +5,5 @@ export * from './NotFoundPage/page';
 export * from './VerifyDate';
 export * from './board.utils';
 export * from './driveCutomLink';
+export * from './getUser.util';
+export * from './likesCounter.util';

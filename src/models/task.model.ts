@@ -1,17 +1,17 @@
-export const difficultyTask = {
-    ALTA: 'alta',
-    MEDIA: 'media',
-    BAJA: 'baja',
-    IMPOSIBLE: 'imposible'
+export enum difficultyTask {
+    ALTA = 'alta',
+    MEDIA = 'media',
+    BAJA = 'baja',
+    IMPOSIBLE = 'imposible'
 }
 
 type StateTask = 'Pendientes' | 'Bloqueadas' | 'En curso' | 'Terminadas';
 
-export const TaskState = {
-    PENDIENTE: 'Pendientes',
-    BLOQUEADAS: 'Bloqueadas',
-    ENCURSO: 'En curso',
-    TERMINADAS: 'Terminadas',
+export enum TaskState {
+    PENDIENTE = 'Pendientes',
+    BLOQUEADAS = 'Bloqueadas',
+    ENCURSO = 'En curso',
+    TERMINADAS = 'Terminadas',
 }
 
 export const taskStates = [
@@ -31,7 +31,7 @@ export interface Task {
     timeAssigned: number;
     levelDifficulty: string;
     stateTask: StateTask;
-    createAt?: Date;
+    createAt?: string;
 }
 
 export type TaskList = Task[];
@@ -100,3 +100,12 @@ export const TaskLevel = {
     green: 'Baja',
     black: 'Imposible'
 } as any
+
+export interface LevelDifficultyInput {
+    id_project: string;
+    levelDifficulty: string
+}
+
+export interface LevelDifficultyStateInput extends LevelDifficultyInput {
+    stateTask: string;
+}

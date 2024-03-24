@@ -1,5 +1,5 @@
-import { Task, TaskInput, TaskType, TasksByState, UpdateInputTask } from "@/models";
-import { createTask, deleteTask, getTask, getTasks, getTasksByState, updateTask } from "@/services/task.service";
+import { LevelDifficultyInput, LevelDifficultyStateInput, TaskInput, TaskList, TasksByState, UpdateInputTask } from "@/models";
+import { createTask, deleteTask, getTasks, getTasksByState, getTotalTasksByLevelDifficulty, getTotalTasksByLevelDifficultyAndState, updateTask } from "@/services/task.service";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Result } from "@/models";
 
@@ -30,18 +30,18 @@ export const deleteATask = createAsyncThunk('task/delete', async (id_task: strin
     }
 });
 
-export const getTasksProject = createAsyncThunk('getUserTasks/tasks', async (id_project: string): Promise<Task[]> => {
+export const getTasksProject = createAsyncThunk('getTasksProject/tasksProject', async (id_project: string): Promise<TaskList> => {
     try {
-        const tasks: Task[] = await getTasks(id_project);
+        const tasks: TaskList = await getTasks(id_project);
         return tasks;
     } catch (error) {
         throw error;
     }
 });
 
-export const getTasksByUser = createAsyncThunk('getTasks/taskByUser', async (id_project: string): Promise<Task[]> => {
+export const getTasksByUser = createAsyncThunk('getTasks/taskByUser', async (id_project: string): Promise<TaskList> => {
     try {
-        const tasks: Task[] = await getTasks(id_project);
+        const tasks: TaskList = await getTasks(id_project);
 
         return tasks;
     } catch (error) {
@@ -49,14 +49,29 @@ export const getTasksByUser = createAsyncThunk('getTasks/taskByUser', async (id_
     }
 });
 
-export const getTaskProjectByState = createAsyncThunk('getUserTasks/tasksByState', async (tasksState: TasksByState): Promise<Task[]> => {
+export const getTaskProjectByState = createAsyncThunk('getUserTasks/tasksByState', async (tasksState: TasksByState): Promise<TaskList> => {
     try {
-        const tasks: Task[] = await getTasksByState(tasksState);
-
-
+        const tasks: TaskList = await getTasksByState(tasksState);
         return tasks;
     } catch (error) {
         throw error;
     }
-})
+});
 
+export const getTotalTasksLevelDifficulty = createAsyncThunk('getTotalTasksLevelDifficulty/tasksByLevelDifficulty', async (inputData: LevelDifficultyInput): Promise<number> => {
+    try {
+        const totalTasks: number = await getTotalTasksByLevelDifficulty(inputData);
+        return totalTasks;
+    } catch (error) {
+        throw error;
+    }
+});
+
+export const getTotalTaskLevelDifficultyState = createAsyncThunk('getTotalTasksLevelDifficultyState/tasksByLevelDifficultyState', async (inputData: LevelDifficultyStateInput): Promise<number> => {
+    try {
+        const totalTasks: number = await getTotalTasksByLevelDifficultyAndState(inputData);
+        return totalTasks;
+    } catch (error) {
+        throw error;
+    }
+});

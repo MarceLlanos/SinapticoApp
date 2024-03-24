@@ -5,12 +5,15 @@ import { BarTitle, DashboardFrameContainer } from '../../components';
 import { Box } from '@mui/material';
 import { DoughnutChartCustom, StatCards, TableDailyReport, TableStats } from './components';
 import { difficultyTask } from '@/models/task.model';
+import { useParams } from 'react-router-dom';
 
 interface IStaticsPageProps {
 
 }
 
 const StatsPage: React.FC<IStaticsPageProps> = (props) => {
+    const { project } = useParams();
+    
     return (
         <DashboardFrameContainer>
             <BarTitle title='Estadísticas' />
@@ -31,9 +34,9 @@ const StatsPage: React.FC<IStaticsPageProps> = (props) => {
                         marginBottom: '30px'
                     }}
                 >
-                    <StatCards difficulty={difficultyTask.ALTA} doneTask={ 10 } totalTask={15} />
-                    <StatCards difficulty={difficultyTask.MEDIA} doneTask={ 8 } totalTask={15} />
-                    <StatCards difficulty={difficultyTask.BAJA} doneTask={ 3 } totalTask={15} />
+                    <StatCards difficulty={difficultyTask.ALTA} doneTask={ 10 }  />
+                    <StatCards difficulty={difficultyTask.MEDIA} doneTask={ 8 }  />
+                    <StatCards difficulty={difficultyTask.BAJA} doneTask={ 3 } />
                     <StatCards difficulty={difficultyTask.IMPOSIBLE} doneTask={ 4 } />
                 </Box>
                 <h3 className='textNormal mb-1'>Actividad de los miembros del equipo de trabajo</h3>

@@ -3,16 +3,21 @@ import React from 'react';
 import { Box, Divider } from '@mui/material';
 import { capitalizeFirstLetter, percentageFinishedWork } from '@/helpers';
 import './style/index.css';
+import { useParams } from 'react-router-dom';
+import { difficultyTask } from '@/models';
+import { useGetTotalTaskByDifficulty } from '../../customHook';
+import useGetTotalDoneTaskByDifficulty from '../../customHook/useGetTotalDoneTasksByDifficulty.customHook';
 
 interface IStaticCardsProps {
     difficulty: string;
     doneTask: number;
-    totalTask?: number;
 }
 
-const StatCards: React.FC<IStaticCardsProps> = ({ difficulty, doneTask, totalTask }) => {
-    
-
+const StatCards: React.FC<IStaticCardsProps> = ({ difficulty, doneTask }) => {
+    const { project } = useParams();
+    const { totalTask } = useGetTotalTaskByDifficulty({ id_project: project!, levelDifficulty: difficulty });
+    const { totalDoneTask } = useGetTotalDoneTaskByDifficulty({id_project: project!, levelDifficulty: difficulty, stateTask: 'Terminadas'})
+    console.log(totalTask)
     return (
         <Box
             width='calc(100%)'
@@ -34,21 +39,21 @@ const StatCards: React.FC<IStaticCardsProps> = ({ difficulty, doneTask, totalTas
             </Box>
             <Divider />
             {
-                difficulty === 'imposible'
+                difficulty === difficultyTask.IMPOSIBLE
                     ? (
                         <Box display="flex" alignItems="center" justifyContent="center">
                             <Box>
-                                <p className='textBold taskText'>{ doneTask } tareas</p>
+                                <p className='textBold taskText'>{ totalTask } tareas</p>
                             </Box>
                         </Box>
                     )
                     : (
                         <Box display="flex" alignItems="center" justifyContent="space-between">
                             <Box>
-                                <p className='textBold taskText'>{ doneTask } de { totalTask }</p>
+                                <p className='textBold taskText'>{ totalDoneTask } de { totalTask }</p>
                                 <span className='spanText'>Tareas terminadas</span>
                             </Box>
-                            <p className='primaryText percentageText textBold'>{ percentageFinishedWork(totalTask, doneTask) } %</p>
+                            <p className='primaryText percentageText textBold'>{ percentageFinishedWork(totalTask, totalDoneTask) } %</p>
                         </Box>
                     )
             }

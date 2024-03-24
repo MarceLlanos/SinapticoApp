@@ -11,7 +11,7 @@ const userInitialState: UserTeam = {
     userName: ''
 }
 
-const getAMember = createSlice({
+const getAMemberSlice = createSlice({
     name: 'getMember',
     initialState: {
         members: userInitialState,
@@ -28,4 +28,4 @@ const getAMember = createSlice({
     }
 });
 
-export default getAMember.reducer;
+export default getAMemberSlice.reducer;

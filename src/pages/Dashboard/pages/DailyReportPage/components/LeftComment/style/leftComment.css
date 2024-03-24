@@ -1,15 +1,7 @@
-.leftCommentContainer {
-    display: flex;
-    width: fit-content;
-
-}
-
 .commentLollipop {
     display: flex;
     top: 0;
-    width: calc(100dvh / 2 + 18%);
-    justify-content: center;
-    float: right;
+    justify-content: flex-end;
 }
 
 .blueLollipop {
@@ -18,7 +10,6 @@
     margin: 0 auto;
     padding: 10px 12px;
     top: 0;
-    width: fit-content;
 }
 
 .right p {

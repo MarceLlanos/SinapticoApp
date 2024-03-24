@@ -1,16 +1,17 @@
 import { firestore } from "@/firebase";
-import { codeGenerator } from "@/helpers";
+import { codeGenerator, formatDate } from "@/helpers";
 import {
     ProjectInput,
-    Project,
     ProjectResult,
     DriveInput,
     CodesProject,
     UserTeamRoles,
+    ProjectTypeResult,
 } from "@/models";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { addDocument, deleteDocument, getDocumentById, updateDocument } from "./collection.service";
 import { addMemberToProject } from "./team.service";
+
 
 const codeRef = collection(firestore, 'codesProject');
 const usersCollectionRef = collection(firestore, 'team');
@@ -36,19 +37,19 @@ export const codesGenerated = async (codeData: CodesProject) => {
 }
 
 export const createNewProject = async (dataProject: ProjectInput): Promise<ProjectResult> => {
-    try {
-        const {
-            user_id,
-            name_proj,
-            description,
-            assigment,
-            professor,
-            date_release,
-        } = dataProject;
+    const {
+        user_id,
+        name_proj,
+        description,
+        assigment,
+        professor,
+        date_release,
+    } = dataProject;
 
-        const codeGenerated = codeGenerator();
+    const codeGenerated = codeGenerator();
+    const dateProjectRelease = new Date(date_release);
+    try {
         const verifyCode = await isCodeAlreadyGenerated(codeGenerated);
-        const dateProjectRelease = new Date(date_release);
         const projectData = {
             user_id,
             name_proj,
@@ -141,21 +142,24 @@ export const deleteProjectData = async (id_project: string): Promise<ProjectResu
     }
 }
 
-export const getProject = async (id_project: string): Promise<Project> => {
+export const getProject = async (id_project: string): Promise<ProjectTypeResult> => {
     try {
         const data = await getDocumentById('project', id_project);
 
-        const project: Project = {
+        const customDate = formatDate(data!.createAt);
+        const dateRelease = formatDate(data!.date_release);
+
+        const project: ProjectTypeResult = {
             id_project: id_project,
             user_id: data!.user_id,
             name_proj: data!.name_proj,
             description: data!.description,
             assigment: data!.assigment,
             professor: data!.professor,
-            date_release: data!.date_release,
+            date_release: dateRelease,
             code_project: data!.code_project,
             drive_link: data!.drive_link,
-            createAt: data!.createAt,
+            createAt: customDate,
         }
 
         return project;
@@ -164,7 +168,7 @@ export const getProject = async (id_project: string): Promise<Project> => {
     }
 }
 
-export const getProjectsByUserId = async (uid: string): Promise<Project[]> => {
+export const getProjectsByUserId = async (uid: string): Promise<ProjectTypeResult[]> => {
     try {
         if (uid === undefined) {
             return [];
@@ -173,9 +177,10 @@ export const getProjectsByUserId = async (uid: string): Promise<Project[]> => {
         const querySnapshot = await getDocs(queryGetMember);
 
         const projectsIds = querySnapshot.docs.map((doc) => doc.data());
-        const projects: Project[] = await Promise.all(projectsIds.map(async data =>
+        const projects: ProjectTypeResult[] = await Promise.all(projectsIds.map(async data =>
             await getProject(data.id_project)
         ));
+
         return projects;
     } catch (error) {
         throw error;

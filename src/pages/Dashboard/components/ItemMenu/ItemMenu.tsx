@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style/index.css';
 import { useNavigate } from 'react-router-dom';
 import { IconSVG } from './components';
@@ -10,21 +10,21 @@ interface IItemMenuProps {
     icon: string;
     label: string;
     navigateUrl: string;
+    isActive: boolean;
+    setActiveItem: (lavel: string) => void;
 }
 
-const ItemMenu: React.FC<IItemMenuProps> = ({ icon, label, navigateUrl }) => {
-    const [clicked, setClicked] = useState(false);
+const ItemMenu: React.FC<IItemMenuProps> = ({ icon, label, navigateUrl, isActive, setActiveItem }) => {
     const navigate = useNavigate();
-
     const handleClick = () => {
-        setClicked(true);
+        setActiveItem(label);
         navigate(navigateUrl);
     }
 
     return (
-        <Link
-            className={`item-container textNormal rowContainer ${clicked ? 'clicked' : ''}`}
-            to={ navigateUrl }
+        <div
+            className={`item-container textNormal rowContainer ${isActive ? 'clicked' : ''}`}
+            onClick={handleClick}
         >
             <div className="icon-item-container">
                 <IconSVG className='icon' icon={ icon } />
@@ -32,7 +32,7 @@ const ItemMenu: React.FC<IItemMenuProps> = ({ icon, label, navigateUrl }) => {
             <div className="label-item-container">
                 <p>{ label }</p>
             </div>
-        </Link>
+        </div>
     );
 }
 

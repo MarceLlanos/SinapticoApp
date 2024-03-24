@@ -1,11 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { ButtonSmallPrimary } from '@/styled-components';
 import { CardDailyReport, LeftComment, ModalCreateDailyReport, RightComment } from './components';
 import { BarTitle, DashboardFrameContainer } from '../../components';
 
 import './style/index.css';
+import { useParams } from 'react-router-dom';
 
 interface IDailyReportPageProps {
 
@@ -21,6 +22,14 @@ const DailyReportPage: React.FC<IDailyReportPageProps> = (props) => {
     const onCloseModal = () => {
         setOpenModal(false);
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            
+        }
+
+    }, [])
+    
     return (
         <DashboardFrameContainer>
             <BarTitle title='Reporte diario de tareas de los integrantes del equipo. (Daily report)' />
@@ -30,12 +39,26 @@ const DailyReportPage: React.FC<IDailyReportPageProps> = (props) => {
                         <ButtonSmallPrimary className='buttonRight' onClick={ onOpenModal }><AddIcon /> Agregar reporte</ButtonSmallPrimary>
                     </div>
                     <div className="cardsReportContainer">
-                        <RightComment>
-                            <CardDailyReport />
-                        </RightComment>
-                        <LeftComment>
-                            <CardDailyReport />
-                        </LeftComment>
+                        <div className="cardsContent">
+                            <RightComment>
+                                <CardDailyReport
+                                    userName=''
+                                    whatIDid=''
+                                    problemsIHave=''
+                                    whatWillIDo=''
+                                    comments={0}
+                                />
+                            </RightComment>
+                            <LeftComment date=''>
+                                <CardDailyReport
+                                    userName=''
+                                    whatIDid=''
+                                    problemsIHave=''
+                                    whatWillIDo=''
+                                    comments={0}
+                                />
+                            </LeftComment>
+                        </div>
                     </div>
                 </div>
             </div>

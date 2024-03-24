@@ -1,16 +1,16 @@
-.red-border {
+.alta-border {
     border-left: 3px solid var(--red-border);
 }
 
-.yellow-border {
+.media-border {
     border-left: 3px solid var(--yellow-border);
 }
 
-.green-border {
+.baja-border {
     border-left: 3px solid var(--green-border);
 }
 
-.black-border {
+.imposible-border {
     border-left: 3px solid var(--black-border);
 }
 

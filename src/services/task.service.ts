@@ -1,5 +1,5 @@
 import { firestore } from "@/firebase";
-import { titleTask } from "@/helpers";
+import { formatDate, titleTask } from "@/helpers";
 import {
     TaskInput,
     IsSuccess,
@@ -7,8 +7,9 @@ import {
     UpdateInputTask,
     TaskByUserInput,
     TasksByState,
-    UserGoogle,
-    TaskList
+    TaskList,
+    LevelDifficultyInput,
+    LevelDifficultyStateInput
 } from "@/models";
 import {
     DocumentData,
@@ -25,25 +26,15 @@ import {
     getDocumentById,
     updateDocument
 } from "./collection.service";
-import { getUser } from "./authentication.service";
+import { getUserAssigned } from "@/utilities";
 
 const taskRef = collection(firestore, 'task');
-
-const getUserAssignedTask = async (uid: string): Promise<UserGoogle> => {
-    if (!uid) return {
-        email: '',
-        photoUrl: '',
-        userName: '',
-        uid: ''
-    };
-    const user = await getUser(uid);
-    return user;
-};
 
 const mapTaskData = (querySnapshot: QuerySnapshot<DocumentData>): TaskList => {
     const tasks: TaskList = querySnapshot.docs.map((doc) => {
         const id_task = doc.id;
-        const { id_project, uidAssignedTo, userName, title, description, timeAssigned, levelDifficulty, stateTask } = doc.data();
+        const { id_project, uidAssignedTo, userName, title, description, timeAssigned, levelDifficulty, stateTask, createAt } = doc.data();
+        const customDate = formatDate(createAt);
         return {
             id: id_task,
             id_project,
@@ -54,6 +45,7 @@ const mapTaskData = (querySnapshot: QuerySnapshot<DocumentData>): TaskList => {
             timeAssigned,
             levelDifficulty,
             stateTask,
+            createAt: customDate
         }
     });
 
@@ -71,8 +63,8 @@ export const createTask = async (dataTask: TaskInput): Promise<IsSuccess> => {
             stateTask
         } = dataTask;
 
-        const taskTitle: string = await titleTask(id_project);
-        const { userName } = await getUserAssignedTask(uidAssignedTo);
+        const taskTitle: string = await titleTask(id_project!);
+        const { userName } = await getUserAssigned(uidAssignedTo!);
         const taskData = {
             id_project,
             uidAssignedTo,
@@ -200,7 +192,7 @@ export const getTasksByState = async ({ id_project, stateTask }: TasksByState): 
     }
 }
 
-export const getNumOfTasksCreated = async (id_project: string): Promise<number> => {
+export const getTotalTasksFromProject = async (id_project: string): Promise<number> => {
     try {
         const queryTask = query(taskRef, where('id_project', '==', id_project));
         const querySnapshot = await getDocs(queryTask);
@@ -211,7 +203,7 @@ export const getNumOfTasksCreated = async (id_project: string): Promise<number> 
     }
 }
 
-export const getNumTasksByState = async ({ id_project, stateTask }: TasksByState): Promise<number> => {
+export const getTotalTasksByState = async ({ id_project, stateTask }: TasksByState): Promise<number> => {
     try {
         const queryTask = query(taskRef, where('id_project', '==', id_project), where('stateTask', '==', stateTask), orderBy("createAt", "desc"));
         const querySnapshot = await getDocs(queryTask);
@@ -223,7 +215,7 @@ export const getNumTasksByState = async ({ id_project, stateTask }: TasksByState
     }
 }
 
-export const getNumTasksByStateAndUser = async (id_project: string, uid: string, stateTask: string): Promise<number> => {
+export const getTotalTasksByStateAndUser = async (id_project: string, uid: string, stateTask: string): Promise<number> => {
     try {
         const queryTask = query(taskRef, where('id_project', '==', id_project),
             where('stateTask', '==', stateTask),
@@ -233,6 +225,32 @@ export const getNumTasksByStateAndUser = async (id_project: string, uid: string,
         const taskDocument = querySnapshot.docs.map((doc) => doc.data());
 
         return taskDocument.length;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const getTotalTasksByLevelDifficulty = async ({ id_project, levelDifficulty }: LevelDifficultyInput): Promise<number> => {
+    try {
+        const queryTask = query(taskRef, where('id_project', '==', id_project), where('levelDifficulty', '==', levelDifficulty));
+        const querySnapshot = await getDocs(queryTask);
+        const taskDocument = querySnapshot.docs.map((doc) => doc.data());
+
+        return taskDocument.length;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const getTotalTasksByLevelDifficultyAndState = async ({ id_project, levelDifficulty, stateTask }: LevelDifficultyStateInput): Promise<number> => {
+    try {
+        const queryTask = query(taskRef, where('id_project', '==', id_project), where('levelDifficulty', '==', levelDifficulty), where('stateTask', '==', stateTask));
+        const querySnapshot = await getDocs(queryTask);
+        const taskDocument = querySnapshot.docs.map((doc) => doc.data());
+
+        return taskDocument.length;
+
     } catch (error) {
         throw error;
     }

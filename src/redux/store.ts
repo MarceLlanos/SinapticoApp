@@ -12,9 +12,9 @@ import {
     taskSlice,
     teamSlice,
     userLogoutSlice,
-    userSlice
+    userSlice,
+    getTotalTasksSlice
 } from "./states";
-import { getTasksByState } from "@/services/task.service";
 
 const rootReducer = combineReducers({
     user: userSlice,
@@ -25,7 +25,8 @@ const rootReducer = combineReducers({
     member: getAMemberSlice,
     projectUser: getProjectSlice,
     task: taskSlice,
-    getTasks: getTasksSlice
+    getTasks: getTasksSlice,
+    getTotalTasks: getTotalTasksSlice,
 });
 
 export const storeReduxApp = configureStore({

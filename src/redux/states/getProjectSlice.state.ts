@@ -1,8 +1,8 @@
-import { Project } from "@/models";
+import { ProjectTypeResult } from "@/models";
 import { createSlice } from "@reduxjs/toolkit";
 import { getAProject } from "../asyncState/project.async";
 
-const projectInitialState: Project = {
+const projectInitialState: ProjectTypeResult = {
     id_project: '',
     user_id: '',
     name_proj: '',
@@ -11,10 +11,10 @@ const projectInitialState: Project = {
     professor: '',
     code_project: '',
     drive_link: '',
-    date_release: null
+    date_release: ''
 }
 
-const getProject = createSlice({
+const getProjectSlice = createSlice({
     name: 'getProject',
     initialState: {
         project: projectInitialState,
@@ -30,4 +30,4 @@ const getProject = createSlice({
     }
 });
 
-export default getProject.reducer;
+export default getProjectSlice.reducer;
