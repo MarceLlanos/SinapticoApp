@@ -5,8 +5,7 @@ import { capitalizeFirstLetter, percentageFinishedWork } from '@/helpers';
 import './style/index.css';
 import { useParams } from 'react-router-dom';
 import { difficultyTask } from '@/models';
-import { useGetTotalTaskByDifficulty } from '../../customHook';
-import useGetTotalDoneTaskByDifficulty from '../../customHook/useGetTotalDoneTasksByDifficulty.customHook';
+import { useGetTotalDoneTasksByDifficulty, useGetTotalTaskByDifficulty } from '../../hooks';
 
 interface IStaticCardsProps {
     difficulty: string;
@@ -16,8 +15,8 @@ interface IStaticCardsProps {
 const StatCards: React.FC<IStaticCardsProps> = ({ difficulty, doneTask }) => {
     const { project } = useParams();
     const { totalTask } = useGetTotalTaskByDifficulty({ id_project: project!, levelDifficulty: difficulty });
-    const { totalDoneTask } = useGetTotalDoneTaskByDifficulty({id_project: project!, levelDifficulty: difficulty, stateTask: 'Terminadas'})
-    console.log(totalTask)
+    const { totalDoneTask } = useGetTotalDoneTasksByDifficulty({id_project: project!, levelDifficulty: difficulty, stateTask: 'Terminadas'})
+
     return (
         <Box
             width='calc(100%)'

@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { BarTitle, DashboardFrameContainer } from '../../components';
 import { TableCostum, TableHead } from './components';
 import { AppDispatch, getTasksProject } from '@/redux';
-import { Task } from '@/models';
+import { Task, TaskList } from '@/models';
 
 import './style/index.css';
 import { getUser } from '@/services';
@@ -56,7 +56,7 @@ const columns: GridColDef[] = [
 	}
 ]
 
-const tasksWithNoUserFilter = (data: Task[]) => {
+const tasksWithNoUserFilter = (data: TaskList) => {
 	const dataTask = data.filter((task) => task.uidAssignedTo === '');
 	const tasks = dataTask.map((data, index) => ({
 		id: index + 1,
@@ -71,7 +71,7 @@ const tasksWithNoUserFilter = (data: Task[]) => {
 	return tasks;
 }
 
-const tasksWithUserFilter = async (data: Task[]) => {
+const tasksWithUserFilter = async (data: TaskList) => {
 	const dataTask = data.filter((task) => task.uidAssignedTo !== '');
 	const tasks = await Promise.all(dataTask.map(async (data, index) => {
 		const { userName } = await getUser(data.uidAssignedTo);

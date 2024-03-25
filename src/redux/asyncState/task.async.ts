@@ -1,5 +1,5 @@
 import { LevelDifficultyInput, LevelDifficultyStateInput, TaskInput, TaskList, TasksByState, UpdateInputTask } from "@/models";
-import { createTask, deleteTask, getTasks, getTasksByState, getTotalTasksByLevelDifficulty, getTotalTasksByLevelDifficultyAndState, updateTask } from "@/services/task.service";
+import { createTask, deleteTask, getTasks, getTasksByState, getTotalTasksByLevelDifficulty, getTotalTasksByLevelDifficultyAndState, getTotalTasksByState, getTotalTasksFromProject, updateTask } from "@/services/task.service";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Result } from "@/models";
 
@@ -70,6 +70,24 @@ export const getTotalTasksLevelDifficulty = createAsyncThunk('getTotalTasksLevel
 export const getTotalTaskLevelDifficultyState = createAsyncThunk('getTotalTasksLevelDifficultyState/tasksByLevelDifficultyState', async (inputData: LevelDifficultyStateInput): Promise<number> => {
     try {
         const totalTasks: number = await getTotalTasksByLevelDifficultyAndState(inputData);
+        return totalTasks;
+    } catch (error) {
+        throw error;
+    }
+});
+
+export const getTotalProjectTasks = createAsyncThunk('getTotalProjectTasks/tasksProject', async (idProject: string): Promise<number> => {
+    try {
+        const totalTasks: number = await getTotalTasksFromProject(idProject);
+        return totalTasks;
+    } catch (error) {
+        throw error;
+    }
+});
+
+export const getTotalTaskState = createAsyncThunk('getTotalTaskState/tasksByLevelDifficultyState', async (inputData: TasksByState): Promise<number> => {
+    try {
+        const totalTasks: number = await getTotalTasksByState(inputData);
         return totalTasks;
     } catch (error) {
         throw error;
